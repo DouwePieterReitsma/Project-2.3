@@ -1,1 +1,1 @@
-java -jar build\libs\game-ai-1.0-SNAPSHOT.jar
+java --module-path %JAVAFX_HOME%\lib --add-modules=javafx.controls,javafx.fxml,javafx.graphics -jar build\libs\game-ai-1.0-SNAPSHOT.jar
