@@ -20,7 +20,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes "Main-Class": "gameai.Main",
+        attributes "Main-Class": project.getProperty("mainClassName"),
                 "Class-Path": configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
     }
 }
