@@ -36,3 +36,9 @@ gradle-app.setting
 
 #intelij
 .idea/
+
+#eclipse
+.classpath
+.project
+.settings/
+/bin/
