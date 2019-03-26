@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
 group 'itv2c.group4.project23'
@@ -18,9 +19,22 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+javafx {
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
 jar {
     manifest {
         attributes "Main-Class": project.getProperty("mainClassName"),
                 "Class-Path": configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java"]
+            includes = ["**/*.fxml"]
+        }
     }
 }
