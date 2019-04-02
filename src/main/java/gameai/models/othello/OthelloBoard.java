@@ -15,7 +15,6 @@ public class OthelloBoard extends Board {
     }
 
     private OthelloColor currentTurnColor;
-    private OthelloColor opponentColor;
 
     @Override
     public List<Position> getLegalMoves() {
@@ -35,7 +34,7 @@ public class OthelloBoard extends Board {
         return legalMoves;
     }
 
-    public boolean isLegalMove(Position position, OthelloColor color) {
+    private boolean isLegalMove(Position position, OthelloColor color) {
         OthelloPiece piece = (OthelloPiece)position.getPiece();
 
         // check if a piece is already at the given position
@@ -58,7 +57,7 @@ public class OthelloBoard extends Board {
         return false;
     }
 
-    public boolean hasPieceInLine(Position startingPosition, int horizontalDirection, int verticalDirection) {
+    private boolean hasPieceInLine(Position startingPosition, int horizontalDirection, int verticalDirection) {
         Position currentPosition = null;
         OthelloPiece piece = null;
         int x = startingPosition.getX() + horizontalDirection;
@@ -88,7 +87,7 @@ public class OthelloBoard extends Board {
         return false;
     }
 
-    public Position tryNeighbor(int x, int y) {
+    private Position tryNeighbor(int x, int y) {
 
         // bounds check
         if(x < 0 || x > 7 || y < 0 || y > 7) return null;
@@ -108,7 +107,7 @@ public class OthelloBoard extends Board {
         return positions[y][x];
     }
 
-    public List<Position> getOpponentNeighbors(Position position) {
+    private List<Position> getOpponentNeighbors(Position position) {
         List<Position> neighbors = new ArrayList<>();
         Position neighbor = null;
 
@@ -161,6 +160,5 @@ public class OthelloBoard extends Board {
 
     public void setCurrentTurnColor(OthelloColor currentTurnColor) {
         this.currentTurnColor = currentTurnColor;
-        this.opponentColor = currentTurnColor == OthelloColor.WHITE ? OthelloColor.BLACK : OthelloColor.WHITE;
     }
 }
