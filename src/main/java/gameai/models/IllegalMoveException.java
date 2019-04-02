@@ -1,4 +1,4 @@
-package gameai;
+package gameai.models;
 
 import gameai.models.Piece;
 import gameai.models.Position;

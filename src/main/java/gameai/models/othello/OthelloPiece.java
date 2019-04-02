@@ -1,12 +1,10 @@
-package gameai.models;
+package gameai.models.othello;
+
+import gameai.models.Piece;
 
 public class OthelloPiece extends Piece {
     public OthelloColor getColor() {
         return color;
-    }
-
-    private enum OthelloColor {
-        WHITE, BLACK
     }
 
     private OthelloColor color;

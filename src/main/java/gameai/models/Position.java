@@ -4,7 +4,7 @@ public class Position {
     private int x;
     private int y;
     private Piece piece;
-    
+
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
@@ -42,5 +42,18 @@ public class Position {
     @Override
     public String toString() {
         return String.format("Position: %d, %d", getX(), getY());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+
+        if (!(obj instanceof Position))
+            return false;
+
+        Position position = (Position)obj;
+
+        return getX() == position.getX() && getY() == position.getY();
     }
 }
