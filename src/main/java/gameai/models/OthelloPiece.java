@@ -1,6 +1,10 @@
 package gameai.models;
 
 public class OthelloPiece extends Piece {
+    public OthelloColor getColor() {
+        return color;
+    }
+
     private enum OthelloColor {
         WHITE, BLACK
     }
@@ -9,10 +13,5 @@ public class OthelloPiece extends Piece {
 
     public OthelloPiece(OthelloColor color) {
         this.color = color;
-    }
-
-    @Override
-    public boolean canMoveTo(Position position) {
-        return true;
     }
 }

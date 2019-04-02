@@ -19,6 +19,18 @@ public class OthelloBoard extends Board {
         for(int i = 0; i < positions.length; i++){
             for(int j = 0; j < positions[i].length; j++){
                 Position position = positions[i][j];
+
+                OthelloPiece piece = (OthelloPiece) position.getPiece();
+
+                //check if a piece is already at the position
+                if (piece != null) continue;
+
+                //get the adjacent positions for the current position
+                List<Position> neighbors = getNeighbors(position);
+
+                for(Position neighbor : neighbors) {
+                    //check if neighbor
+                }
             }
         }
 

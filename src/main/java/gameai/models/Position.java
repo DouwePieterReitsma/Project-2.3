@@ -4,11 +4,7 @@ public class Position {
     private int x;
     private int y;
     private Piece piece;
-
-    public Position() {
-
-    }
-
+    
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
@@ -37,6 +33,10 @@ public class Position {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+    }
+
+    public boolean isAvailable() {
+        return getPiece() == null;
     }
 
     @Override
