@@ -3,7 +3,7 @@ package gameai.models;
 import java.util.List;
 
 public abstract class Board {
-    private Position[][] positions;
+    protected Position[][] positions;
 
     public Board(int x, int y) {
         positions = new Position[y][x];
