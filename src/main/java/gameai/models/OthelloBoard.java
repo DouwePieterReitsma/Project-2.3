@@ -19,8 +19,6 @@ public class OthelloBoard extends Board {
         for(int i = 0; i < positions.length; i++){
             for(int j = 0; j < positions[i].length; j++){
                 Position position = positions[i][j];
-
-
             }
         }
 
@@ -44,7 +42,7 @@ public class OthelloBoard extends Board {
         return position;
     }
 
-    private List<Position> getNeighbors(Position position) {
+    public List<Position> getNeighbors(Position position) {
         List<Position> neighbors = new ArrayList<>();
         Position neighbor = null;
 
