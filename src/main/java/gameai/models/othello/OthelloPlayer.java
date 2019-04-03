@@ -14,7 +14,7 @@ public abstract class OthelloPlayer {
     public void doMove(Position position) {
         if (board.getCurrentTurnColor() == playerColor) {
             try {
-                board.setPieceAtPosition(new OthelloPiece(playerColor), position.getX(), position.getY());
+                board.setPieceAtPosition(new OthelloPiece(playerColor), position);
             } catch (IllegalMoveException e) {
                 e.printStackTrace();
             }

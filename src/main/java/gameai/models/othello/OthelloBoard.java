@@ -9,15 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OthelloBoard extends Board {
-    public OthelloBoard(OthelloColor startingColor, OthelloPlayer whitePlayer, OthelloPlayer blackPlayer) {
+    public OthelloBoard(OthelloColor startingColor) {
         super(8, 8);
 
         this.currentTurnColor = startingColor;
-
-        if (whitePlayer != null && blackPlayer != null) {
-            whitePlayer.setBoard(this);
-            blackPlayer.setBoard(this);
-        }
     }
 
     private OthelloColor currentTurnColor;
@@ -233,10 +228,10 @@ public class OthelloBoard extends Board {
     }
 
     @Override
-    public void setPieceAtPosition(Piece piece, int x, int y) throws IllegalMoveException {
-        super.setPieceAtPosition(piece, x, y);
+    public void setPieceAtPosition(Piece piece, Position position) throws IllegalMoveException {
+        super.setPieceAtPosition(piece, position);
 
-        turnPieces(new Position(x, y), ((OthelloPiece)piece).getColor());
+        turnPieces(position, ((OthelloPiece)piece).getColor());
 
         // next player's turn
         setCurrentTurnColor(currentTurnColor == OthelloColor.WHITE ? OthelloColor.BLACK : OthelloColor.WHITE);

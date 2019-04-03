@@ -26,8 +26,8 @@ public abstract class Board {
 
     public abstract List<Position> getLegalMoves();
 
-    public void setPieceAtPosition(Piece piece, int x, int y) throws IllegalMoveException {
-        Position position = positions[y][x];
+    public void setPieceAtPosition(Piece piece, Position position) throws IllegalMoveException {
+//        Position position = positions[y][x];
 
         List<Position> legalMoves = getLegalMoves();
 
