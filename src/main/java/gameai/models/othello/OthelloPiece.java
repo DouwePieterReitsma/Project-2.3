@@ -12,4 +12,9 @@ public class OthelloPiece extends Piece {
     public OthelloPiece(OthelloColor color) {
         this.color = color;
     }
+
+    @Override
+    public String toString() {
+        return color == OthelloColor.WHITE ? "W" : "B";
+    }
 }
