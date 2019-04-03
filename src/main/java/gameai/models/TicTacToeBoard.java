@@ -1,50 +1,41 @@
 package gameai.models;
 
-import javafx.geometry.Pos;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import gameai.models.TicTacToePiece.TicTacToeFigure;
 
 public class TicTacToeBoard extends Board {
-	public int turn = 0;
-    public TicTacToeBoard() {
+	public TicTacToeAI ai;
+    protected ArrayList<Position> array = new ArrayList<Position>();
+    public TicTacToeBoard(TicTacToeAI ai) {
         super(3,3);
-        Random rand = new Random();
+        this.ai = ai;
+        ai.setBoard(this);
+        play();
+    }
+    
+    public void play() {
         while(true) {
             TicTacToeFigure check = checkWinningConditions();
             if(check != null) {
             	System.out.println("The winner is: " + check);
             	break;
             }
-            ArrayList<Position> array = new ArrayList<Position>();
             array = getLegalMoves();
             if(array.size() == 0) {
             	System.out.println("It's a draw");
             	break;
             }
-            int nextmove = rand.nextInt(array.size());
-            if(turn == 0) {
-            	array.get(nextmove).setPiece(new TicTacToePiece(TicTacToeFigure.CROSS));
-            	turn = 1;
-            }else {
-            	array.get(nextmove).setPiece(new TicTacToePiece(TicTacToeFigure.CIRCLE));
-            	turn = 0;
-            }
+            ai.makeMove();
             
             
         }
-        for(int x = 0; x < 3; x++) {
-        	for(int y = 0; y < 3; y++) {
-        		System.out.println(positions[y][x]);
-        	}
-        }
+        System.out.println(this);
     }
-
     @Override
     public ArrayList<Position> getLegalMoves() {
+    	//returns an array which contains the positions which aren't occupied.
     	ArrayList<Position> temp = new ArrayList<Position>();
         for(int x = 0; x < 3; x++) {
         	for(int y = 0; y < 3; y++) {
@@ -57,6 +48,7 @@ public class TicTacToeBoard extends Board {
     }
     
     public TicTacToeFigure checkWinningConditions() {
+    	//Checks if the current state of the game has a winning condition. If so, it returns the character which has won (Cross or Circle).If there is no winning condition found, it returns null.
     	if(positions[0][0].getPiece() != null && positions[1][1].getPiece() != null && positions[2][2].getPiece() != null) {
         	if(((TicTacToePiece)positions[0][0].getPiece()).equals(((TicTacToePiece)positions[1][1].getPiece())) && ((TicTacToePiece)positions[1][1].getPiece()).equals(((TicTacToePiece)positions[2][2].getPiece()))) {
         		return ((TicTacToePiece) positions[0][0].getPiece()).getFigure();
@@ -81,5 +73,20 @@ public class TicTacToeBoard extends Board {
         	}
         }
 		return null;
+    }
+    
+    public String toString() {
+    	//Overrides the toString method to display the board in the console.
+    	String board = "";
+        for(int x = 0; x < 3; x++) {
+        	for(int y = 0; y < 3; y++) {
+        		board += positions[y][x] + " " + positions[y][x].getPiece() + "\n";
+        	}
+        }
+        return board;
+    }
+    
+    public ArrayList<Position> getLegalMovesList(){
+    	return array;
     }
 }

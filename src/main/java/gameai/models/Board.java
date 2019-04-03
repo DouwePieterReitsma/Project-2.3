@@ -3,6 +3,7 @@ package gameai.models;
 import java.util.List;
 
 public abstract class Board {
+	protected int turn = 0;
     protected Position[][] positions;
 
     public Board(int x, int y) {
@@ -35,5 +36,13 @@ public abstract class Board {
         }
 
         position.setPiece(piece);
+    }
+    
+    public int getTurn() {
+    	return turn;
+    }
+    
+    public void setTurn(int turn) {
+    	this.turn = turn;
     }
 }
