@@ -13,15 +13,12 @@ public abstract class OthelloAI extends OthelloPlayer {
     public abstract Position calculateMove();
 
     public void play() {
+        board.setCurrentTurnColor(playerColor);
+
         Position move = calculateMove();
 
         if(move != null) {
             doMove(move);
-        } else {
-            // no moves, skip turn
-            board.setCurrentTurnColor(playerColor == OthelloColor.WHITE ? OthelloColor.BLACK : OthelloColor.WHITE);
         }
-
-        System.out.println(board.toString());
     }
 }

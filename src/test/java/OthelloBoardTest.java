@@ -24,8 +24,6 @@ public class OthelloBoardTest {
         board.getPositions()[3][4].setPiece(new OthelloPiece(OthelloColor.WHITE));
         board.getPositions()[4][4].setPiece(new OthelloPiece(OthelloColor.BLACK));
 
-        System.out.println(board.toString());
-
 //        List<Position> moves = board.getLegalMoves(board.getCurrentTurnColor());
         List<Position> moves = board.getLegalMoves(OthelloColor.BLACK);
 

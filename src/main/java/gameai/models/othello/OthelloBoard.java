@@ -18,14 +18,9 @@ public class OthelloBoard extends Board {
             whitePlayer.setBoard(this);
             blackPlayer.setBoard(this);
         }
-
-        this.whitePlayer = whitePlayer;
-        this.blackPlayer = blackPlayer;
     }
 
     private OthelloColor currentTurnColor;
-    private OthelloPlayer whitePlayer;
-    private OthelloPlayer blackPlayer;
 
     @Override
     public List<Position> getLegalMoves() {
@@ -35,12 +30,10 @@ public class OthelloBoard extends Board {
     public List<Position> getLegalMoves(OthelloColor color) {
         List<Position> legalMoves = new ArrayList<>();
 
-        for(int i = 0; i < positions.length; i++){
-            for(int j = 0; j < positions[i].length; j++){
-                Position position = positions[i][j];
-
-                if (isLegalMove(position, color))
-                    legalMoves.add(position);
+        for (Position[] row : positions) {
+            for (Position column : row) {
+                if (isLegalMove(column, color))
+                    legalMoves.add(column);
             }
         }
 
@@ -199,11 +192,11 @@ public class OthelloBoard extends Board {
     private int getPiecesLeft(OthelloColor color) {
         int pieces = 0;
 
-        for(int i = 0; i < positions.length; i++) {
-            for (int j = 0; j < positions[i].length; j++) {
-                OthelloPiece piece = (OthelloPiece) positions[i][j].getPiece();
+        for (Position[] row : positions) {
+            for (Position column : row) {
+                OthelloPiece piece = (OthelloPiece) column.getPiece();
 
-                if(piece != null) {
+                if (piece != null) {
                     if (piece.getColor() == color) pieces++;
                 }
             }
@@ -213,28 +206,26 @@ public class OthelloBoard extends Board {
     }
 
     private boolean boardIsFull() {
-        for(int i = 0 ;i < positions.length; i++) {
-            for (int j = 0; j < positions[i].length; j++) {
-                if (positions[i][j].getPiece() == null) return false;
+        for (Position[] row : positions) {
+            for (Position column : row) {
+                if (column.getPiece() == null) return false;
             }
         }
 
         return true;
     }
 
-    public OthelloColor getWinner() {
+    public OthelloMatchResult getMatchResult() {
         int whitePiecesLeft = getPiecesLeft(OthelloColor.WHITE);
         int blackPiecesLeft = getPiecesLeft(OthelloColor.BLACK);
 
-        return whitePiecesLeft > blackPiecesLeft ? OthelloColor.WHITE : OthelloColor.BLACK;
+        if (whitePiecesLeft == blackPiecesLeft) return OthelloMatchResult.TIE;
+
+        return whitePiecesLeft > blackPiecesLeft ? OthelloMatchResult.WHITE_WINS : OthelloMatchResult.BLACK_WINS;
     }
 
     public boolean isGameOver() {
         if(boardIsFull()) {
-            OthelloColor winner = getWinner();
-
-            System.out.println(winner == OthelloColor.WHITE ? "White Victory!" : "Black Victory!");
-
             return true;
         }
 
@@ -263,9 +254,9 @@ public class OthelloBoard extends Board {
     public String toString() {
         StringBuilder result = new StringBuilder();
 
-        for(int i = 0; i < positions.length; i++) {
-            for (int j = 0; j < positions[i].length; j++) {
-                OthelloPiece piece = (OthelloPiece)positions[i][j].getPiece();
+        for (Position[] row : positions) {
+            for (Position column : row) {
+                OthelloPiece piece = (OthelloPiece) column.getPiece();
 
                 result.append(piece != null ? piece.toString() : "X");
                 result.append(" ");
