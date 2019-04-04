@@ -1,6 +1,8 @@
-package gameai.models.othello;
+package gameai.models.othello.ai;
 
 import gameai.models.Position;
+import gameai.models.othello.OthelloColor;
+import gameai.models.othello.ai.OthelloAI;
 
 import java.util.List;
 import java.util.Random;

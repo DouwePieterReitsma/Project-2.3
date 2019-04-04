@@ -1,8 +1,10 @@
-package gameai.models.othello;
+package gameai.models.othello.ai;
 
 import gameai.models.IllegalMoveException;
 import gameai.models.Piece;
 import gameai.models.Position;
+import gameai.models.othello.OthelloColor;
+import gameai.models.othello.OthelloPlayer;
 import javafx.geometry.Pos;
 
 public abstract class OthelloAI extends OthelloPlayer {
