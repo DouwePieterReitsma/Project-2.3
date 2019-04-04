@@ -1,5 +1,6 @@
 package gameai.controllers;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,6 +24,8 @@ public class MainThread implements Runnable {
 
 	private ExecutorService threadPool;
 
+	private MainWindow mainWindow;
+
 	private Timeline verbindAnim;
 
 	private Button loginButton;
@@ -31,7 +34,7 @@ public class MainThread implements Runnable {
 	private String username;
 
 	private int port;
-
+	private int timer;
 	private int state;
 
 	private Label errorLabel;
@@ -49,6 +52,9 @@ public class MainThread implements Runnable {
 		this.username = name;
 		hasConnected = false;
 		isConnecting = false;
+
+		connectThread = null;
+
 		state = 0; //0 is Login, 1 = main, 2 = game
 
 		//Maak animatie
@@ -80,7 +86,7 @@ public class MainThread implements Runnable {
 			state = connectThread.GetState();
 			//Sleep
 			try {
-				Thread.sleep(100);
+				Thread.sleep(timer);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -90,7 +96,13 @@ public class MainThread implements Runnable {
 				CheckConnection();
 			}
 			else if(state == 1) {
-				MainMenuHandler();
+				timer = 1000;
+				try {
+					MainMenuHandler();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else if(state == 2) {
 				GameHandler();
@@ -121,7 +133,7 @@ public class MainThread implements Runnable {
 					hasConnected = true;
 					isConnecting = false;
 
-					MainWindow mainWindow = new MainWindow();
+					mainWindow = new MainWindow();
 					Platform.runLater(new Runnable() {
 						@Override public void run() {
 							Main.GetMainStage().setScene(mainWindow.GetMainScene());
@@ -137,8 +149,14 @@ public class MainThread implements Runnable {
 	}
 
 	//Function to handle main menu
-	private void MainMenuHandler() {
+	private void MainMenuHandler() throws IOException {
+		//PlayerList
+		connectThread.UpdatePlayerList();
+		mainWindow.UpdatePlayerList(connectThread.GetPlayerList());
 
+		//GameList
+		connectThread.UpdateGameList();
+		mainWindow.UpdateGameList(connectThread.GetGameList());
 	}
 
 	//Function to handle game menus

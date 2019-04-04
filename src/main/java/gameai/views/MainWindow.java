@@ -1,5 +1,7 @@
 package gameai.views;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -65,6 +67,15 @@ public class MainWindow {
 
 	public Scene GetMainScene() {
 		return mainScene;
+	}
+
+
+	public void UpdatePlayerList(ArrayList<String> pList) {
+
+	}
+
+	public void UpdateGameList(ArrayList<String> gList) {
+
 	}
 
 	public void subscribe() {
