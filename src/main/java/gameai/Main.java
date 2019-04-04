@@ -8,6 +8,8 @@ import gameai.controllers.MainThread;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -29,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 public class Main extends Application {
@@ -54,8 +57,23 @@ public class Main extends Application {
 	private TextField portTextArea;
 	private TextField nameTextArea;
 
+	private static Stage mainStage;
+
     @Override
     public void start(Stage stage) throws Exception{
+    	mainStage = stage;
+
+    	//Make sure everything stops after exit
+    	mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+    	    @Override
+    	    public void handle(WindowEvent t) {
+    	        Platform.exit();
+    	        System.out.println("Application sucessfully stopped!");
+    	        System.exit(0);
+    	    }
+    	});
+
+    	//FXML view
         Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
 
         //Create Threadpool
@@ -96,7 +114,7 @@ public class Main extends Application {
         titleBox.getChildren().add(errorLabel);
         titleBox.setAlignment(Pos.CENTER);
 
-        //
+        //Make new loginScene
         Scene loginScene = new Scene(bPane, 375, 200);
 
         //CreateLoginPane function
@@ -113,9 +131,10 @@ public class Main extends Application {
         bPane.setAlignment(bottomPane, Pos.BOTTOM_RIGHT);
 
         //Stageset
-        stage.setTitle("Login");
-        stage.setScene(loginScene);
-        stage.show();
+        mainStage.setTitle("Login");
+        mainStage.setScene(loginScene);
+        mainStage.setResizable(false);
+        mainStage.show();
     }
 
     private void CreateLoginPane() {
@@ -184,6 +203,11 @@ public class Main extends Application {
 
     	//Run mainthread
     	threadPool.execute(mainThread);
+    }
+
+    //Stage getter
+    public static Stage GetMainStage() {
+    	return mainStage;
     }
 
     //Launch application

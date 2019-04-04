@@ -3,6 +3,8 @@ package gameai.controllers;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import gameai.Main;
+import gameai.views.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -13,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainThread implements Runnable {
@@ -29,6 +32,8 @@ public class MainThread implements Runnable {
 
 	private int port;
 
+	private int state;
+
 	private Label errorLabel;
 
 	private boolean hasConnected;
@@ -44,6 +49,7 @@ public class MainThread implements Runnable {
 		this.username = name;
 		hasConnected = false;
 		isConnecting = false;
+		state = 0; //0 is Login, 1 = main, 2 = game
 
 		//Maak animatie
         verbindAnim = new Timeline(
@@ -70,34 +76,80 @@ public class MainThread implements Runnable {
 
 		//Loop
 		while(true) {
-			if(!hasConnected && isConnecting) {
-				try {
-					Thread.sleep(100);
-					//Check connection status
-					if(connectThread.GetConnectStatus() == 1) {
-						//Connection failed
-						verbindAnim.stop();
-						isConnecting = false;
-						//Set new text
-						Platform.runLater(() -> {
-							errorLabel.setText("Verbinding mislukt, check je host & poort.");
-							});
-						loginButton.setDisable(false);
-						threadPool = Executors.newFixedThreadPool(5);
-					}
-					else if(connectThread.GetConnectStatus() == 2) {
-						//Connection succesfull
-						verbindAnim.stop();
-						hasConnected = true;
-						isConnecting = false;
-
-						System.out.println("Success!");
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			//Set state
+			state = connectThread.GetState();
+			//Sleep
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//State handlers
+			if(state == 0) {
+				CheckConnection();
+			}
+			else if(state == 1) {
+				MainMenuHandler();
+			}
+			else if(state == 2) {
+				GameHandler();
 			}
 		}
+	}
+
+	//Function for checking connection
+	private void CheckConnection() {
+		if(!hasConnected && isConnecting) {
+			try {
+				Thread.sleep(100);
+				//Check connection status
+				if(connectThread.GetConnectStatus() == 1) {
+					//Connection failed
+					verbindAnim.stop();
+					isConnecting = false;
+					//Set new text
+					Platform.runLater(() -> {
+						errorLabel.setText("Verbinding mislukt, check je host & poort.");
+						});
+					loginButton.setDisable(false);
+					threadPool = Executors.newFixedThreadPool(5);
+				}
+				else if(connectThread.GetConnectStatus() == 2) {
+					//Connection successfull
+					verbindAnim.stop();
+					hasConnected = true;
+					isConnecting = false;
+
+					MainWindow mainWindow = new MainWindow();
+					Platform.runLater(new Runnable() {
+						@Override public void run() {
+							Main.GetMainStage().setScene(mainWindow.GetMainScene());
+							Main.GetMainStage().setTitle("Wachtkamer");
+		                 }});
+				}
+			}
+			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	//Function to handle main menu
+	private void MainMenuHandler() {
+
+	}
+
+	//Function to handle game menus
+	private void GameHandler() {
+
+	}
+
+	//Close application
+    public void stop(){
+    	threadPool.shutdown();
+		while(!threadPool.isTerminated()) {}
+		System.out.println("Application succesfully closed!");
 	}
 }
