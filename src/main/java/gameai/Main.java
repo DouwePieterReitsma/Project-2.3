@@ -1,6 +1,7 @@
 package gameai;
 
 import gameai.models.Board;
+import gameai.models.MiniMaxTicTacToe;
 import gameai.models.RandomTicTacToeAI;
 import gameai.models.TicTacToeBoard;
 import javafx.application.Application;
@@ -24,6 +25,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch();
-        Board board = new TicTacToeBoard(new RandomTicTacToeAI());
+        Board board = new TicTacToeBoard(new MiniMaxTicTacToe());
     }
 }
