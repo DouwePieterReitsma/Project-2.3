@@ -12,10 +12,31 @@ public class OthelloBoard extends Board {
     public OthelloBoard(OthelloColor startingColor) {
         super(8, 8);
 
-        this.currentTurnColor = startingColor;
+
+        setCurrentTurnColor(startingColor);
+        //this.currentTurnColor = startingColor;
+    }
+
+    public OthelloBoard(Position[][] positions, OthelloColor startingColor) {
+        this(startingColor);
+
+        setPositions(positions);
+    }
+
+    public OthelloBoard(OthelloBoard board) {
+        super(8, 8);
+
+        setCurrentTurnColor(board.getCurrentTurnColor());
+
+        for(int i = 0; i < positions.length; i++) {
+            for(int j = 0; j < positions[i].length; j++) {
+                positions[i][j] = new Position(board.getPositions()[i][j]);
+            }
+        }
     }
 
     private OthelloColor currentTurnColor;
+    private OthelloColor opponentColor;
 
     @Override
     public List<Position> getLegalMoves() {
@@ -23,43 +44,57 @@ public class OthelloBoard extends Board {
     }
 
     public List<Position> getLegalMoves(OthelloColor color) {
-        List<Position> legalMoves = new ArrayList<>();
+        List<Position> result = new ArrayList<>();
+
+        for(OthelloMove move : getLegalMovesWrapper(color)) {
+            result.add(move.getPosition());
+        }
+
+        return result;
+    }
+
+    public List<OthelloMove> getLegalMovesWrapper(OthelloColor color) {
+        List<OthelloMove> legalMoves = new ArrayList<>();
 
         for (Position[] row : positions) {
             for (Position column : row) {
-                if (isLegalMove(column, color))
-                    legalMoves.add(column);
+                OthelloMove move = tryPosition(column, color);
+
+                if (move != null)
+                    legalMoves.add(move);
             }
         }
 
         return legalMoves;
     }
 
-    private boolean isLegalMove(Position position, OthelloColor color) {
+    private OthelloMove tryPosition(Position position, OthelloColor color) {
         OthelloPiece piece = (OthelloPiece)position.getPiece();
+        OthelloMove move = new OthelloMove(position);
 
         // check if a piece is already at the given position
-        if (piece != null) return false;
+        if (piece != null) return null;
 
         // get the adjacent positions for the given position
         List<Position> neighbors = getOpponentNeighbors(position, color);
 
         // no adjacent opponent pieces
         if (neighbors.size() == 0)
-            return false;
+            return null;
 
         for(Position neighbor : neighbors) {
             int horizontalDirection = neighbor.getX() - position.getX();
             int verticalDirection = neighbor.getY() - position.getY();
 
-            if (hasPieceInLine(position, color, horizontalDirection, verticalDirection)) return true;
+            OthelloMove temp = findPieceInLine(position, color, horizontalDirection, verticalDirection);
+
+            // if piece is found add all enemy pieces that would be swapped to the piecesToSwap list
+            if (temp != null) {
+                move.getPiecesToSwap().addAll(temp.getPiecesToSwap());
+            }
         }
 
-        return false;
-    }
-
-    private boolean hasPieceInLine(Position startingPosition, OthelloColor color, int horizontalDirection, int verticalDirection) {
-        return findPieceInLine(startingPosition, color, horizontalDirection, verticalDirection) != null;
+        return move.getScore() > 0 ? move : null;
     }
 
     private OthelloMove findPieceInLine(Position startingPosition, OthelloColor color, int horizontalDirection, int verticalDirection) {
@@ -184,20 +219,20 @@ public class OthelloBoard extends Board {
         return neighbors;
     }
 
-    private int getPiecesLeft(OthelloColor color) {
-        int pieces = 0;
+    public int getPlayerScore(OthelloColor color) {
+        int score = 0;
 
         for (Position[] row : positions) {
             for (Position column : row) {
                 OthelloPiece piece = (OthelloPiece) column.getPiece();
 
                 if (piece != null) {
-                    if (piece.getColor() == color) pieces++;
+                    if (piece.getColor() == color) score++;
                 }
             }
         }
 
-        return pieces;
+        return score;
     }
 
     private boolean boardIsFull() {
@@ -211,8 +246,8 @@ public class OthelloBoard extends Board {
     }
 
     public OthelloMatchResult getMatchResult() {
-        int whitePiecesLeft = getPiecesLeft(OthelloColor.WHITE);
-        int blackPiecesLeft = getPiecesLeft(OthelloColor.BLACK);
+        int whitePiecesLeft = getPlayerScore(OthelloColor.WHITE);
+        int blackPiecesLeft = getPlayerScore(OthelloColor.BLACK);
 
         if (whitePiecesLeft == blackPiecesLeft) return OthelloMatchResult.TIE;
 
@@ -220,11 +255,7 @@ public class OthelloBoard extends Board {
     }
 
     public boolean isGameOver() {
-        if(boardIsFull()) {
-            return true;
-        }
-
-        return false;
+        return boardIsFull() || (getLegalMoves(currentTurnColor).size() == 0 && getLegalMoves(opponentColor).size() == 0);
     }
 
     @Override
@@ -233,8 +264,13 @@ public class OthelloBoard extends Board {
 
         turnPieces(position, ((OthelloPiece)piece).getColor());
 
-        // next player's turn
-        setCurrentTurnColor(currentTurnColor == OthelloColor.WHITE ? OthelloColor.BLACK : OthelloColor.WHITE);
+        advanceTurn();
+    }
+
+    public void advanceTurn() {
+        turn++;
+
+        setCurrentTurnColor(opponentColor);
     }
 
     public OthelloColor getCurrentTurnColor() {
@@ -243,6 +279,7 @@ public class OthelloBoard extends Board {
 
     public void setCurrentTurnColor(OthelloColor currentTurnColor) {
         this.currentTurnColor = currentTurnColor;
+        this.opponentColor = currentTurnColor == OthelloColor.WHITE ? OthelloColor.BLACK : OthelloColor.WHITE;
     }
 
     @Override

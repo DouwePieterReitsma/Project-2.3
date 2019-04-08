@@ -7,7 +7,8 @@ public abstract class OthelloPlayer {
     protected OthelloBoard board;
     protected OthelloColor playerColor;
 
-    public OthelloPlayer(OthelloColor playerColor) {
+    public OthelloPlayer(OthelloBoard board, OthelloColor playerColor) {
+        this.board = board;
         this.playerColor = playerColor;
     }
 

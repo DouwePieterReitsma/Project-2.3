@@ -1,6 +1,7 @@
 package gameai.models.othello.ai;
 
 import gameai.models.Position;
+import gameai.models.othello.OthelloBoard;
 import gameai.models.othello.OthelloColor;
 import gameai.models.othello.ai.OthelloAI;
 
@@ -8,8 +9,8 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomOthelloAI extends OthelloAI {
-    public RandomOthelloAI(OthelloColor playerColor) {
-        super(playerColor);
+    public RandomOthelloAI(OthelloBoard board, OthelloColor playerColor) {
+        super(board, playerColor);
     }
 
     @Override
