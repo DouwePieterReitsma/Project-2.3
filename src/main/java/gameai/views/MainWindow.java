@@ -16,14 +16,18 @@ public class MainWindow  {
 	private ComboBox spel = new ComboBox();
 	private Scene mainScene;
 	private String subscribeCommand;
+	private BorderPane mid;
+	private ChallengeView challview;
 	private ConnectionListenerThread connectThread;
+	private Button sub;
+	private Button player;
 
 	public MainWindow(ConnectionListenerThread connectThread){
 		this.connectThread = connectThread;
 		
 		//knopjes waar je de verschillende modes kunt kiezen.
-		Button sub = new Button("Inschrijven");
-		Button player = new Button("Speler");
+		sub = new Button("Inschrijven");
+		player = new Button("Speler");
 		Button chal = new Button("Uitdagen");
 
 		// combobox om spellen uit te kiezen, later toevoegen dat je
@@ -60,11 +64,11 @@ public class MainWindow  {
 		//pane.setRight(chal);
 
 		// middelste pane wat de spellen gaat bevatten en de lijst met spelers om te challenge
-		BorderPane mid = new BorderPane();
+		mid = new BorderPane();
 		//TextField test = new TextField();
 		mid.setStyle("-fx-border-color: red");
 		//mid.setCenter(test);
-		mid.setPrefSize(200, 200);
+		//mid.setPrefSize(200, 200);
 
 
 
@@ -72,8 +76,11 @@ public class MainWindow  {
 		// hier wordt alles in geplaatst
 		BorderPane root = new BorderPane();
 		root.setTop(pane);
+		
 		//root.setStyle("-fx-border-color: red");
 		root.setCenter(mid);
+		//challview = new ChallengeView();
+		//challview.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
 	}
@@ -88,8 +95,8 @@ public class MainWindow  {
 	}
 
 	public void UpdateGameList(ArrayList<String> gList) {
-
 	}
+	
 
 	public void subscribe() throws IOException{
 		if(spel.getValue() != null) {
@@ -106,7 +113,11 @@ public class MainWindow  {
 
 	}
 	public void challenge() {
-		String game = (String) spel.getValue();
-		System.out.println("Daag ...... uit om " + game + " te spelen");
+		if(spel.getValue() != null) {
+			String game = (String) spel.getValue();
+			challview = new ChallengeView();
+			challview.createUI(mid , game , sub , player);
 	}
 }
+}
+

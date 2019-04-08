@@ -133,7 +133,7 @@ public class Main extends Application {
         //Stageset
         mainStage.setTitle("Login");
         mainStage.setScene(loginScene);
-        mainStage.setResizable(false);
+        mainStage.setResizable(true);
         mainStage.show();
     }
 

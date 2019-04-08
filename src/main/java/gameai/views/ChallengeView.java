@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -18,21 +19,22 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.geometry.Pos;
 
-public class ChallengeView extends Application {
+public class ChallengeView{
 
     private final TableView<Online> table = new TableView<>();
     private final ObservableList<Online> tvObservableList = FXCollections.observableArrayList();
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) {
-
+    private BorderPane paneel;
+    private String game;
+    private Button sub;
+    private Button player;
+    
+    public void createUI(BorderPane parent , String game ,Button sub , Button player) {
+    	this.game = game;
+    	this.sub = sub;
+    	this.player = player;
     	
-        stage.setWidth(600);
-        stage.setHeight(600);
+    	sub.setDisable(true);
+    	player.setDisable(true);
 
         setTableappearance();
 
@@ -55,17 +57,22 @@ public class ChallengeView extends Application {
         paneel.setCenter(table);
         paneel.setAlignment(terug, Pos.TOP_RIGHT);
         paneel.setBottom(terug);
+        paneel.setPrefSize(300, 300);
+        parent.setCenter(paneel);
+       
         
-        Scene scene = new Scene(paneel);
-
-        stage.setScene(scene);
-        stage.show();
+        
+        
+        //mainScene = new Scene(paneel);
+    }
+    public BorderPane getStage() {
+    	return paneel;
     }
 
     private void setTableappearance() {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        table.setPrefWidth(600);
-        table.setPrefHeight(600);
+        table.setPrefWidth(200);
+        table.setPrefHeight(200);
     }
 
   //  private void fillTableObservableListWithPlayers() {
@@ -73,20 +80,20 @@ public class ChallengeView extends Application {
    // }
     private void fillTableObservableListWithSampleData() {
 
-        tvObservableList.addAll(new Online (1, "Speler2", "Orthello"),
-                                new Online(2, "Speler6", "Orthello"), 
-                                new Online(3, "Speler5", "Orthello"), 
-                                new Online(4, "Speler3", "Orthello"),
-                                new Online(5, "Speler6", "Orthello"), 
-                                new Online(6, "Speler5", "Orthello"), 
-                                new Online(7, "Speler3", "Orthello"),
-                                new Online(8, "Speler6", "Orthello"), 
-                                new Online(9, "Speler5", "Orthello"), 
-                                new Online(10, "Speler3", "Orthello"),
-                                new Online(11, "Speler6", "Orthello"), 
-                                new Online(12, "Speler5", "Orthello"), 
-                                new Online(13, "Speler3", "Orthello"),
-                                new Online(14, "Speler4", "Orthello"));
+        tvObservableList.addAll(new Online (1, "Speler2", game ),
+                                new Online(2, "Speler6", game), 
+                                new Online(3, "Speler5", game ), 
+                                new Online(4, "Speler3", game ),
+                                new Online(5, "Speler6", game ), 
+                                new Online(6, "Speler5", game ), 
+                                new Online(7, "Speler3", game ),
+                                new Online(8, "Speler6", game ), 
+                                new Online(9, "Speler5", game ), 
+                                new Online(10, "Speler3", game ),
+                                new Online(11, "Speler6", game ), 
+                                new Online(12, "Speler5", game ), 
+                                new Online(13, "Speler3", game ),
+                                new Online(14, "Speler4", game ));
     }
     public void vorige() {
     	System.out.println("terug naar het vorige scherm");

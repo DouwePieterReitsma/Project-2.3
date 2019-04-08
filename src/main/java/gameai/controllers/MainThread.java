@@ -128,7 +128,7 @@ public class MainThread implements Runnable {
 					threadPool = Executors.newFixedThreadPool(6);
 				}
 				else if(connectThread.GetConnectStatus() == 2) {
-					//Connection successfull
+					//Connection successful
 					verbindAnim.stop();
 					hasConnected = true;
 					isConnecting = false;
