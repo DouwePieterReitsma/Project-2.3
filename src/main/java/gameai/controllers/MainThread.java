@@ -125,7 +125,7 @@ public class MainThread implements Runnable {
 						errorLabel.setText("Verbinding mislukt, check je host & poort.");
 						});
 					loginButton.setDisable(false);
-					threadPool = Executors.newFixedThreadPool(5);
+					threadPool = Executors.newFixedThreadPool(6);
 				}
 				else if(connectThread.GetConnectStatus() == 2) {
 					//Connection successfull
@@ -133,7 +133,7 @@ public class MainThread implements Runnable {
 					hasConnected = true;
 					isConnecting = false;
 
-					mainWindow = new MainWindow();
+					mainWindow = new MainWindow(connectThread);
 					Platform.runLater(new Runnable() {
 						@Override public void run() {
 							Main.GetMainStage().setScene(mainWindow.GetMainScene());

@@ -1,7 +1,9 @@
 package gameai.views;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import gameai.controllers.ConnectionListenerThread;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,11 +12,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class MainWindow {
+public class MainWindow  {
 	private ComboBox spel = new ComboBox();
 	private Scene mainScene;
+	private String subscribeCommand;
+	private ConnectionListenerThread connectThread;
 
-	public MainWindow(){
+	public MainWindow(ConnectionListenerThread connectThread){
+		this.connectThread = connectThread;
+		
 		//knopjes waar je de verschillende modes kunt kiezen.
 		Button sub = new Button("Inschrijven");
 		Button player = new Button("Speler");
@@ -27,7 +33,14 @@ public class MainWindow {
 
 
 		//dat er ook iet gebeurt als je op een knopje drukt
-		sub.setOnAction(e -> subscribe());
+		sub.setOnAction(e ->{
+			try {
+				subscribe();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		player.setOnAction(e -> tegenAi());
 		chal.setOnAction(e -> challenge());
 
@@ -71,17 +84,20 @@ public class MainWindow {
 
 
 	public void UpdatePlayerList(ArrayList<String> pList) {
-
+		
 	}
 
 	public void UpdateGameList(ArrayList<String> gList) {
 
 	}
 
-	public void subscribe() {
+	public void subscribe() throws IOException{
 		if(spel.getValue() != null) {
 			String game = (String) spel.getValue();
-			System.out.println("Inschrijven voor " + game);
+			subscribeCommand = "subscribe "+ game +"";
+			System.out.println(subscribeCommand);
+			connectThread.subben(subscribeCommand);
+		
 		}
 	}
 	public void tegenAi() {

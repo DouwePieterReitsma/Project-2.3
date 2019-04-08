@@ -29,7 +29,7 @@ public class ConnectionListenerThread implements Runnable {
 
 	private BufferedReader fromServer;
 	private DataOutputStream toServer;
-
+	
 	private PrintWriter outWriter;
 
 	private int state;
@@ -49,6 +49,7 @@ public class ConnectionListenerThread implements Runnable {
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
 
 		timer = 100;
+		
 
 		commandList = new ArrayList<String>();
 		playerList = new ArrayList<String>();
@@ -110,15 +111,18 @@ public class ConnectionListenerThread implements Runnable {
 	}
 
 	public void UpdatePlayerList() throws IOException {
-		toServer.writeUTF("get playerlist\n");
-		toServer.flush(); // send the message
-		ListenToServer();
+		
+			toServer.writeUTF("get playerlist\n");
+			toServer.flush(); // send the message
+			ListenToServer();
+		
 	}
 
 	public void UpdateGameList() throws IOException {
 		toServer.writeUTF("get gamelist\n");
 		toServer.flush(); // send the message
 		ListenToServer();
+		
 	}
 
 	public ArrayList<String> GetPlayerList() {
@@ -127,6 +131,11 @@ public class ConnectionListenerThread implements Runnable {
 
 	public ArrayList<String> GetGameList() {
 		return gameList;
+	}
+	public void subben(String tekst) throws IOException {
+		toServer.writeUTF(tekst);
+		toServer.flush();
+		ListenToServer();
 	}
 
 	private void ListenToServer() throws IOException {
