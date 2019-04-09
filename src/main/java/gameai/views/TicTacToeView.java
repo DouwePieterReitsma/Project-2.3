@@ -22,6 +22,7 @@ public class TicTacToeView extends GameBoardView {
 	private Scene gameScene;
 	private Label titleLabel;
 	private GridPane gameBoard;
+	
 
 	private Image emptyImg;
 	private Image playerImg;
@@ -32,25 +33,26 @@ public class TicTacToeView extends GameBoardView {
 
 	private List<List<Button>> boardList;
 
-	public TicTacToeView() {
+	public void createUI(BorderPane parent) {
 		this.gameScene = super.GetGameScene();
 		this.titleLabel = super.GetTitleLabel();
 		this.gameBoard = super.GetGameBoard();
 		this.boardList = super.GetBoardList();
 
 		//Set images
-		emptyImg = new Image(getClass().getResource("/img/tictactoe/empty.png").toString());
-		playerImg = new Image(getClass().getResource("/img/tictactoe/x.png").toString());
-		enemyImg = new Image(getClass().getResource("/img/tictactoe/o.png").toString());
+		//emptyImg = new Image(getClass().getResource("/img/tictactoe/empty.png").toString());
+		//playerImg = new Image(getClass().getResource("/img/tictactoe/x.png").toString());
+		//enemyImg = new Image(getClass().getResource("/img/tictactoe/o.png").toString());
 
 		//Set titleLabel
 		titleLabel.setText("Tic-Tac-Toe");
 
 		//Create Board
 		CreateBoard();
+		parent.setCenter(mainPane);
 	}
 
-	@Override
+	/*
     public void start(Stage stage) throws Exception{
 		//Set title of stage
 		stage.setTitle("TicTacToe");
@@ -58,6 +60,7 @@ public class TicTacToeView extends GameBoardView {
         stage.setResizable(false);
 		stage.show();
 	}
+	*/
 
 	//Function to create gameboard
 	private void CreateBoard() {
@@ -105,8 +108,8 @@ public class TicTacToeView extends GameBoardView {
 
 	}
 
-	//Launch application
+	/*Launch application
     public static void main(String[] args) {
         launch(args);
-    }
+    }*/
 }

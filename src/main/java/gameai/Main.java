@@ -144,9 +144,9 @@ public class Main extends Application {
         nameLabel = new Label("Gebruikersnaam:");
 
     	//Create new textareas
-        ipTextArea = new TextField();
-    	portTextArea = new TextField();
-    	nameTextArea = new TextField();
+        ipTextArea = new TextField("localhost");
+    	portTextArea = new TextField("7789");
+    	nameTextArea = new TextField("Bram");
 
     	//Set pref sizes
     	ipTextArea.setPrefHeight(5);

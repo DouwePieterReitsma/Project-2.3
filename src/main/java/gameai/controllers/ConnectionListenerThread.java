@@ -45,6 +45,7 @@ public class ConnectionListenerThread implements Runnable {
 		this.host = host;
 		this.port = port;
 		this.username = name;
+		
 
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
 

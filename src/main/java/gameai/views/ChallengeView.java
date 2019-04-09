@@ -95,7 +95,7 @@ public class ChallengeView{
     }
     public void vorige() {
     	//sub.setDisable(false);
-    	//player.setDisable(false);
+    	player.setDisable(false);
     	//parent.setCenter(null);
     	System.out.println("terug naar het vorige scherm");
     }

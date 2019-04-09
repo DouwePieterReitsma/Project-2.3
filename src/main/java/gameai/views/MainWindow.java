@@ -19,11 +19,13 @@ public class MainWindow  {
 	private String subscribeCommand;
 	private BorderPane mid;
 	private ChallengeView challview;
+	private TicTacToeView tictac;
 	private ConnectionListenerThread connectThread;
 	private Button sub;
 	private Button player;
 	private ArrayList<String> playerList;
 	private ArrayList<String> gameList;
+	private OthelloView othell;
 
 	public MainWindow(ConnectionListenerThread connectThread){
 		this.connectThread = connectThread;
@@ -85,6 +87,10 @@ public class MainWindow  {
 		root.setCenter(mid);
 		//challview = new ChallengeView();
 		//challview.createUI(mid);
+		//othell = new OthelloView();
+		//othell.createUI(mid);
+		tictac=new TicTacToeView();
+		tictac.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
 	}
@@ -115,6 +121,9 @@ public class MainWindow  {
 		}
 	}
 	public void tegenAi() {
+		
+		othell = new OthelloView();
+		othell.createUI(mid);
 		String game = (String) spel.getValue();
 		System.out.println(game + " spelen tegen de AI");
 
