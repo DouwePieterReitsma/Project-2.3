@@ -153,7 +153,6 @@ public class OthelloBoard extends Board {
     }
 
     private Position tryNeighbor(int x, int y, OthelloColor color) {
-
         // bounds check
         if(x < 0 || x > 7 || y < 0 || y > 7) return null;
 
@@ -235,16 +234,6 @@ public class OthelloBoard extends Board {
         return score;
     }
 
-    private boolean boardIsFull() {
-        for (Position[] row : positions) {
-            for (Position column : row) {
-                if (column.getPiece() == null) return false;
-            }
-        }
-
-        return true;
-    }
-
     public OthelloMatchResult getMatchResult() {
         int whitePiecesLeft = getPlayerScore(OthelloColor.WHITE);
         int blackPiecesLeft = getPlayerScore(OthelloColor.BLACK);
@@ -255,7 +244,7 @@ public class OthelloBoard extends Board {
     }
 
     public boolean isGameOver() {
-        return boardIsFull() || (getLegalMoves(currentTurnColor).size() == 0 && getLegalMoves(opponentColor).size() == 0);
+        return getLegalMoves(currentTurnColor).isEmpty() && getLegalMoves(opponentColor).isEmpty();
     }
 
     @Override

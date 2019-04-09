@@ -21,7 +21,7 @@ public class RandomOthelloAI extends OthelloAI {
     }
 
     private Position getRandomMove(List<Position> legalMoves) {
-        if (legalMoves.size() == 0) return null;
+        if (legalMoves.isEmpty()) return null;
 
         return legalMoves.get(new Random().nextInt(legalMoves.size()));
     }

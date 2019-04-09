@@ -19,6 +19,8 @@ public abstract class OthelloAI extends OthelloPlayer {
         if(board.getCurrentTurnColor() == playerColor) {
             Position move = calculateMove();
 
+            System.out.printf("\n\nTurn %d, Player: %s\n\n", board.getTurn() + 1, board.getCurrentTurnColor());
+
             if (move != null) {
                 doMove(move);
             } else {
@@ -26,9 +28,7 @@ public abstract class OthelloAI extends OthelloPlayer {
                 board.advanceTurn();
             }
 
-            System.out.printf("\n\nTurn %d, Player: %s\n\n", board.getTurn(), board.getCurrentTurnColor());
-
-            System.out.println(board.toString());
+            //System.out.println(board.toString());
         }
     }
 }

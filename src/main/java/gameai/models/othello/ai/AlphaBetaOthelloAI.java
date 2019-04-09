@@ -16,16 +16,8 @@ public class AlphaBetaOthelloAI extends OthelloAI {
     private OthelloColor opponentColor;
     private int depth;
 
-    public AlphaBetaOthelloAI(OthelloBoard board, OthelloColor playerColor) {
-        super(board, playerColor);
-
-        opponentColor = playerColor == OthelloColor.WHITE ? OthelloColor.BLACK : OthelloColor.WHITE;
-
-        this.depth = 5;
-    }
-
     public AlphaBetaOthelloAI(OthelloBoard board, OthelloColor playerColor, int depth) {
-        this(board,playerColor);
+        super(board, playerColor);
 
         this.depth = depth;
     }
@@ -36,7 +28,7 @@ public class AlphaBetaOthelloAI extends OthelloAI {
     }
 
     private int alphabeta(OthelloBoard board, int depth, int alpha, int beta, boolean maximizingPlayer) {
-        List<OthelloMove> legalMoves = null;
+        List<Position> legalMoves = null;
         int value;
 
         if (depth == 0 || board.isGameOver()) {
@@ -46,12 +38,12 @@ public class AlphaBetaOthelloAI extends OthelloAI {
         if (maximizingPlayer) {
             value = Integer.MIN_VALUE;
 
-            legalMoves = board.getLegalMovesWrapper(playerColor);
+            legalMoves = board.getLegalMoves(board.getCurrentTurnColor());
 
-            for(OthelloMove move : legalMoves) {
+            for (Position move : legalMoves) {
                 OthelloBoard temp = evaluate(board, move);
 
-                if(temp == null) continue;
+                if (temp == null) continue;
 
                 value = max(value, alphabeta(temp, depth - 1, alpha, beta, false));
                 alpha = max(alpha, value);
@@ -62,16 +54,15 @@ public class AlphaBetaOthelloAI extends OthelloAI {
             }
 
             return value;
-        }
-        else {
+        } else {
             value = Integer.MAX_VALUE;
 
-            legalMoves = board.getLegalMovesWrapper(opponentColor);
+            legalMoves = board.getLegalMoves(board.getCurrentTurnColor());
 
-            for(OthelloMove move : legalMoves) {
+            for (Position move : legalMoves) {
                 OthelloBoard temp = evaluate(board, move);
 
-                if(temp == null) continue;
+                if (temp == null) continue;
 
                 value = min(value, alphabeta(temp, depth - 1, alpha, beta, true));
                 beta = min(beta, value);
@@ -85,31 +76,34 @@ public class AlphaBetaOthelloAI extends OthelloAI {
     }
 
     private Position alphabetaDecision(int depth) {
-        List<OthelloMove> legalMoves = board.getLegalMovesWrapper(playerColor);
-        OthelloMove result = null;
+        List<Position> legalMoves = this.board.getLegalMoves(playerColor);
+        Position result = null;
         int bestScore = 0;
 
-        for(OthelloMove move : legalMoves) {
-            int score = alphabeta(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE,true);
+        for (Position move : legalMoves) {
+            OthelloBoard temp = evaluate(this.board, move);
 
-            if(score > bestScore) {
+            int score = alphabeta(temp, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+
+            if (score > bestScore) {
                 bestScore = score;
                 result = move;
             }
         }
 
-        return result != null ? result.getPosition() : null;
+        return result;
     }
 
     private int heuristic(OthelloBoard board) {
         return board.getPlayerScore(playerColor) - board.getPlayerScore(opponentColor);
     }
 
-    private OthelloBoard evaluate(OthelloBoard original, OthelloMove move) {
+    private OthelloBoard evaluate(OthelloBoard original, Position position) {
         OthelloBoard board = new OthelloBoard(original);
+        position = board.getPositions()[position.getY()][position.getX()];
 
         try {
-            board.setPieceAtPosition(new OthelloPiece(board.getCurrentTurnColor()), move.getPosition());
+            board.setPieceAtPosition(new OthelloPiece(board.getCurrentTurnColor()), position);
         } catch (IllegalMoveException e) {
             e.printStackTrace();
 
