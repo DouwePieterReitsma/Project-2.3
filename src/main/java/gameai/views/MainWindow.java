@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import gameai.controllers.ConnectionListenerThread;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -21,6 +22,8 @@ public class MainWindow  {
 	private ConnectionListenerThread connectThread;
 	private Button sub;
 	private Button player;
+	private ArrayList<String> playerList;
+	private ArrayList<String> gameList;
 
 	public MainWindow(ConnectionListenerThread connectThread){
 		this.connectThread = connectThread;
@@ -34,6 +37,7 @@ public class MainWindow  {
 		// de ondersteunde spellen opvraagd en dan er in zet.
 		//ComboBox spel = new ComboBox();
 		spel.getItems().addAll("Reversi","Boter kaas en eieren");
+	
 
 
 		//dat er ook iet gebeurt als je op een knopje drukt
@@ -91,11 +95,14 @@ public class MainWindow  {
 
 
 	public void UpdatePlayerList(ArrayList<String> pList) {
-		
+		playerList= pList;
 	}
 
 	public void UpdateGameList(ArrayList<String> gList) {
+		gameList=gList;
+	
 	}
+	
 	
 
 	public void subscribe() throws IOException{

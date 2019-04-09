@@ -24,6 +24,7 @@ public class ChallengeView{
     private final TableView<Online> table = new TableView<>();
     private final ObservableList<Online> tvObservableList = FXCollections.observableArrayList();
     private BorderPane paneel;
+    private BorderPane parent;
     private String game;
     private Button sub;
     private Button player;
@@ -52,7 +53,7 @@ public class ChallengeView{
         addButtonToTable();
         Button terug =  new Button("terug");
         terug.setOnAction(e -> vorige());
-        BorderPane paneel = new BorderPane();
+        paneel = new BorderPane();
        
         paneel.setCenter(table);
         paneel.setAlignment(terug, Pos.TOP_RIGHT);
@@ -64,9 +65,6 @@ public class ChallengeView{
         
         
         //mainScene = new Scene(paneel);
-    }
-    public BorderPane getStage() {
-    	return paneel;
     }
 
     private void setTableappearance() {
@@ -96,6 +94,9 @@ public class ChallengeView{
                                 new Online(14, "Speler4", game ));
     }
     public void vorige() {
+    	//sub.setDisable(false);
+    	//player.setDisable(false);
+    	//parent.setCenter(null);
     	System.out.println("terug naar het vorige scherm");
     }
 
