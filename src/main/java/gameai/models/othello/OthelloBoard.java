@@ -265,6 +265,7 @@ public class OthelloBoard extends Board {
     public OthelloColor getCurrentTurnColor() {
         return currentTurnColor;
     }
+    public OthelloColor getOpponentColor() { return opponentColor; }
 
     public void setCurrentTurnColor(OthelloColor currentTurnColor) {
         this.currentTurnColor = currentTurnColor;

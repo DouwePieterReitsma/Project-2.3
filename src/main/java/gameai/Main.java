@@ -30,29 +30,35 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
-        Board board = new TicTacToeBoard(new MiniMaxTicTacToe());
+        //launch();
+        //Board board = new TicTacToeBoard(new MiniMaxTicTacToe());
 
-//        OthelloBoard board = new OthelloBoard(OthelloColor.WHITE);
-//
-//        OthelloPiece wp = new OthelloPiece(OthelloColor.WHITE);
-//        OthelloPiece bp = new OthelloPiece(OthelloColor.BLACK);
-//
-//        board.getPositions()[3][3].setPiece(bp);
-//        board.getPositions()[4][3].setPiece(wp);
-//        board.getPositions()[3][4].setPiece(wp);
-//        board.getPositions()[4][4].setPiece(bp);
-//
-//        System.out.println(board);
-//
-//        OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 5);
-//        OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
-//
-//        while(!board.isGameOver()) {
-//            white.play();
-//            black.play();
-//        }
-//
-//        System.out.println(board.getMatchResult());
+        OthelloBoard board = new OthelloBoard(OthelloColor.WHITE);
+
+        OthelloPiece wp = new OthelloPiece(OthelloColor.WHITE);
+        OthelloPiece bp = new OthelloPiece(OthelloColor.BLACK);
+
+        board.getPositions()[3][3].setPiece(bp);
+        board.getPositions()[4][3].setPiece(wp);
+        board.getPositions()[3][4].setPiece(wp);
+        board.getPositions()[4][4].setPiece(bp);
+
+        System.out.println(board);
+
+        OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 10);
+        OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
+        //OthelloAI black = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 4);
+
+        while(!board.isGameOver()) {
+            long startTime = System.currentTimeMillis();
+            white.play();
+            long endTime = System.currentTimeMillis() - startTime;
+
+            System.out.printf("Execution time: %d\n", endTime);
+
+            black.play();
+        }
+
+        System.out.println(board.getMatchResult());
     }
 }
