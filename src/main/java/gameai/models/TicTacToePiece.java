@@ -1,9 +1,6 @@
 package gameai.models;
 
 public class TicTacToePiece extends Piece {
-    public enum TicTacToeFigure {
-        CROSS, CIRCLE
-    }
     private TicTacToeFigure figure;
     
     public TicTacToePiece(TicTacToeFigure figure) {
@@ -24,4 +21,9 @@ public class TicTacToePiece extends Piece {
 		}
     	return false;
     }
+    
+    public void setFigure(TicTacToeFigure figure) {
+    	this.figure = figure;
+    }
+
 }

@@ -3,7 +3,6 @@ package gameai.models;
 import java.util.ArrayList;
 import java.util.Random;
 
-import gameai.models.TicTacToePiece.TicTacToeFigure;
 
 public class RandomTicTacToeAI implements TicTacToeAI {
 	public TicTacToeBoard board;
