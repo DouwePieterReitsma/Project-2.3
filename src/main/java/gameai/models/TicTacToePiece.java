@@ -1,11 +1,6 @@
 package gameai.models;
 
-import java.util.List;
-
 public class TicTacToePiece extends Piece {
-    public enum TicTacToeFigure {
-        CROSS, CIRCLE
-    }
     private TicTacToeFigure figure;
     
     public TicTacToePiece(TicTacToeFigure figure) {

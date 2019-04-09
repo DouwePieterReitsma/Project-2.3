@@ -3,26 +3,24 @@ package gameai.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import gameai.models.TicTacToePiece.TicTacToeFigure;
+
 
 public class MiniMaxTicTacToe implements TicTacToeAI {
 	public TicTacToeBoard board;
 	public TicTacToeFigure player = TicTacToeFigure.CROSS;
 	public TicTacToeFigure opponent = TicTacToeFigure.CIRCLE;
-	protected ArrayList<Position> array;
 	private Position bestPlay;
-	private Position worstPlay;
 	int bestPlayScore;
-	int worstPlayScore;
 	int score2;
 	private HashMap<Position,Integer> moves = new HashMap<Position,Integer>();
 
 	@Override
 	public void makeMove() {
 		System.out.println(board + "\n");
-        checkBestMove(board, player);
-        array = board.getLegalMoves();
+ 
+        ArrayList<Position> array = board.getLegalMoves();
         if(this.board.getTurn() == 0) {
+            checkBestMove(board, player);
         	for(Position position: array) {
         		if(position.equals(bestPlay)) {
         			this.board.setTicTacToePieceAtPosition(new TicTacToePiece(player), position);
@@ -31,8 +29,9 @@ public class MiniMaxTicTacToe implements TicTacToeAI {
 			this.board.setTurn(1);
         }
         else if(this.board.getTurn() == 1) {
+            checkBestMove(board, opponent);
         	for(Position position: array) {
-        		if(position.equals(worstPlay)) {
+        		if(position.equals(bestPlay)) {
         			this.board.setTicTacToePieceAtPosition(new TicTacToePiece(opponent), position);
         		}
         	}
@@ -52,7 +51,7 @@ public class MiniMaxTicTacToe implements TicTacToeAI {
 		ArrayList<Position> available = copyBoard.getLegalMoves();
 		for(int x = 0; x < available.size() ; x++) {
 			Position position = available.get(x);
-		score = miniMax(copyBoard, playertemp);
+		score = miniMax(copyBoard, playertemp, true);
 		moves.put(position, score);
 		score = 0;
 		}
@@ -70,25 +69,22 @@ public class MiniMaxTicTacToe implements TicTacToeAI {
 				bestPlay = position;
 				bestPlayScore = highest;
 			}
-			if(moves.get(position)==lowest) {
-				worstPlay = position;
-				worstPlayScore = lowest;
-			}
 		}
 		
 	}
 	
 	
 	
-	public int miniMax(TicTacToeBoard boardCurrent, TicTacToeFigure figure) {
+	public int miniMax(TicTacToeBoard boardCurrent, TicTacToeFigure figure, boolean isMaximizing) {
 		TicTacToeFigure playertemp = figure;
+		boolean maximizing = isMaximizing;
 		TicTacToeBoard copyBoard = new TicTacToeBoard(boardCurrent);
 		ArrayList<Position> available = copyBoard.getLegalMoves();
 		if(isWinning(boardCurrent)) {
-			if(playertemp == player) {
+			if(maximizing) {
 				return 10;
 			}
-			else if(playertemp == opponent) {
+			else if(!maximizing) {
 				return -10;
 			}
 
@@ -105,7 +101,8 @@ public class MiniMaxTicTacToe implements TicTacToeAI {
 				position.setPiece(new TicTacToePiece(getOpponent()));
 				playertemp = player;
 			}
-			score2 += miniMax(copyBoard, playertemp);
+			maximizing = !maximizing;
+			score2 += miniMax(copyBoard, playertemp, maximizing);
 			
 
 		}

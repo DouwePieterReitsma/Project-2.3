@@ -2,7 +2,6 @@ package gameai.models;
 
 import java.util.ArrayList;
 
-import gameai.models.TicTacToePiece.TicTacToeFigure;
 
 public class TicTacToeBoard extends Board {
 	public TicTacToeAI ai;
