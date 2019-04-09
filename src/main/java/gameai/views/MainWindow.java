@@ -3,6 +3,7 @@ package gameai.views;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import gameai.Main;
 import gameai.controllers.ConnectionListenerThread;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -87,10 +88,10 @@ public class MainWindow  {
 		root.setCenter(mid);
 		//challview = new ChallengeView();
 		//challview.createUI(mid);
-		//othell = new OthelloView();
-		//othell.createUI(mid);
-		tictac=new TicTacToeView();
-		tictac.createUI(mid);
+		othell = new OthelloView();
+		othell.createUI(mid);
+		//tictac=new TicTacToeView();
+		//tictac.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
 	}
@@ -121,11 +122,17 @@ public class MainWindow  {
 		}
 	}
 	public void tegenAi() {
+		if(spel.getValue().equals("Reversi")) {
+			othell = new OthelloView();
+			othell.createUI(mid);
+			Main.GetMainStage().setTitle("Othello");
+		}
+		else {
+			tictac = new TicTacToeView();
+			tictac.createUI(mid);
+			Main.GetMainStage().setTitle("Tic-Tac-Toe");
+		}
 		
-		othell = new OthelloView();
-		othell.createUI(mid);
-		String game = (String) spel.getValue();
-		System.out.println(game + " spelen tegen de AI");
 
 	}
 	public void challenge() {

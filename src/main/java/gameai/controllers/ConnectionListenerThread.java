@@ -38,6 +38,7 @@ public class ConnectionListenerThread implements Runnable {
 	private ArrayList<String> commandList;
 	private ArrayList<String> playerList;
 	private ArrayList<String> gameList;
+	
 
 	public ConnectionListenerThread(String host, int port, String name) {
 		//Set values
@@ -112,7 +113,6 @@ public class ConnectionListenerThread implements Runnable {
 	}
 
 	public void UpdatePlayerList() throws IOException {
-		
 			toServer.writeUTF("get playerlist\n");
 			toServer.flush(); // send the message
 			ListenToServer();
@@ -162,7 +162,7 @@ public class ConnectionListenerThread implements Runnable {
 				}
 				commandList.remove(0);
 			}
-			else if(commandList.get(0).contains("SVR GAMELIST")) {
+			if(commandList.get(0).contains("SVR GAMELIST")) {
 				String[] firstStep = commandList.get(0).split("\\[");
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\]","");
@@ -172,6 +172,17 @@ public class ConnectionListenerThread implements Runnable {
 				for(int i = 0; i < finalResult.length; i++) {
 					gameList.add(finalResult[i]);
 				}
+				commandList.remove(0);
+			}else if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
+				String[] firstStep = commandList.get(0).split("\\{");
+				String secondStep = firstStep[1];
+				String thirdStep = secondStep.replaceAll("\\}","");
+				String fourthStep = thirdStep.replaceAll("\"", "");
+				String[] finalResult = fourthStep.split(", ");
+				for(int i = 0; i < finalResult.length; i++) {
+					System.out.println(finalResult[i]);
+				}
+				
 				commandList.remove(0);
 			}
 

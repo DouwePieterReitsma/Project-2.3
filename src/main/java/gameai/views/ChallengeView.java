@@ -33,6 +33,7 @@ public class ChallengeView{
     	this.game = game;
     	this.sub = sub;
     	this.player = player;
+    	this.parent = parent;
     	
     	sub.setDisable(true);
     	player.setDisable(true);
@@ -94,9 +95,9 @@ public class ChallengeView{
                                 new Online(14, "Speler4", game ));
     }
     public void vorige() {
-    	//sub.setDisable(false);
+    	sub.setDisable(false);
     	player.setDisable(false);
-    	//parent.setCenter(null);
+    	parent.setCenter(null);
     	System.out.println("terug naar het vorige scherm");
     }
 
