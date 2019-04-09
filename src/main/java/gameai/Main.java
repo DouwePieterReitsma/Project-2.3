@@ -45,7 +45,7 @@ public class Main extends Application {
 //
 //        System.out.println(board);
 //
-//        OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 5);
+//        OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 6);
 //        OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
 //
 //        while(!board.isGameOver()) {

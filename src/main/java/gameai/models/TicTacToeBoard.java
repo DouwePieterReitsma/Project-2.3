@@ -14,6 +14,19 @@ public class TicTacToeBoard extends Board {
 		ai.setBoard(this);
 		play();
 	}
+	
+	public TicTacToeBoard(TicTacToeBoard board) {
+		super(3,3);
+		Position[][] tempPositions = board.getPositions();
+		for (int x = 0; x < 3; x++) {
+			for (int y = 0; y < 3; y++) {
+				if (!tempPositions[y][x].isAvailable()) {
+					TicTacToePiece tempFigure = (TicTacToePiece) tempPositions[y][x].getPiece();
+					positions[y][x].setPiece(new TicTacToePiece(tempFigure.getFigure()));
+				}
+			}
+		}
+	}
 
 	public void play() {
 		// Carries out the game locally
@@ -29,6 +42,7 @@ public class TicTacToeBoard extends Board {
 				break;
 			}
 			ai.makeMove();
+			
 
 		}
 		System.out.println(this);
@@ -107,4 +121,7 @@ public class TicTacToeBoard extends Board {
 	public ArrayList<Position> getLegalMovesList() {
 		return array;
 	}
+    public void setTicTacToePieceAtPosition(Piece piece, Position position){
+        position.setPiece(piece);
+    }
 }
