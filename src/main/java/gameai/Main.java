@@ -2,6 +2,7 @@ package gameai;
 
 import gameai.models.Board;
 import gameai.models.MiniMaxTicTacToe;
+import gameai.models.MiniMaxTicTacToeAI;
 import gameai.models.RandomTicTacToeAI;
 import gameai.models.TicTacToeBoard;
 import gameai.models.othello.OthelloBoard;
@@ -31,7 +32,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch();
-        Board board = new TicTacToeBoard(new MiniMaxTicTacToe());
+        Board board = new TicTacToeBoard(new MiniMaxTicTacToeAI());
 
 //        OthelloBoard board = new OthelloBoard(OthelloColor.WHITE);
 //
