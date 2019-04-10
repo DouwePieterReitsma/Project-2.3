@@ -1,5 +1,11 @@
 package gameai;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -77,7 +83,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
 
         //Create Threadpool
-        threadPool = Executors.newFixedThreadPool(5);
+        threadPool = Executors.newFixedThreadPool(6);
 
     	//Create border pane
         bPane = new BorderPane();
@@ -91,7 +97,12 @@ public class Main extends Application {
         //Create button
         loginButton = new Button("Verbinden");
         loginButton.setOnAction((event) -> {
-        	ConnectToServer();
+        	try {
+				ConnectToServer();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         });
 
         //Create bottompane
@@ -148,6 +159,29 @@ public class Main extends Application {
     	portTextArea = new TextField();
     	nameTextArea = new TextField();
 
+    	//Check if logininfo exists
+        File tempFile = new File("login.txt");
+        boolean exists = tempFile.exists();
+
+        if(exists) {
+        	try {
+				BufferedReader br = new BufferedReader(new FileReader(tempFile));
+				String st = br.readLine();
+				String[] loginInfo = st.split(",");
+
+				//Set logininfo
+		        nameTextArea.setText(loginInfo[0]);
+		        ipTextArea.setText(loginInfo[1]);
+		        portTextArea.setText(loginInfo[2]);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
     	//Set pref sizes
     	ipTextArea.setPrefHeight(5);
         ipTextArea.setPrefWidth(75);
@@ -173,7 +207,7 @@ public class Main extends Application {
         loginPane.setConstraints(portTextArea, 1, 2, 1, 1, HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
     }
 
-    private void ConnectToServer() {
+    private void ConnectToServer() throws FileNotFoundException {
     	//Check if inputs are correct
     	if(portTextArea.getText().length() > 5) {
     		errorLabel.setText("Poort waarde is te lang.");
@@ -200,6 +234,11 @@ public class Main extends Application {
 
     	//Set new mainthread
     	mainThread = new MainThread(threadPool, errorLabel, loginButton, ipTextArea.getText(), Integer.parseInt(portTextArea.getText()), nameTextArea.getText());
+
+    	//Save info
+    	PrintWriter out = new PrintWriter("login.txt");
+    	out.println(nameTextArea.getText() + "," + ipTextArea.getText() + "," + portTextArea.getText());
+    	out.close();
 
     	//Run mainthread
     	threadPool.execute(mainThread);

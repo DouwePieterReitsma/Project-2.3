@@ -1,5 +1,6 @@
 package gameai.controllers;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -27,8 +28,10 @@ public class ConnectionListenerThread implements Runnable {
 	private String loginCommand;
 	private String lastResponse;
 
+	private boolean connectionReady;
+
 	private BufferedReader fromServer;
-	private DataOutputStream toServer;
+	private BufferedOutputStream toServer;
 
 	private PrintWriter outWriter;
 
@@ -48,6 +51,8 @@ public class ConnectionListenerThread implements Runnable {
 
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
 
+		connectionReady = false;
+
 		timer = 100;
 
 		commandList = new ArrayList<String>();
@@ -57,7 +62,7 @@ public class ConnectionListenerThread implements Runnable {
 
 	//Getter for connectionstatus
 	public int GetConnectStatus() {
-		return connectStatus; // 0 = connecting, 1 = failed, 2 = succesfull
+		return connectStatus; // 0 = connecting, 1 = failed by host, 2 = failed by duplicate name,  3 = succesfull
 	}
 
 	//Getter for state
@@ -75,50 +80,49 @@ public class ConnectionListenerThread implements Runnable {
 			//Create inputstream to receive
 			fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			//Create outputstream to send
-			toServer = new DataOutputStream(socket.getOutputStream());
+			toServer = new BufferedOutputStream(new DataOutputStream(socket.getOutputStream()));
 
 			loginCommand = "login " + username + "\n";
 
-			Thread.sleep(100);
-
-			toServer.writeUTF(loginCommand);
+			toServer.write(loginCommand.getBytes());
 	        toServer.flush(); // send the message
-
-			connectStatus = 2;
 
 			//Loop
 			while(true) {
-				//Check Commands
-				if(state == 0) {
-					ListenToServer();
+				ListenToServer();
+				if(connectStatus == 3) {
+					//Run functions
+
+					//Sleep
+					//Thread.sleep(timer);
 				}
-
-				//Run functions
-				ProcessCommands();
-
-				//Sleep
-				Thread.sleep(timer);
+				else {
+					if(connectionReady && connectStatus == 0 || connectionReady && connectStatus == 1 || connectionReady && connectStatus == 2) {
+						connectStatus = 3;
+					}
+					else {
+						if(state == 0) {
+							ListenToServer();
+						}
+				        ProcessCommands();
+					}
+				}
 			}
 		} catch (UnknownHostException e) {
 			connectStatus = 1;
 		} catch (IOException e) {
 			connectStatus = 1;
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
-	public void UpdatePlayerList() throws IOException {
-		toServer.writeUTF("get playerlist\n");
+	public void UpdatePlayerList() throws IOException, InterruptedException {
+		toServer.write("get playerlist\n".getBytes());
 		toServer.flush(); // send the message
-		ListenToServer();
 	}
 
-	public void UpdateGameList() throws IOException {
-		toServer.writeUTF("get gamelist\n");
+	public void UpdateGameList() throws IOException, InterruptedException {
+		toServer.write("get gamelist\n".getBytes());
 		toServer.flush(); // send the message
-		ListenToServer();
 	}
 
 	public ArrayList<String> GetPlayerList() {
@@ -129,9 +133,19 @@ public class ConnectionListenerThread implements Runnable {
 		return gameList;
 	}
 
-	private void ListenToServer() throws IOException {
+	public void subben(String tekst) throws IOException {
+		toServer.write(tekst.getBytes());
+		toServer.flush();
+	}
+
+	public void ListenToServer() throws IOException {
 		//Add to queue
-		commandList.add(fromServer.readLine());
+		String data = null;
+		while (fromServer.ready()) {
+			data = fromServer.readLine();
+			commandList.add(data);
+		}
+		ProcessCommands();
 	}
 
 	private void ProcessCommands() {
@@ -164,16 +178,22 @@ public class ConnectionListenerThread implements Runnable {
 				}
 				commandList.remove(0);
 			}
+		}
 
+		if(commandList.size() > 0) {
 			//Then use switch case
 			switch(commandList.get(0)) {
 				case "OK":
 					if(state == 0) {
 						state++;
 						System.out.println("State highered!");
+						connectionReady = true;
 						timer = 1000;
 					}
 					commandList.remove(0);
+					break;
+				case "ERR Duplicate name exists":
+					connectStatus = 2;
 					break;
 
 				default:

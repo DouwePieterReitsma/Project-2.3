@@ -102,6 +102,9 @@ public class MainThread implements Runnable {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			else if(state == 2) {
@@ -128,20 +131,28 @@ public class MainThread implements Runnable {
 					threadPool = Executors.newFixedThreadPool(5);
 				}
 				else if(connectThread.GetConnectStatus() == 2) {
+					//Connection failed
+					verbindAnim.stop();
+					isConnecting = false;
+					//Set new text
+					Platform.runLater(() -> {
+						errorLabel.setText("Verbinding mislukt, er is al een speler met deze naam.");
+						});
+					loginButton.setDisable(false);
+					threadPool = Executors.newFixedThreadPool(6);
+				}
+				else if(connectThread.GetConnectStatus() == 3) {
 					//Connection successfull
 					verbindAnim.stop();
 					hasConnected = true;
 					isConnecting = false;
-
-					mainWindow = new MainWindow();
-					Platform.runLater(new Runnable() {
-						@Override public void run() {
-							Main.GetMainStage().setScene(mainWindow.GetMainScene());
-							Main.GetMainStage().setTitle("Wachtkamer");
-		                 }});
+					connectThread.UpdateGameList();
 				}
 			}
 			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -149,14 +160,22 @@ public class MainThread implements Runnable {
 	}
 
 	//Function to handle main menu
-	private void MainMenuHandler() throws IOException {
-		//PlayerList
-		connectThread.UpdatePlayerList();
-		mainWindow.UpdatePlayerList(connectThread.GetPlayerList());
-
-		//GameList
-		connectThread.UpdateGameList();
-		mainWindow.UpdateGameList(connectThread.GetGameList());
+	private void MainMenuHandler() throws IOException, InterruptedException {
+		//Create main menu
+		if(mainWindow == null && connectThread.GetGameList().size() > 0) {
+			mainWindow = new MainWindow(connectThread);
+			Platform.runLater(new Runnable() {
+				@Override public void run() {
+					Main.GetMainStage().setScene(mainWindow.GetMainScene());
+					Main.GetMainStage().setTitle("Wachtkamer");
+	             }});
+		}
+		else if(mainWindow != null) {
+			//Load players
+			if(mainWindow.GetLoadingPlayers()) {
+				mainWindow.ProcessPlayers();
+			}
+		}
 	}
 
 	//Function to handle game menus

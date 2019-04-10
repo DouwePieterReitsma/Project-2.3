@@ -1,8 +1,11 @@
 package gameai.views;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import gameai.controllers.ConnectionListenerThread;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -13,23 +16,55 @@ import javafx.stage.Stage;
 public class MainWindow {
 	private ComboBox spel = new ComboBox();
 	private Scene mainScene;
+	private String subscribeCommand;
+	private BorderPane mid;
+	private ChallengeView challview;
+	private ConnectionListenerThread connectThread;
+	private Button sub;
+	private Button player;
+	private Button chal;
 
-	public MainWindow(){
+	private boolean loadingPlayers;
+
+	public MainWindow(ConnectionListenerThread connectThread) throws IOException
+	{
+		this.connectThread = connectThread;
+
+		loadingPlayers = true;
+
 		//knopjes waar je de verschillende modes kunt kiezen.
-		Button sub = new Button("Inschrijven");
-		Button player = new Button("Speler");
-		Button chal = new Button("Uitdagen");
+		chal = new Button("Uitdagen");
+		sub = new Button("Inschrijven");
+		player = new Button("Speler");
 
 		// combobox om spellen uit te kiezen, later toevoegen dat je
 		// de ondersteunde spellen opvraagd en dan er in zet.
 		//ComboBox spel = new ComboBox();
-		spel.getItems().addAll("Reversi","Boter kaas en eieren");
-
+		for(int i = 0; i < connectThread.GetGameList().size(); i++) {
+			spel.getItems().add(connectThread.GetGameList().get(i));
+		}
 
 		//dat er ook iet gebeurt als je op een knopje drukt
-		sub.setOnAction(e -> subscribe());
+		sub.setOnAction(e ->{
+			try {
+				subscribe();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		player.setOnAction(e -> tegenAi());
-		chal.setOnAction(e -> challenge());
+		chal.setOnAction(e -> {
+			try {
+				challenge();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 
 		// Bovenste pane waar de knopjes in worden geplaatst
 		GridPane pane = new GridPane();
@@ -47,14 +82,11 @@ public class MainWindow {
 		//pane.setRight(chal);
 
 		// middelste pane wat de spellen gaat bevatten en de lijst met spelers om te challenge
-		BorderPane mid = new BorderPane();
+		mid = new BorderPane();
 		//TextField test = new TextField();
 		mid.setStyle("-fx-border-color: red");
 		//mid.setCenter(test);
-		mid.setPrefSize(200, 200);
-
-
-
+		//mid.setPrefSize(200, 200);
 
 		// hier wordt alles in geplaatst
 		BorderPane root = new BorderPane();
@@ -69,28 +101,43 @@ public class MainWindow {
 		return mainScene;
 	}
 
-
-	public void UpdatePlayerList(ArrayList<String> pList) {
-
+	public boolean GetLoadingPlayers() {
+		return loadingPlayers;
 	}
 
-	public void UpdateGameList(ArrayList<String> gList) {
-
+	public void ProcessPlayers() throws IOException {
+		if(loadingPlayers && connectThread.GetPlayerList().size() > 0) {
+			loadingPlayers = false;
+			chal.setDisable(false);
+			String game = (String) spel.getValue();
+			challview = new ChallengeView();
+			Platform.runLater(() ->
+				challview.createUI(mid , game , sub , player, connectThread.GetPlayerList())
+			);
+		}
 	}
 
-	public void subscribe() {
+	public void subscribe() throws IOException{
 		if(spel.getValue() != null) {
 			String game = (String) spel.getValue();
 			System.out.println("Inschrijven voor " + game);
+			subscribeCommand = "subscribe "+ game + "\n";
+			System.out.println(subscribeCommand);
+			connectThread.subben(subscribeCommand);
 		}
 	}
+
 	public void tegenAi() {
 		String game = (String) spel.getValue();
 		System.out.println(game + " spelen tegen de AI");
-
 	}
-	public void challenge() {
-		String game = (String) spel.getValue();
-		System.out.println("Daag ...... uit om " + game + " te spelen");
+
+	public void challenge() throws IOException, InterruptedException {
+		if(spel.getValue() != null) {
+			connectThread.GetPlayerList().clear();
+			connectThread.UpdatePlayerList();
+			chal.setDisable(true);
+			loadingPlayers = true;
+		}
 	}
 }
