@@ -94,7 +94,7 @@ public class Main extends Application {
     	});
 
     	//FXML view
-        Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
 
         //Create Threadpool
         threadPool = Executors.newFixedThreadPool(6);
@@ -160,7 +160,6 @@ public class Main extends Application {
         mainStage.setScene(loginScene);
         mainStage.setResizable(false);
         mainStage.show();
-
     }
 
     private void CreateLoginPane() {
@@ -263,7 +262,7 @@ public class Main extends Application {
     public static Stage GetMainStage() {
     	return mainStage;
     }
-    
+
     public static void runPopup(String speler, String game , String id) {
     	Platform.runLater(() -> Popup.display(speler, game ,id) );
     }

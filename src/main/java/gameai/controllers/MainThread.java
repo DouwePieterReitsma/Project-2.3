@@ -6,6 +6,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import gameai.Main;
+import gameai.models.othello.OthelloBoard;
+import gameai.models.othello.OthelloColor;
+import gameai.models.othello.OthelloPiece;
+import gameai.models.othello.ai.AlphaBetaOthelloAI;
+import gameai.models.othello.ai.OthelloAI;
+import gameai.models.othello.ai.RandomOthelloAI;
 import gameai.views.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -42,6 +48,7 @@ public class MainThread implements Runnable {
 
 	private boolean hasConnected;
 	private boolean isConnecting;
+	private boolean inGame;
 
 	public MainThread(ExecutorService threadPool, Label errorLabel, Button loginButton, String host, int port, String name) {
 		//Set value
@@ -53,6 +60,7 @@ public class MainThread implements Runnable {
 		this.username = name;
 		hasConnected = false;
 		isConnecting = false;
+		inGame = false;
 
 		connectThread = null;
 
@@ -110,7 +118,12 @@ public class MainThread implements Runnable {
 				}
 			}
 			else if(state == 2) {
-				GameHandler();
+				try {
+					GameHandler();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -177,23 +190,57 @@ public class MainThread implements Runnable {
 			if(mainWindow.GetLoadingPlayers()) {
 				mainWindow.ProcessPlayers();
 			}
-		} if (connectThread.getChallenged()) {
+			if (connectThread.getChallenged()) {
 			ArrayList<String> info = connectThread.GetChallengeList();
 			Main.runPopup(info.get(0),info.get(1),info.get(2));
 			connectThread.setChallFalse();
 
 			//Check if challenged
 
-
+			}
 		}
-		
+
 	}
 
 	//Function to handle game menus
-	private void GameHandler() {
-		//if()
+	private void GameHandler() throws InterruptedException {
+		//Startup game
+		if(!inGame) {
+			inGame = true;
+			switch(connectThread.getGame())
+			{
+				case "Reversi":
+					mainWindow.SetOthelloView();
+
+					Thread.sleep(1000);
+
+					OthelloBoard board = new OthelloBoard(OthelloColor.WHITE, mainWindow.GetOthelloView());
+
+					OthelloPiece wp = new OthelloPiece(OthelloColor.WHITE);
+			        OthelloPiece bp = new OthelloPiece(OthelloColor.BLACK);
+
+					board.getPositions()[3][3].setPiece(bp);
+					board.getPositions()[4][3].setPiece(wp);
+					board.getPositions()[3][4].setPiece(wp);
+					board.getPositions()[4][4].setPiece(bp);
+
+					OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 6);
+					OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
+
+					while(!board.isGameOver()) {
+						white.play();
+						mainWindow.UpdateOthelloBoard(board);
+						black.play();
+						mainWindow.UpdateOthelloBoard(board);
+					}
+					break;
+				case "Tic-tac-toe":
+
+					break;
+			}
+		}
 	}
-	
+
 
 	//Close application
     public void stop(){
