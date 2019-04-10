@@ -40,6 +40,7 @@ public class ConnectionListenerThread implements Runnable {
 	private int state;
 	private int timer;
 	private boolean challenge;
+	private boolean match;
 
 	private ArrayList<String> commandList;
 	private ArrayList<String> playerList;
@@ -55,6 +56,7 @@ public class ConnectionListenerThread implements Runnable {
 		this.username = name;
 		
 		challenge = false;
+		match = false;
 
 
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
@@ -196,6 +198,19 @@ public class ConnectionListenerThread implements Runnable {
 				for(int i = 0; i < finalResult.length; i++) {
 					gameList.add(finalResult[i]);
 				}
+				commandList.remove(0);
+				return;
+			}
+			if(commandList.get(0).contains("SVR GAME MATCH")) {
+				String[] firstStep = commandList.get(0).split("\\{");
+				String secondStep = firstStep[1];
+				String thirdStep = secondStep.replaceAll("\\}","");
+				String fourthStep = thirdStep.replaceAll("\"", "");
+				String[] finalResult = fourthStep.split(", ");
+				match= true;
+				System.out.println("truee");
+				
+				
 				commandList.remove(0);
 				return;
 			}else if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
