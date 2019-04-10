@@ -164,7 +164,7 @@ public class MainThread implements Runnable {
 	private void MainMenuHandler() throws IOException, InterruptedException {
 		//Create main menu
 		if(mainWindow == null && connectThread.GetGameList().size() > 0) {
-			mainWindow = new MainWindow(connectThread);
+			mainWindow = new MainWindow(connectThread, username);
 			Platform.runLater(new Runnable() {
 				@Override public void run() {
 					Main.GetMainStage().setScene(mainWindow.GetMainScene());
@@ -176,6 +176,9 @@ public class MainThread implements Runnable {
 			if(mainWindow.GetLoadingPlayers()) {
 				mainWindow.ProcessPlayers();
 			}
+
+			//Check if challenged
+
 		}
 	}
 

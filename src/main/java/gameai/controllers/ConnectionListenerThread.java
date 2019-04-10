@@ -138,13 +138,7 @@ public class ConnectionListenerThread implements Runnable {
 		return gameList;
 	}
 
-	public void uitdagend(String tekst) throws IOException {
-		toServer.write(tekst.getBytes());
-		toServer.flush();
-		ListenToServer();
-	}
-
-	public void subben(String tekst) throws IOException {
+	public void sendCommand(String tekst) throws IOException {
 		toServer.write(tekst.getBytes());
 		toServer.flush();
 	}
@@ -176,6 +170,7 @@ public class ConnectionListenerThread implements Runnable {
 					playerList.add(finalResult[i]);
 				}
 				commandList.remove(0);
+				return;
 			}
 			if(commandList.get(0).contains("SVR GAMELIST")) {
 				String[] firstStep = commandList.get(0).split("\\[");
@@ -188,6 +183,7 @@ public class ConnectionListenerThread implements Runnable {
 					gameList.add(finalResult[i]);
 				}
 				commandList.remove(0);
+				return;
 			}else if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[1];
@@ -199,8 +195,7 @@ public class ConnectionListenerThread implements Runnable {
 				}
 
 				commandList.remove(0);
-				//Main.runPopup();
-				//Popup.display();
+				return;
 			}
 		}
 
@@ -215,14 +210,14 @@ public class ConnectionListenerThread implements Runnable {
 						timer = 1000;
 					}
 					commandList.remove(0);
-					break;
+					return;
 				case "ERR Duplicate name exists":
 					connectStatus = 2;
-					break;
+					return;
 
 				default:
 					commandList.remove(0);
-					break;
+					return;
 			}
 		}
 	}

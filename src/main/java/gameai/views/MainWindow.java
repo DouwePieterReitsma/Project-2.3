@@ -31,12 +31,14 @@ public class MainWindow  {
 	private ArrayList<String> playerList;
 	private ArrayList<String> gameList;
 	private OthelloView othell;
+	private String username;
 
 	private boolean loadingPlayers;
 
-	public MainWindow(ConnectionListenerThread connectThread) throws IOException
+	public MainWindow(ConnectionListenerThread connectThread, String username) throws IOException
 	{
 		this.connectThread = connectThread;
+		this.username = username;
 
 		loadingPlayers = true;
 
@@ -51,8 +53,6 @@ public class MainWindow  {
 		for(int i = 0; i < connectThread.GetGameList().size(); i++) {
 			spel.getItems().add(connectThread.GetGameList().get(i));
 		}
-		spel.getItems().addAll("Reversi","Boter kaas en eieren");
-
 
 		//dat er ook iet gebeurt als je op een knopje drukt
 		sub.setOnAction(e ->{
@@ -112,7 +112,6 @@ public class MainWindow  {
 		//tictac.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
-		Main.runPopup();
 	}
 
 	public Scene GetMainScene() {
@@ -130,7 +129,7 @@ public class MainWindow  {
 			String game = (String) spel.getValue();
 			challview = new ChallengeView();
 			Platform.runLater(() ->
-				challview.createUI(connectThread, mid , game , sub , player, connectThread.GetPlayerList())
+				challview.createUI(connectThread, mid , game , sub , player, username, connectThread.GetPlayerList())
 			);
 		}
 	}
@@ -141,7 +140,7 @@ public class MainWindow  {
 			System.out.println("Inschrijven voor " + game);
 			subscribeCommand = "subscribe "+ game + "\n";
 			System.out.println(subscribeCommand);
-			connectThread.subben(subscribeCommand);
+			connectThread.sendCommand(subscribeCommand);
 		}
 	}
 

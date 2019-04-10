@@ -29,6 +29,7 @@ public class ChallengeView {
     private final ObservableList<Online> tvObservableList = FXCollections.observableArrayList();
     private BorderPane paneel;
     private String game;
+    private String username;
     private Button sub;
     private Button player;
     private ConnectionListenerThread connectThread;
@@ -36,13 +37,14 @@ public class ChallengeView {
     private int playerCounter;
     private BorderPane parent;
 
-    public void createUI(ConnectionListenerThread connectThread, BorderPane parent , String game ,Button sub , Button player, ArrayList<String> playerList) {
+    public void createUI(ConnectionListenerThread connectThread, BorderPane parent , String game ,Button sub , Button player, String username, ArrayList<String> playerList) {
     	this.connectThread = connectThread;
     	this.game = game;
     	this.sub = sub;
     	this.player = player;
     	this.playerList = playerList;
     	this.parent = parent;
+    	this.username = username;
 
     	sub.setDisable(true);
     	player.setDisable(true);
@@ -82,8 +84,10 @@ public class ChallengeView {
     private void fillTableObservableListWithSampleData() {
     	playerCounter = 0;
     	for(int i = 0; i < playerList.size(); i++) {
-    		playerCounter++;
-    		tvObservableList.add(new Online(playerCounter, playerList.get(i), game));
+    		if(!playerList.get(i).equals(username)) {
+    			playerCounter++;
+        		tvObservableList.add(new Online(playerCounter, playerList.get(i), game));
+    		}
     	}
     }
 
@@ -103,14 +107,14 @@ public class ChallengeView {
                 final TableCell<Online, Void> cell = new TableCell<Online, Void>() {
 
                     private final Button btn = new Button("Uitdagen");
-
+                    //Check if player is player
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Online online = getTableView().getItems().get(getIndex());
                             System.out.println(online);
 
                             try {
-								connectThread.uitdagend(online.toString());
+								connectThread.sendCommand(online.toString());
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -173,7 +177,7 @@ public class ChallengeView {
 
         @Override
         public String toString() {
-            return "Challenge " + name + " " + game ;
+            return "challenge \"" + name + "\" \"" + game + "\"\n" ;
         }
 
     }
