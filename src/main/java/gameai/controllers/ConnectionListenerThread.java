@@ -17,6 +17,8 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import gameai.Main;
+
 public class ConnectionListenerThread implements Runnable {
 	private int connectStatus;
 	private int port;
@@ -42,6 +44,7 @@ public class ConnectionListenerThread implements Runnable {
 	private ArrayList<String> playerList;
 	private ArrayList<String> gameList;
 
+
 	public ConnectionListenerThread(String host, int port, String name) {
 		//Set values
 		connectStatus = 0;
@@ -49,11 +52,13 @@ public class ConnectionListenerThread implements Runnable {
 		this.port = port;
 		this.username = name;
 
+
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
 
 		connectionReady = false;
 
 		timer = 100;
+
 
 		commandList = new ArrayList<String>();
 		playerList = new ArrayList<String>();
@@ -133,6 +138,12 @@ public class ConnectionListenerThread implements Runnable {
 		return gameList;
 	}
 
+	public void uitdagend(String tekst) throws IOException {
+		toServer.write(tekst.getBytes());
+		toServer.flush();
+		ListenToServer();
+	}
+
 	public void subben(String tekst) throws IOException {
 		toServer.write(tekst.getBytes());
 		toServer.flush();
@@ -166,7 +177,7 @@ public class ConnectionListenerThread implements Runnable {
 				}
 				commandList.remove(0);
 			}
-			else if(commandList.get(0).contains("SVR GAMELIST")) {
+			if(commandList.get(0).contains("SVR GAMELIST")) {
 				String[] firstStep = commandList.get(0).split("\\[");
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\]","");
@@ -177,6 +188,19 @@ public class ConnectionListenerThread implements Runnable {
 					gameList.add(finalResult[i]);
 				}
 				commandList.remove(0);
+			}else if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
+				String[] firstStep = commandList.get(0).split("\\{");
+				String secondStep = firstStep[1];
+				String thirdStep = secondStep.replaceAll("\\}","");
+				String fourthStep = thirdStep.replaceAll("\"", "");
+				String[] finalResult = fourthStep.split(", ");
+				for(int i = 0; i < finalResult.length; i++) {
+					System.out.println(finalResult[i]);
+				}
+
+				commandList.remove(0);
+				//Main.runPopup();
+				//Popup.display();
 			}
 		}
 

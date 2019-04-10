@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 
 import gameai.controllers.ConnectionListenerThread;
 import gameai.controllers.MainThread;
+import gameai.views.Popup;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -146,6 +147,7 @@ public class Main extends Application {
         mainStage.setScene(loginScene);
         mainStage.setResizable(false);
         mainStage.show();
+        Popup.display();
     }
 
     private void CreateLoginPane() {
@@ -155,9 +157,9 @@ public class Main extends Application {
         nameLabel = new Label("Gebruikersnaam:");
 
     	//Create new textareas
-        ipTextArea = new TextField();
-    	portTextArea = new TextField();
-    	nameTextArea = new TextField();
+        ipTextArea = new TextField("localhost");
+    	portTextArea = new TextField("7789");
+    	nameTextArea = new TextField("Bram");
 
     	//Check if logininfo exists
         File tempFile = new File("login.txt");
@@ -247,6 +249,9 @@ public class Main extends Application {
     //Stage getter
     public static Stage GetMainStage() {
     	return mainStage;
+    }
+    public static void runPopup() {
+    	Platform.runLater(() -> Popup.display() );
     }
 
     //Launch application

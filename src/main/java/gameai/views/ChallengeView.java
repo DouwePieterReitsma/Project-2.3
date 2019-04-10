@@ -3,6 +3,8 @@ package gameai.views;
 import java.util.ArrayList;
 
 import gameai.controllers.ConnectionListenerThread;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -22,21 +25,24 @@ import javafx.util.Callback;
 import javafx.geometry.Pos;
 
 public class ChallengeView {
-
     private final TableView<Online> table = new TableView<>();
     private final ObservableList<Online> tvObservableList = FXCollections.observableArrayList();
     private BorderPane paneel;
     private String game;
     private Button sub;
     private Button player;
+    private ConnectionListenerThread connectThread;
     private ArrayList<String> playerList;
     private int playerCounter;
+    private BorderPane parent;
 
-    public void createUI(BorderPane parent , String game ,Button sub , Button player, ArrayList<String> playerList) {
+    public void createUI(ConnectionListenerThread connectThread, BorderPane parent , String game ,Button sub , Button player, ArrayList<String> playerList) {
+    	this.connectThread = connectThread;
     	this.game = game;
     	this.sub = sub;
     	this.player = player;
     	this.playerList = playerList;
+    	this.parent = parent;
 
     	sub.setDisable(true);
     	player.setDisable(true);
@@ -46,7 +52,6 @@ public class ChallengeView {
         fillTableObservableListWithSampleData();
         table.setItems(tvObservableList);
 
-
         TableColumn<Online, String> colName = new TableColumn<>("Naam");
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -55,7 +60,7 @@ public class ChallengeView {
         addButtonToTable();
         Button terug =  new Button("terug");
         terug.setOnAction(e -> vorige());
-        BorderPane paneel = new BorderPane();
+        paneel = new BorderPane();
 
         paneel.setCenter(table);
         paneel.setAlignment(terug, Pos.TOP_RIGHT);
@@ -74,9 +79,6 @@ public class ChallengeView {
         table.setPrefHeight(200);
     }
 
-  //  private void fillTableObservableListWithPlayers() {
-
-   // }
     private void fillTableObservableListWithSampleData() {
     	playerCounter = 0;
     	for(int i = 0; i < playerList.size(); i++) {
@@ -86,6 +88,9 @@ public class ChallengeView {
     }
 
     public void vorige() {
+    	sub.setDisable(false);
+    	player.setDisable(false);
+    	parent.setCenter(null);
     	System.out.println("terug naar het vorige scherm");
     }
 
@@ -103,6 +108,13 @@ public class ChallengeView {
                         btn.setOnAction((ActionEvent event) -> {
                             Online online = getTableView().getItems().get(getIndex());
                             System.out.println(online);
+
+                            try {
+								connectThread.uitdagend(online.toString());
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
                         });
                     }
 

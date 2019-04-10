@@ -22,8 +22,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public abstract class GameBoardView extends Application {
-	private BorderPane mainPane;
+public abstract class GameBoardView{
+	public BorderPane mainPane;
 	private BorderPane middlePane;
 	private GridPane gameBoard;
 	private HBox middleTitleBox;
@@ -106,7 +106,7 @@ public abstract class GameBoardView extends Application {
         mainPane.setAlignment(turnLabel, Pos.BOTTOM_RIGHT);
 
 		//Create new game scene
-		gameScene = new Scene(mainPane, 700, 700);
+	//	gameScene = new Scene(mainPane, 700, 700);
 	}
 
 	//Getters
@@ -124,6 +124,9 @@ public abstract class GameBoardView extends Application {
 
 	public List<List<Button>> GetBoardList() {
 		return boardList;
+	}
+	public BorderPane getMainPane() {
+		return mainPane;
 	}
 
 	public Label GetTitleLabel() {

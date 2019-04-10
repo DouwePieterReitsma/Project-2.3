@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import gameai.controllers.ConnectionListenerThread;
 import javafx.application.Application;
 import javafx.application.Platform;
+import gameai.Main;
+import gameai.controllers.ConnectionListenerThread;
+import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -13,7 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class MainWindow {
+public class MainWindow  {
 	private ComboBox spel = new ComboBox();
 	private Scene mainScene;
 	private String subscribeCommand;
@@ -23,6 +27,10 @@ public class MainWindow {
 	private Button sub;
 	private Button player;
 	private Button chal;
+	private TicTacToeView tictac;
+	private ArrayList<String> playerList;
+	private ArrayList<String> gameList;
+	private OthelloView othell;
 
 	private boolean loadingPlayers;
 
@@ -43,6 +51,8 @@ public class MainWindow {
 		for(int i = 0; i < connectThread.GetGameList().size(); i++) {
 			spel.getItems().add(connectThread.GetGameList().get(i));
 		}
+		spel.getItems().addAll("Reversi","Boter kaas en eieren");
+
 
 		//dat er ook iet gebeurt als je op een knopje drukt
 		sub.setOnAction(e ->{
@@ -91,10 +101,18 @@ public class MainWindow {
 		// hier wordt alles in geplaatst
 		BorderPane root = new BorderPane();
 		root.setTop(pane);
+
 		//root.setStyle("-fx-border-color: red");
 		root.setCenter(mid);
+		//challview = new ChallengeView();
+		//challview.createUI(mid);
+		othell = new OthelloView();
+		othell.createUI(mid);
+		//tictac=new TicTacToeView();
+		//tictac.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
+		Main.runPopup();
 	}
 
 	public Scene GetMainScene() {
@@ -112,7 +130,7 @@ public class MainWindow {
 			String game = (String) spel.getValue();
 			challview = new ChallengeView();
 			Platform.runLater(() ->
-				challview.createUI(mid , game , sub , player, connectThread.GetPlayerList())
+				challview.createUI(connectThread, mid , game , sub , player, connectThread.GetPlayerList())
 			);
 		}
 	}
@@ -127,17 +145,25 @@ public class MainWindow {
 		}
 	}
 
-	public void tegenAi() {
-		String game = (String) spel.getValue();
-		System.out.println(game + " spelen tegen de AI");
-	}
-
 	public void challenge() throws IOException, InterruptedException {
 		if(spel.getValue() != null) {
 			connectThread.GetPlayerList().clear();
 			connectThread.UpdatePlayerList();
 			chal.setDisable(true);
 			loadingPlayers = true;
+		}
+	}
+
+	public void tegenAi() {
+		if(spel.getValue().equals("Reversi")) {
+			othell = new OthelloView();
+			othell.createUI(mid);
+			Main.GetMainStage().setTitle("Othello");
+		}
+		else {
+			tictac = new TicTacToeView();
+			tictac.createUI(mid);
+			Main.GetMainStage().setTitle("Tic-Tac-Toe");
 		}
 	}
 }

@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -25,6 +26,7 @@ public class OthelloView extends GameBoardView {
 	private Image emptyImg;
 	private Image whiteImg;
 	private Image blackImg;
+	
 
 	private int playerColor = 0; //0 = white, 1 = black
 
@@ -33,7 +35,7 @@ public class OthelloView extends GameBoardView {
 
 	private List<List<Button>> boardList;
 
-	public OthelloView() {
+	public void createUI(BorderPane parent) {
 		this.gameScene = super.GetGameScene();
 		this.titleLabel = super.GetTitleLabel();
 		this.gameBoard = super.GetGameBoard();
@@ -49,6 +51,9 @@ public class OthelloView extends GameBoardView {
 
 		//Create board
 		CreateBoard();
+		
+		parent.setCenter(mainPane);
+	
 	}
 
 	//Function to create gameboard
@@ -118,7 +123,7 @@ public class OthelloView extends GameBoardView {
 		boardList.get(rowId).get(columnId).setDisable(true);
 	}
 
-	@Override
+	/*@Override
     public void start(Stage stage) throws Exception{
 		//Set title of stage
 		stage.setTitle("Othello");
@@ -129,5 +134,5 @@ public class OthelloView extends GameBoardView {
 	//Launch application
     public static void main(String[] args) {
         launch(args);
-    }
+    }*/
 }

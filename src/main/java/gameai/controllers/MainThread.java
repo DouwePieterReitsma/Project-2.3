@@ -97,6 +97,7 @@ public class MainThread implements Runnable {
 			}
 			else if(state == 1) {
 				timer = 1000;
+
 				try {
 					MainMenuHandler();
 				} catch (IOException e) {
@@ -128,7 +129,7 @@ public class MainThread implements Runnable {
 						errorLabel.setText("Verbinding mislukt, check je host & poort.");
 						});
 					loginButton.setDisable(false);
-					threadPool = Executors.newFixedThreadPool(5);
+					threadPool = Executors.newFixedThreadPool(6);
 				}
 				else if(connectThread.GetConnectStatus() == 2) {
 					//Connection failed
