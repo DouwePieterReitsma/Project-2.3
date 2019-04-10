@@ -51,7 +51,6 @@ public class MainWindow  {
 		for(int i = 0; i < connectThread.GetGameList().size(); i++) {
 			spel.getItems().add(connectThread.GetGameList().get(i));
 		}
-		spel.getItems().addAll("Reversi","Boter kaas en eieren");
 
 
 		//dat er ook iet gebeurt als je op een knopje drukt
@@ -112,7 +111,7 @@ public class MainWindow  {
 		//tictac.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
-		Main.runPopup();
+		
 	}
 
 	public Scene GetMainScene() {

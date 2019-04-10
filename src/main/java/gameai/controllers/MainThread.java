@@ -1,6 +1,7 @@
 package gameai.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -176,13 +177,19 @@ public class MainThread implements Runnable {
 			if(mainWindow.GetLoadingPlayers()) {
 				mainWindow.ProcessPlayers();
 			}
+		} if (connectThread.getChallenged()) {
+			ArrayList<String> info = connectThread.GetChallengeList();
+			Main.runPopup(info.get(0),info.get(1),info.get(2));
+			connectThread.setChallFalse();
 		}
+		
 	}
 
 	//Function to handle game menus
 	private void GameHandler() {
 
 	}
+	
 
 	//Close application
     public void stop(){

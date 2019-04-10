@@ -147,7 +147,7 @@ public class Main extends Application {
         mainStage.setScene(loginScene);
         mainStage.setResizable(false);
         mainStage.show();
-        Popup.display();
+        
     }
 
     private void CreateLoginPane() {
@@ -250,8 +250,9 @@ public class Main extends Application {
     public static Stage GetMainStage() {
     	return mainStage;
     }
-    public static void runPopup() {
-    	Platform.runLater(() -> Popup.display() );
+    
+    public static void runPopup(String speler, String game , String id) {
+    	Platform.runLater(() -> Popup.display(speler, game ,id) );
     }
 
     //Launch application

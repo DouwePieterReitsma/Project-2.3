@@ -39,10 +39,12 @@ public class ConnectionListenerThread implements Runnable {
 
 	private int state;
 	private int timer;
+	private boolean challenge;
 
 	private ArrayList<String> commandList;
 	private ArrayList<String> playerList;
 	private ArrayList<String> gameList;
+	private ArrayList<String> challengeList;
 
 
 	public ConnectionListenerThread(String host, int port, String name) {
@@ -51,6 +53,8 @@ public class ConnectionListenerThread implements Runnable {
 		this.host = host;
 		this.port = port;
 		this.username = name;
+		
+		challenge = false;
 
 
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
@@ -63,6 +67,7 @@ public class ConnectionListenerThread implements Runnable {
 		commandList = new ArrayList<String>();
 		playerList = new ArrayList<String>();
 		gameList = new ArrayList<String>();
+		challengeList = new ArrayList<String>();
 	}
 
 	//Getter for connectionstatus
@@ -137,6 +142,15 @@ public class ConnectionListenerThread implements Runnable {
 	public ArrayList<String> GetGameList() {
 		return gameList;
 	}
+	public ArrayList<String> GetChallengeList() {
+		return challengeList;
+	}
+	public boolean getChallenged() {
+		return challenge;
+	}
+	public void setChallFalse() {
+		challenge = false;
+	}
 
 	public void uitdagend(String tekst) throws IOException {
 		toServer.write(tekst.getBytes());
@@ -176,6 +190,7 @@ public class ConnectionListenerThread implements Runnable {
 					playerList.add(finalResult[i]);
 				}
 				commandList.remove(0);
+				return;
 			}
 			if(commandList.get(0).contains("SVR GAMELIST")) {
 				String[] firstStep = commandList.get(0).split("\\[");
@@ -188,19 +203,27 @@ public class ConnectionListenerThread implements Runnable {
 					gameList.add(finalResult[i]);
 				}
 				commandList.remove(0);
+				return;
 			}else if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
 				String fourthStep = thirdStep.replaceAll("\"", "");
 				String[] finalResult = fourthStep.split(", ");
-				for(int i = 0; i < finalResult.length; i++) {
-					System.out.println(finalResult[i]);
-				}
-
+				String[] speler = finalResult[0].split(": ");
+				String[] nummer = finalResult[1].split(": ");
+				String[] game = finalResult[2].split(": ");
+				challengeList.clear();
+				
 				commandList.remove(0);
-				//Main.runPopup();
+				challengeList.add(speler[1]);
+				challengeList.add(nummer[1]);
+				challengeList.add(game[1]);
+				
+				challenge = true;
+				//Main.runPopup(speler[1],game[1],nummer[1]);
 				//Popup.display();
+				return;
 			}
 		}
 
@@ -215,14 +238,14 @@ public class ConnectionListenerThread implements Runnable {
 						timer = 1000;
 					}
 					commandList.remove(0);
-					break;
+					return;
 				case "ERR Duplicate name exists":
 					connectStatus = 2;
-					break;
+					return;
 
 				default:
 					commandList.remove(0);
-					break;
+					return;
 			}
 		}
 	}
