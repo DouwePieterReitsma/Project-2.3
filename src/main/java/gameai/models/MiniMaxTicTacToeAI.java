@@ -1,13 +1,15 @@
 package gameai.models;
 
 import java.util.ArrayList;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class MiniMaxTicTacToeAI implements TicTacToeAI {
 	public TicTacToeBoard board;
-	public TicTacToeFigure player = TicTacToeFigure.CROSS;
-	public TicTacToeFigure opponent = TicTacToeFigure.CIRCLE;
+	private TicTacToeFigure player = TicTacToeFigure.X;
+	private TicTacToeFigure opponent = TicTacToeFigure.O;
+	
 	@Override
 	public void makeMove() {
 		System.out.println(board + "\n");
@@ -15,7 +17,6 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
 		
 		if(this.board.currentTurn == player) {
 			Position bestMove = calculateMove(player);
-			System.out.println(bestMove);
 			for(Position move: available) {
 				if(move.equals(bestMove)) {
 					board.setTicTacToePieceAtPosition(new TicTacToePiece(player), move);
@@ -25,7 +26,6 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
 
 		}else if(this.board.currentTurn == opponent) {
 			Position bestMove = calculateMove(opponent);
-			System.out.println(bestMove);
 			for(Position move: available) {
 				if(move.equals(bestMove)) {
 					board.setTicTacToePieceAtPosition(new TicTacToePiece(opponent), move);
@@ -46,12 +46,14 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
 		
 		int bestMoveScore = -100;
 		Position bestMove = null;
+
 		for(Position move: available) {
-			//TicTacToeBoard copyBoard = new TicTacToeBoard(board);
 			copyBoard.setTicTacToePieceAtPosition(new TicTacToePiece(figure), move);
 			
-			int moveScore = miniMax(copyBoard,true, figure);
-			System.out.println(bestMoveScore + " " + bestMove + " Current move: " + moveScore);
+			int moveScore = miniMax(copyBoard,false, figure);
+			
+			copyBoard.setTicTacToePieceAtPosition(null, move);
+			
 			if(moveScore > bestMoveScore) {
 				bestMoveScore = moveScore;
 				bestMove = move;
@@ -65,24 +67,25 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
 		TicTacToeFigure temp;
 		TicTacToeBoard copyBoard = new TicTacToeBoard(tempBoard);
 		boolean isMaximizing = maximizing;
-		if(figure.equals(TicTacToeFigure.CROSS)) {
-			temp = TicTacToeFigure.CIRCLE;
+		
+		if(figure.equals(TicTacToeFigure.X)) {
+			temp = TicTacToeFigure.O;
 		}else {
-			temp = TicTacToeFigure.CROSS;
+			temp = TicTacToeFigure.X;
 		}
 		
 		ArrayList<Position> available = copyBoard.getLegalMoves();
 		
-		
+		if(isWinning(copyBoard) && !isMaximizing) {
+			return 10;
+		}
+		if(isWinning(copyBoard) && isMaximizing) {
+			return -10;
+		}
 		if(available.size() == 0) {
 			return 0;
 		}
-		if(isWinning(copyBoard) && isMaximizing) {
-			return 10;
-		}
-		if(isWinning(copyBoard) && !isMaximizing) {
-			return -10;
-		}
+
 		
 		if(maximizing) {
 			int score = Integer.MIN_VALUE;
@@ -90,8 +93,11 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
 			for(Position move: available) {
 				copyBoard.setTicTacToePieceAtPosition(new TicTacToePiece(temp), move);
 
-				
 				score = max(score, miniMax(copyBoard, false, temp));
+				
+				copyBoard.setTicTacToePieceAtPosition(null, move);
+
+				
 			}
 			return score;
 		} else {
@@ -101,6 +107,8 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
 				copyBoard.setTicTacToePieceAtPosition(new TicTacToePiece(temp), move);
 				
 				score = min(score, miniMax(copyBoard,true, temp));
+				
+				copyBoard.setTicTacToePieceAtPosition(null, move);
 			}
 			return score;
 		}
@@ -132,5 +140,22 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
         }
 		return false;
 	}
+	
+	public TicTacToeFigure getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(TicTacToeFigure player) {
+		this.player = player;
+	}
+
+	public TicTacToeFigure getOpponent() {
+		return opponent;
+	}
+
+	public void setOpponent(TicTacToeFigure opponent) {
+		this.opponent = opponent;
+	}
+
 
 }
