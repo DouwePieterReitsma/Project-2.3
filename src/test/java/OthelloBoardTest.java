@@ -1,15 +1,12 @@
-import gameai.models.Piece;
-import gameai.models.othello.OthelloBoard;
 import gameai.models.Position;
+import gameai.models.othello.OthelloBoard;
 import gameai.models.othello.OthelloColor;
 import gameai.models.othello.OthelloPiece;
-import gameai.models.othello.RandomOthelloAI;
-import javafx.geometry.Pos;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OthelloBoardTest {
     @Test
