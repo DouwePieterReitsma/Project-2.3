@@ -54,6 +54,7 @@ public class MainWindow  {
 			spel.getItems().add(connectThread.GetGameList().get(i));
 		}
 
+
 		//dat er ook iet gebeurt als je op een knopje drukt
 		sub.setOnAction(e ->{
 			try {
@@ -112,6 +113,7 @@ public class MainWindow  {
 		//tictac.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
+
 	}
 
 	public Scene GetMainScene() {
