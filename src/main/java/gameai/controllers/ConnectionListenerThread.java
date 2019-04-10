@@ -153,6 +153,12 @@ public class ConnectionListenerThread implements Runnable {
 	public void setChallFalse() {
 		challenge = false;
 	}
+	public boolean getMatchStatus() {
+		return match;
+	}
+	public void setMatchFalse() {
+		match = false;
+	}
 
 	public void sendCommand(String tekst) throws IOException {
 		toServer.write(tekst.getBytes());
