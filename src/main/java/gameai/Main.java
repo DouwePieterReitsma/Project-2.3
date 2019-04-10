@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 
 import gameai.controllers.ConnectionListenerThread;
 import gameai.controllers.MainThread;
+import gameai.views.Popup;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -135,6 +136,7 @@ public class Main extends Application {
         mainStage.setScene(loginScene);
         mainStage.setResizable(false);
         mainStage.show();
+        Popup.display();
     }
 
     private void CreateLoginPane() {
@@ -208,6 +210,9 @@ public class Main extends Application {
     //Stage getter
     public static Stage GetMainStage() {
     	return mainStage;
+    }
+    public static void runPopup() {
+    	Platform.runLater(() -> Popup.display() );
     }
 
     //Launch application

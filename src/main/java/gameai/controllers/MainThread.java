@@ -97,6 +97,7 @@ public class MainThread implements Runnable {
 			}
 			else if(state == 1) {
 				timer = 1000;
+				
 				try {
 					MainMenuHandler();
 				} catch (IOException e) {

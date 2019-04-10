@@ -40,9 +40,9 @@ public class TicTacToeView extends GameBoardView {
 		this.boardList = super.GetBoardList();
 
 		//Set images
-		//emptyImg = new Image(getClass().getResource("/img/tictactoe/empty.png").toString());
-		//playerImg = new Image(getClass().getResource("/img/tictactoe/x.png").toString());
-		//enemyImg = new Image(getClass().getResource("/img/tictactoe/o.png").toString());
+		emptyImg = new Image(getClass().getResource("/img/tictactoe/empty.png").toString());
+		playerImg = new Image(getClass().getResource("/img/tictactoe/x.png").toString());
+		enemyImg = new Image(getClass().getResource("/img/tictactoe/o.png").toString());
 
 		//Set titleLabel
 		titleLabel.setText("Tic-Tac-Toe");

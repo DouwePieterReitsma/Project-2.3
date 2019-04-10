@@ -1,5 +1,7 @@
 package gameai.views;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -115,6 +117,12 @@ public class ChallengeView{
                         btn.setOnAction((ActionEvent event) -> {
                             Online online = getTableView().getItems().get(getIndex());
                             System.out.println(online);
+                            try {
+								MainWindow.uitdagen(online.toString());
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
                         });
                     }
 

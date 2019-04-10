@@ -16,6 +16,8 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import gameai.Main;
+
 public class ConnectionListenerThread implements Runnable {
 	private int connectStatus;
 	private int port;
@@ -84,7 +86,7 @@ public class ConnectionListenerThread implements Runnable {
 
 			Thread.sleep(100);
 
-			toServer.writeUTF(loginCommand);
+			toServer.write(loginCommand.getBytes());
 	        toServer.flush(); // send the message
 
 			connectStatus = 2;
@@ -113,14 +115,16 @@ public class ConnectionListenerThread implements Runnable {
 	}
 
 	public void UpdatePlayerList() throws IOException {
-			toServer.writeUTF("get playerlist\n");
+			String playerlist = "get playerlist\n";
+			toServer.write(playerlist.getBytes());
 			toServer.flush(); // send the message
 			ListenToServer();
 		
 	}
 
 	public void UpdateGameList() throws IOException {
-		toServer.writeUTF("get gamelist\n");
+		String gamelist = "get gamelist\n";
+		toServer.write(gamelist.getBytes());
 		toServer.flush(); // send the message
 		ListenToServer();
 		
@@ -134,12 +138,17 @@ public class ConnectionListenerThread implements Runnable {
 		return gameList;
 	}
 	public void subben(String tekst) throws IOException {
-		toServer.writeUTF(tekst);
+		toServer.write(tekst.getBytes());
+		toServer.flush();
+		ListenToServer();
+	}
+	public void uitdagend(String tekst) throws IOException {
+		toServer.write(tekst.getBytes());
 		toServer.flush();
 		ListenToServer();
 	}
 
-	private void ListenToServer() throws IOException {
+	public void ListenToServer() throws IOException {
 		//Add to queue
 		commandList.add(fromServer.readLine());
 	}
@@ -184,6 +193,8 @@ public class ConnectionListenerThread implements Runnable {
 				}
 				
 				commandList.remove(0);
+				//Main.runPopup();
+				//Popup.display();
 			}
 
 			//Then use switch case

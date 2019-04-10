@@ -21,7 +21,7 @@ public class MainWindow  {
 	private BorderPane mid;
 	private ChallengeView challview;
 	private TicTacToeView tictac;
-	private ConnectionListenerThread connectThread;
+	private static ConnectionListenerThread connectThread;
 	private Button sub;
 	private Button player;
 	private ArrayList<String> playerList;
@@ -94,6 +94,7 @@ public class MainWindow  {
 		//tictac.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
+		Main.runPopup();
 	}
 
 	public Scene GetMainScene() {
@@ -120,6 +121,9 @@ public class MainWindow  {
 			connectThread.subben(subscribeCommand);
 		
 		}
+	}
+	public static void uitdagen(String tegen) throws IOException {
+		connectThread.uitdagend(tegen);
 	}
 	public void tegenAi() {
 		if(spel.getValue().equals("Reversi")) {
