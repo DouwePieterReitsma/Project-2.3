@@ -14,6 +14,19 @@ import gameai.controllers.MainThread;
 import gameai.views.Popup;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+
+import gameai.models.Board;
+import gameai.models.MiniMaxTicTacToe;
+import gameai.models.MiniMaxTicTacToeAI;
+import gameai.models.RandomTicTacToeAI;
+import gameai.models.TicTacToeBoard;
+import gameai.models.othello.OthelloBoard;
+import gameai.models.othello.OthelloColor;
+import gameai.models.othello.OthelloPiece;
+import gameai.models.othello.ai.AlphaBetaOthelloAI;
+import gameai.models.othello.ai.OthelloAI;
+import gameai.models.othello.ai.RandomOthelloAI;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -147,7 +160,7 @@ public class Main extends Application {
         mainStage.setScene(loginScene);
         mainStage.setResizable(false);
         mainStage.show();
-        
+
     }
 
     private void CreateLoginPane() {
@@ -258,6 +271,30 @@ public class Main extends Application {
     //Launch application
     public static void main(String[] args) {
         launch(args);
+        //launch();
+        //Board board = new TicTacToeBoard(new MiniMaxTicTacToeAI());
+
+//        OthelloBoard board = new OthelloBoard(OthelloColor.WHITE);
+//
+//        OthelloPiece wp = new OthelloPiece(OthelloColor.WHITE);
+//        OthelloPiece bp = new OthelloPiece(OthelloColor.BLACK);
+//
+//        board.getPositions()[3][3].setPiece(bp);
+//        board.getPositions()[4][3].setPiece(wp);
+//        board.getPositions()[3][4].setPiece(wp);
+//        board.getPositions()[4][4].setPiece(bp);
+//
+//        System.out.println(board);
+//
+//        OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 6);
+//        OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
+//
+//        while(!board.isGameOver()) {
+//            white.play();
+//            black.play();
+//        }
+//
+//        System.out.println(board.getMatchResult());
     }
 
     //Close application

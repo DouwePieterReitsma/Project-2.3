@@ -152,13 +152,7 @@ public class ConnectionListenerThread implements Runnable {
 		challenge = false;
 	}
 
-	public void uitdagend(String tekst) throws IOException {
-		toServer.write(tekst.getBytes());
-		toServer.flush();
-		ListenToServer();
-	}
-
-	public void subben(String tekst) throws IOException {
+	public void sendCommand(String tekst) throws IOException {
 		toServer.write(tekst.getBytes());
 		toServer.flush();
 	}
@@ -223,6 +217,7 @@ public class ConnectionListenerThread implements Runnable {
 				challenge = true;
 				//Main.runPopup(speler[1],game[1],nummer[1]);
 				//Popup.display();
+
 				return;
 			}
 		}

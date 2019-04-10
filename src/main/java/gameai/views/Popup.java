@@ -43,16 +43,17 @@ public class Popup {
 		layout.add(Decline, 1, 3);
 	
 		Scene scene1= new Scene(layout, 300, 250);
-      
+
 		popupwindow.setScene(scene1);
-      
+
 		popupwindow.showAndWait();
-       
 	}
+
 	private static void accept() {
 		//String send = "challenge accept " + nummer + "/n" ;
 		popupwindow.close();
 	}
+
 
 }
 
