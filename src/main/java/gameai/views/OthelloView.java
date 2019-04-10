@@ -26,7 +26,6 @@ public class OthelloView extends GameBoardView {
 	private Image emptyImg;
 	private Image whiteImg;
 	private Image blackImg;
-	
 
 	private int playerColor = 0; //0 = white, 1 = black
 
@@ -51,9 +50,9 @@ public class OthelloView extends GameBoardView {
 
 		//Create board
 		CreateBoard();
-		
+
 		parent.setCenter(mainPane);
-	
+
 	}
 
 	//Function to create gameboard

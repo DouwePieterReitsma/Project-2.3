@@ -184,7 +184,7 @@ public class MainThread implements Runnable {
 
 	//Function to handle game menus
 	private void GameHandler() {
-
+		//if()
 	}
 
 	//Close application
