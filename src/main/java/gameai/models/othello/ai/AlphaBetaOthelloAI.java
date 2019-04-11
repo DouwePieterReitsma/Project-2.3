@@ -34,10 +34,10 @@ public class AlphaBetaOthelloAI extends OthelloAI {
             return heuristic(board);
         }
 
+        legalMoves = board.getLegalMoves(board.getCurrentTurnColor());
+
         if (maximizingPlayer) {
             value = Integer.MIN_VALUE;
-
-            legalMoves = board.getLegalMoves(board.getCurrentTurnColor());
 
             for (Position move : legalMoves) {
                 OthelloBoard temp = evaluate(board, move);
@@ -55,8 +55,6 @@ public class AlphaBetaOthelloAI extends OthelloAI {
             return value;
         } else {
             value = Integer.MAX_VALUE;
-
-            legalMoves = board.getLegalMoves(board.getCurrentTurnColor());
 
             for (Position move : legalMoves) {
                 OthelloBoard temp = evaluate(board, move);
@@ -83,7 +81,7 @@ public class AlphaBetaOthelloAI extends OthelloAI {
         for (Position move : legalMoves) {
             OthelloBoard temp = evaluate(this.board, move);
 
-            int score = alphabeta(temp, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+            int score = alphabeta(temp, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
 
             if (score > bestScore) {
                 bestScore = score;
@@ -94,15 +92,17 @@ public class AlphaBetaOthelloAI extends OthelloAI {
         return result;
     }
 
-    //todo: add weights
     private int heuristic(OthelloBoard board) {
         int score = 0;
 
         // coin parity
         score += getCoinParity(board);
 
+        // mobility value
+        score += getMobilityValue(board);
+
         // utility value
-        score += getUtilityValueForPlayer(board, playerColor) - getUtilityValueForPlayer(board, opponentColor);
+        score += getUtilityValueForColor(board, playerColor) - getUtilityValueForColor(board, opponentColor);
 
         return score;
     }
@@ -116,7 +116,7 @@ public class AlphaBetaOthelloAI extends OthelloAI {
         return 100 * (maximizingPlayerScore - minimizingPlayerScore) / (maximizingPlayerScore + minimizingPlayerScore);
     }
 
-    private int getUtilityValueForPlayer(OthelloBoard board, OthelloColor color) {
+    private int getUtilityValueForColor(OthelloBoard board, OthelloColor color) {
         Position[][] positions = board.getPositions();
         int result = 0;
 
@@ -145,6 +145,21 @@ public class AlphaBetaOthelloAI extends OthelloAI {
 
         return result;
     }
+
+    private int getMobilityValueForColor(OthelloBoard board, OthelloColor color) {
+        return board.getLegalMoves(color).size();
+    }
+
+    private int getMobilityValue(OthelloBoard board) {
+        int maximizingPlayerScore = getMobilityValueForColor(board, playerColor);
+        int minimizingPlayerScore = getMobilityValueForColor(board, opponentColor);
+
+        if(maximizingPlayerScore + minimizingPlayerScore == 0) return 0;
+
+        return 100 * (maximizingPlayerScore - minimizingPlayerScore) / (maximizingPlayerScore + minimizingPlayerScore);
+    }
+
+
 
     private OthelloBoard evaluate(OthelloBoard original, Position position) {
         OthelloBoard board = new OthelloBoard(original);
