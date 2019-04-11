@@ -155,7 +155,7 @@ public class ConnectionListenerThread implements Runnable {
 		return challenge;
 	}
 	public String getGame() {
-		return matchList.get(0);
+		return matchList.get(1);
 	}
 	public void setChallFalse() {
 		challenge = false;

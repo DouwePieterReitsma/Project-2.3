@@ -216,6 +216,8 @@ public class MainThread implements Runnable {
 				case "Reversi":
 					mainWindow.SetOthelloView();
 
+					System.out.println("asdasdf");
+
 					Thread.sleep(1000);
 
 					OthelloBoard board = new OthelloBoard(OthelloColor.WHITE);
