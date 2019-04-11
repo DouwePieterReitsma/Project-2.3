@@ -217,7 +217,7 @@ public class MainThread implements Runnable {
 
 					Thread.sleep(1000);
 
-					OthelloBoard board = new OthelloBoard(OthelloColor.WHITE, mainWindow.GetOthelloView());
+					OthelloBoard board = new OthelloBoard(OthelloColor.WHITE);
 
 					OthelloPiece wp = new OthelloPiece(OthelloColor.WHITE);
 			        OthelloPiece bp = new OthelloPiece(OthelloColor.BLACK);
@@ -227,14 +227,19 @@ public class MainThread implements Runnable {
 					board.getPositions()[3][4].setPiece(wp);
 					board.getPositions()[4][4].setPiece(bp);
 
-					OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 6);
+					OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 5);
 					OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
 
 					while(!board.isGameOver()) {
 						white.play();
 						mainWindow.UpdateOthelloBoard(board);
+
+						System.out.println(board.toString());
+
 						black.play();
 						mainWindow.UpdateOthelloBoard(board);
+
+						System.out.println(board.toString());
 					}
 					break;
 				case "Tic-tac-toe":

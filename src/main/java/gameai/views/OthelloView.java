@@ -111,13 +111,13 @@ public class OthelloView extends GameBoardView {
 				column.setAlignment(Pos.CENTER);
 				column.setTextAlignment(TextAlignment.CENTER);
 
-				if(!oBoard.getPositions()[x][y].isAvailable()) {
-					if(((OthelloPiece)(oBoard.getPositions()[x][y]).getPiece()).getColor() == OthelloColor.WHITE) { //White start
+				if(!oBoard.getPositions()[y][x].isAvailable()) {
+					if(((OthelloPiece)(oBoard.getPositions()[y][x]).getPiece()).getColor() == OthelloColor.WHITE) { //White start
 						ImageView whiteView = new ImageView(whiteImg);
 						column.setGraphic(whiteView);
 						column.setDisable(true);
 					}
-					else if(((OthelloPiece)(oBoard.getPositions()[x][y]).getPiece()).getColor() == OthelloColor.BLACK) { //Black start
+					else if(((OthelloPiece)(oBoard.getPositions()[y][x]).getPiece()).getColor() == OthelloColor.BLACK) { //Black start
 						ImageView blackView = new ImageView(blackImg);
 						column.setGraphic(blackView);
 						column.setDisable(true);
