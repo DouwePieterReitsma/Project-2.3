@@ -199,17 +199,12 @@ public class MainThread implements Runnable {
 			Main.runPopup(info.get(0),info.get(1),info.get(2), connectThread);
 			connectThread.setChallFalse();
 
-			//Check if challenged
-		} if (connectThread.getMatchStatus()) {
-
-			connectThread.setMatchFalse();
-			}
-
 		}
 
 	}
 
 	//Function to handle game menus
+
 	private void GameHandler() throws InterruptedException {
 		//Startup game
 		if(!inGame) {
@@ -219,6 +214,8 @@ public class MainThread implements Runnable {
 				case "Reversi":
 
 					mainWindow.SetOthelloView();
+
+					System.out.println("asdasdf");
 
 					Thread.sleep(1000);
 
@@ -234,6 +231,7 @@ public class MainThread implements Runnable {
 
 					OthelloAI ai = null;
 					OthelloServerPlayer opponent = null;
+
 					if(connectThread.getYourTurn()) {
 						System.out.println("yourturn");
 						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 6);
@@ -249,7 +247,7 @@ public class MainThread implements Runnable {
 					moveController = new MoveController(connectThread, ai, opponent);
 
 					while(!board.isGameOver()) {
-						if(connectThread.getYourTurn()) {
+						if(connectThread.getYourTurn() && connectThread.GetState() == 2) {
 							try {
 								moveController.doAIMove();
 							} catch (IOException e) {
@@ -257,13 +255,12 @@ public class MainThread implements Runnable {
 								e.printStackTrace();
 							}
 						}
-						else {
-							Thread.sleep(300);
+						else if(connectThread.GetState() == 2) {
+							Thread.sleep(200);
 							//Check enemy movement
 							moveController.checkEnemy();
 						}
 						mainWindow.UpdateOthelloBoard(board);
-						System.out.println(board);
 					}
 					break;
 				case "Tic-tac-toe":
