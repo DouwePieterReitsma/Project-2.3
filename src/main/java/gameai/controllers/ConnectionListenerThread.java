@@ -31,6 +31,7 @@ public class ConnectionListenerThread implements Runnable {
 	private String lastResponse;
 
 	private boolean connectionReady;
+	private boolean yourTurn;
 
 	private BufferedReader fromServer;
 	private BufferedOutputStream toServer;
@@ -41,7 +42,6 @@ public class ConnectionListenerThread implements Runnable {
 	private int timer;
 	private boolean challenge;
 	private boolean match;
-	private boolean yourTurn;
 
 	private String game;
 
@@ -50,7 +50,6 @@ public class ConnectionListenerThread implements Runnable {
 	private ArrayList<String> gameList;
 	private ArrayList<String> challengeList;
 	private ArrayList<String> matchList;
-
 
 	public ConnectionListenerThread(String host, int port, String name) {
 		//Set values
@@ -62,7 +61,6 @@ public class ConnectionListenerThread implements Runnable {
 		challenge = false;
 		match = false;
 		yourTurn = false;
-
 
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
 
@@ -157,7 +155,7 @@ public class ConnectionListenerThread implements Runnable {
 		return challenge;
 	}
 	public String getGame() {
-		return game;
+		return matchList.get(0);
 	}
 	public void setChallFalse() {
 		challenge = false;
@@ -248,9 +246,9 @@ public class ConnectionListenerThread implements Runnable {
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
+
 				String finalResult = thirdStep.replaceAll("\"", ""); 
 				String message = finalResult.replaceAll("TURNMESSAGE: ", "");
-				
 				commandList.remove(0);
 				yourTurn= true;
 				return;
@@ -264,15 +262,15 @@ public class ConnectionListenerThread implements Runnable {
 				String sixthStep = fifthStep.replaceAll("DETAILS: ", "");
 				String seventhStep = sixthStep.replaceAll("MOVE: ", "");
 				String[] finalResult = seventhStep.split(", ");
-				
+
 				for(int i = 0; i < finalResult.length; i++) {
 					System.out.println(finalResult[i]);
 				}
-
-
 				commandList.remove(0);
-				
+
 				return;
+
+		
 			}else if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[1];

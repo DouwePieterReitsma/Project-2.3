@@ -263,10 +263,8 @@ public class Main extends Application {
     	return mainStage;
     }
 
-    
     public static void runPopup(String speler, String game , String id,ConnectionListenerThread connectThread) {
     	Platform.runLater(() -> Popup.display(speler, game ,id, connectThread) );
-
     }
 
     //Launch application
@@ -287,7 +285,7 @@ public class Main extends Application {
 //
 //        System.out.println(board);
 //
-//        OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 6);
+//        OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 4);
 //        OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
 //
 //        while(!board.isGameOver()) {
