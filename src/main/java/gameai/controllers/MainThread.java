@@ -196,10 +196,11 @@ public class MainThread implements Runnable {
 			connectThread.setChallFalse();
 
 			//Check if challenged
-			} if (connectThread.getMatchStatus()) {
+		} if (connectThread.getMatchStatus()) {
 
-				connectThread.setMatchFalse();
+			connectThread.setMatchFalse();
 			}
+
 		}
 
 	}

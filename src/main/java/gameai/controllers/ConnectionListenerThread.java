@@ -225,6 +225,33 @@ public class ConnectionListenerThread implements Runnable {
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
 				String fourthStep = thirdStep.replaceAll("\"", "");
+				String[] finalResult = fourthStep.split(", ");
+				String[] game = finalResult[1].split(": ");
+				String[] vijand = finalResult[2].split(": ");
+				matchList.clear();
+				commandList.remove(0);
+				matchList.add(game[0]);
+				matchList.add(vijand[0]);
+				match= true;
+
+				return;
+			}
+			if(commandList.get(0).contains("SVR GAME YOURTURN")) {
+				String[] firstStep = commandList.get(0).split("\\{");
+				String secondStep = firstStep[1];
+				String thirdStep = secondStep.replaceAll("\\}","");
+				String finalResult = thirdStep.replaceAll("\"", "");
+				String[] message = finalResult.split(": ");
+
+				commandList.remove(0);
+				yourTurn= true;
+				return;
+			}
+			if(commandList.get(0).contains("SVR GAME MOVE")) {
+				String[] firstStep = commandList.get(0).split("\\{");
+				String secondStep = firstStep[1];
+				String thirdStep = secondStep.replaceAll("\\}","");
+				String fourthStep = thirdStep.replaceAll("\"", "");
 				String fifthStep = fourthStep.replaceAll("PLAYERTOMOVE: ", "");
 				String sixthStep = fifthStep.replaceAll("GAMETYPE: ", "");
 				String seventhStep = sixthStep.replaceAll("OPPONENT: ", "");
@@ -241,8 +268,8 @@ public class ConnectionListenerThread implements Runnable {
 				}
 
 				state = 2;
-
 				commandList.remove(0);
+
 				return;
 
 			}
@@ -286,8 +313,6 @@ public class ConnectionListenerThread implements Runnable {
 				challengeList.add(game[1]);
 
 				challenge = true;
-				//Main.runPopup(speler[1],game[1],nummer[1]);
-				//Popup.display();
 
 				return;
 			}

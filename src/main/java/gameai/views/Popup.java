@@ -36,7 +36,6 @@ public class Popup {
 		Button Accept= new Button("Accepteren ");
 		Button Decline= new Button("Weigeren");
 
-
 		Accept.setOnAction(e ->{
 			try {
 				accept();
