@@ -81,6 +81,8 @@ public class AlphaBetaOthelloAI extends OthelloAI {
         for (Position move : legalMoves) {
             OthelloBoard temp = evaluate(this.board, move);
 
+            System.out.println(move);
+
             int score = alphabeta(temp, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
 
             if (score > bestScore) {
