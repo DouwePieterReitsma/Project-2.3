@@ -18,10 +18,10 @@ public class RandomTicTacToeAI implements TicTacToeAI {
 
         int nextmove = rand.nextInt(array.size());
 		if(board.getTurn() == 0) {
-		   	array.get(nextmove).setPiece(new TicTacToePiece(TicTacToeFigure.CROSS));
+		   	array.get(nextmove).setPiece(new TicTacToePiece(TicTacToeFigure.X));
         	board.setTurn(1);
 		}else if(board.getTurn() == 1){
-		   	array.get(nextmove).setPiece(new TicTacToePiece(TicTacToeFigure.CIRCLE));
+		   	array.get(nextmove).setPiece(new TicTacToePiece(TicTacToeFigure.O));
         	board.setTurn(0);
 		}
 		

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class TicTacToeBoard extends Board {
 	public TicTacToeAI ai;
 	protected ArrayList<Position> array = new ArrayList<Position>();
-	public TicTacToeFigure currentTurn = TicTacToeFigure.CROSS;
+	public TicTacToeFigure currentTurn = TicTacToeFigure.X;
 
 	public TicTacToeBoard(TicTacToeAI ai) {
 		super(3, 3);

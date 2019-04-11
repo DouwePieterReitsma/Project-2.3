@@ -1,5 +1,5 @@
 package gameai.models;
 
 public enum TicTacToeFigure {
-    CROSS, CIRCLE
+    X, O
 }
