@@ -198,9 +198,8 @@ public class MainThread implements Runnable {
 			ArrayList<String> info = connectThread.GetChallengeList();
 			Main.runPopup(info.get(0),info.get(1),info.get(2), connectThread);
 			connectThread.setChallFalse();
-
+			}
 		}
-
 	}
 
 	//Function to handle game menus
