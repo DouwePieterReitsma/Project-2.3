@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 public class MiniMaxTicTacToe implements TicTacToeAI {
 	public TicTacToeBoard board;
-	public TicTacToeFigure player = TicTacToeFigure.CROSS;
-	public TicTacToeFigure opponent = TicTacToeFigure.CIRCLE;
+	public TicTacToeFigure player = TicTacToeFigure.X;
+	public TicTacToeFigure opponent = TicTacToeFigure.O;
 	private Position bestPlay;
 	int bestPlayScore;
 	int score2;
