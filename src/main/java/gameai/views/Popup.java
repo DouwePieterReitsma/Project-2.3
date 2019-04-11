@@ -1,5 +1,8 @@
 package gameai.views;
 
+import java.io.IOException;
+
+import gameai.controllers.ConnectionListenerThread;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -12,12 +15,14 @@ public class Popup {
 	private static String spel;
 	private static String nummer;
 	private static Stage popupwindow;
+	private static ConnectionListenerThread connectThreadd;
 	
    
-	public static void display(String player, String game , String id) {
+	public static void display(String player, String id , String game, ConnectionListenerThread connectThread) {
 		uitdager = player;
 		spel = game;
 		nummer = id;
+		connectThreadd = connectThread;
 		
 		popupwindow=new Stage();
       
@@ -33,7 +38,14 @@ public class Popup {
 		Button Decline= new Button("Weigeren");
      
      
-		Accept.setOnAction(e ->accept());
+		Accept.setOnAction(e ->{
+			try {
+				accept();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		Decline.setOnAction(e -> popupwindow.close());
      
      
@@ -49,8 +61,9 @@ public class Popup {
 		popupwindow.showAndWait();
 	}
 
-	private static void accept() {
-		//String send = "challenge accept " + nummer + "/n" ;
+	private static void accept() throws IOException {
+		String send = "challenge accept " + nummer + "/n" ;
+		connectThreadd.sendCommand(send);
 		popupwindow.close();
 	}
 

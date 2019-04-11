@@ -264,8 +264,8 @@ public class Main extends Application {
     	return mainStage;
     }
     
-    public static void runPopup(String speler, String game , String id) {
-    	Platform.runLater(() -> Popup.display(speler, game ,id) );
+    public static void runPopup(String speler, String game , String id,ConnectionListenerThread connectThread) {
+    	Platform.runLater(() -> Popup.display(speler, game ,id, connectThread) );
     }
 
     //Launch application
