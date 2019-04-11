@@ -43,6 +43,8 @@ public class ConnectionListenerThread implements Runnable {
 	private boolean match;
 	private boolean yourTurn;
 
+	private String game;
+
 	private ArrayList<String> commandList;
 	private ArrayList<String> playerList;
 	private ArrayList<String> gameList;
@@ -56,7 +58,7 @@ public class ConnectionListenerThread implements Runnable {
 		this.host = host;
 		this.port = port;
 		this.username = name;
-		
+
 		challenge = false;
 		match = false;
 		yourTurn = false;
@@ -154,6 +156,9 @@ public class ConnectionListenerThread implements Runnable {
 	public boolean getChallenged() {
 		return challenge;
 	}
+	public String getGame() {
+		return game;
+	}
 	public void setChallFalse() {
 		challenge = false;
 	}
@@ -249,11 +254,18 @@ public class ConnectionListenerThread implements Runnable {
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
 				String fourthStep = thirdStep.replaceAll("\"", "");
-				String[] finalResult = fourthStep.split(", ");
-				String[] speler = finalResult[0].split(": ");
-				String[] details = finalResult[1].split(": ");
-				String[] move = finalResult[2].split(": ");
-				
+				String fifthStep = fourthStep.replaceAll("PLAYERTOMOVE: ", "");
+				String sixthStep = fifthStep.replaceAll("GAMETYPE: ", "");
+				String seventhStep = sixthStep.replaceAll("OPPONENT: ", "");
+				String[] finalResult = seventhStep.split(", ");
+				match= true;
+				for(int i = 0; i < finalResult.length; i++) {
+					System.out.println(finalResult[i]);
+				}
+
+				game = finalResult[1];
+
+				state = 2;
 				commandList.remove(0);
 				
 				return;
@@ -267,12 +279,12 @@ public class ConnectionListenerThread implements Runnable {
 				String[] nummer = finalResult[1].split(": ");
 				String[] game = finalResult[2].split(": ");
 				challengeList.clear();
-				
+
 				commandList.remove(0);
 				challengeList.add(speler[1]);
 				challengeList.add(nummer[1]);
 				challengeList.add(game[1]);
-				
+
 				challenge = true;
 
 				return;

@@ -4,21 +4,26 @@ import gameai.models.Board;
 import gameai.models.IllegalMoveException;
 import gameai.models.Piece;
 import gameai.models.Position;
+import gameai.views.OthelloView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OthelloBoard extends Board {
-    public OthelloBoard(OthelloColor startingColor) {
+	private OthelloView othelloView;
+
+    public OthelloBoard(OthelloColor startingColor, OthelloView othelloView) {
         super(8, 8);
+
+        this.othelloView = othelloView;
 
 
         setCurrentTurnColor(startingColor);
         //this.currentTurnColor = startingColor;
     }
 
-    public OthelloBoard(Position[][] positions, OthelloColor startingColor) {
-        this(startingColor);
+    public OthelloBoard(Position[][] positions, OthelloColor startingColor, OthelloView othelloView) {
+        this(startingColor, othelloView);
 
         setPositions(positions);
     }
@@ -33,6 +38,10 @@ public class OthelloBoard extends Board {
                 positions[i][j] = new Position(board.getPositions()[i][j]);
             }
         }
+    }
+
+    public OthelloView GetOthelloView() {
+    	return othelloView;
     }
 
     private OthelloColor currentTurnColor;

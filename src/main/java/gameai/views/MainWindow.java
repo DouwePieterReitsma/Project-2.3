@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import gameai.controllers.ConnectionListenerThread;
+import gameai.models.othello.OthelloBoard;
 import javafx.application.Application;
 import javafx.application.Platform;
 import gameai.Main;
@@ -107,13 +108,12 @@ public class MainWindow  {
 		root.setCenter(mid);
 		//challview = new ChallengeView();
 		//challview.createUI(mid);
-		othell = new OthelloView();
-		othell.createUI(mid);
+		//othell = new OthelloView();
+		//othell.createUI(mid);
 		//tictac=new TicTacToeView();
 		//tictac.createUI(mid);
 
 		mainScene = new Scene(root, 700, 700);
-
 	}
 
 	public Scene GetMainScene() {
@@ -122,6 +122,24 @@ public class MainWindow  {
 
 	public boolean GetLoadingPlayers() {
 		return loadingPlayers;
+	}
+
+	public void SetOthelloView() {
+		Platform.runLater(() -> {
+			othell = new OthelloView();
+					othell.createUI(mid);
+					Main.GetMainStage().setTitle("Reversi");
+	    });
+	}
+
+	public void UpdateOthelloBoard(OthelloBoard oBoard) {
+		Platform.runLater(() -> {
+			othell.UpdatePositions(oBoard);
+	    });
+	}
+
+	public OthelloView GetOthelloView() {
+		return othell;
 	}
 
 	public void ProcessPlayers() throws IOException {
@@ -157,9 +175,9 @@ public class MainWindow  {
 
 	public void tegenAi() {
 		if(spel.getValue().equals("Reversi")) {
-			othell = new OthelloView();
-			othell.createUI(mid);
-			Main.GetMainStage().setTitle("Othello");
+			//othell = new OthelloView();
+			//othell.createUI(mid);
+			//Main.GetMainStage().setTitle("Othello");
 		}
 		else {
 			tictac = new TicTacToeView();
