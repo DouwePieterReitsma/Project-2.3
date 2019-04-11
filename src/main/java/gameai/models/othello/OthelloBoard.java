@@ -14,7 +14,6 @@ public class OthelloBoard extends Board {
     public OthelloBoard(OthelloColor startingColor) {
         super(8, 8);
 
-
         setCurrentTurnColor(startingColor);
         //this.currentTurnColor = startingColor;
     }

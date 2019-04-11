@@ -9,6 +9,8 @@ import gameai.models.othello.OthelloPlayer;
 import javafx.geometry.Pos;
 
 public abstract class OthelloAI extends OthelloPlayer {
+	private Position move;
+
     public OthelloAI(OthelloBoard board, OthelloColor playerColor) {
         super(board, playerColor);
     }
@@ -17,7 +19,7 @@ public abstract class OthelloAI extends OthelloPlayer {
 
     public void play() {
         if(board.getCurrentTurnColor() == playerColor) {
-            Position move = calculateMove();
+            move = calculateMove();
 
             System.out.printf("\n\nTurn %d, Player: %s\n\n", board.getTurn() + 1, board.getCurrentTurnColor());
 
@@ -30,5 +32,9 @@ public abstract class OthelloAI extends OthelloPlayer {
 
             //System.out.println(board.toString());
         }
+    }
+
+    public Position GetMove() {
+    	return move;
     }
 }

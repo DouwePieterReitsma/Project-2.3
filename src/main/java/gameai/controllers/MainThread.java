@@ -9,6 +9,8 @@ import gameai.Main;
 import gameai.models.othello.OthelloBoard;
 import gameai.models.othello.OthelloColor;
 import gameai.models.othello.OthelloPiece;
+import gameai.models.othello.OthelloPlayer;
+import gameai.models.othello.OthelloServerPlayer;
 import gameai.models.othello.ai.AlphaBetaOthelloAI;
 import gameai.models.othello.ai.OthelloAI;
 import gameai.models.othello.ai.RandomOthelloAI;
@@ -30,6 +32,8 @@ public class MainThread implements Runnable {
 	private ConnectionListenerThread connectThread;
 
 	private ExecutorService threadPool;
+
+	private MoveController moveController;
 
 	private MainWindow mainWindow;
 
@@ -213,28 +217,53 @@ public class MainThread implements Runnable {
 			switch(connectThread.getGame())
 			{
 				case "Reversi":
+
 					mainWindow.SetOthelloView();
 
 					Thread.sleep(1000);
 
-					OthelloBoard board = new OthelloBoard(OthelloColor.WHITE, mainWindow.GetOthelloView());
+					OthelloBoard board = new OthelloBoard(OthelloColor.BLACK);
 
 					OthelloPiece wp = new OthelloPiece(OthelloColor.WHITE);
 			        OthelloPiece bp = new OthelloPiece(OthelloColor.BLACK);
 
-					board.getPositions()[3][3].setPiece(bp);
-					board.getPositions()[4][3].setPiece(wp);
-					board.getPositions()[3][4].setPiece(wp);
-					board.getPositions()[4][4].setPiece(bp);
+					board.getPositions()[3][3].setPiece(wp);
+					board.getPositions()[4][3].setPiece(bp);
+					board.getPositions()[3][4].setPiece(bp);
+					board.getPositions()[4][4].setPiece(wp);
 
-					OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 6);
-					OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
+					OthelloAI ai = null;
+					OthelloServerPlayer opponent = null;
+					if(connectThread.getYourTurn()) {
+						System.out.println("yourturn");
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 6);
+						opponent = new OthelloServerPlayer(board, OthelloColor.WHITE, connectThread);
+					}
+					else {
+						System.out.println("notyourturn");
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 6);
+						opponent = new OthelloServerPlayer(board, OthelloColor.BLACK, connectThread);
+					}
+					//OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
+
+					moveController = new MoveController(connectThread, ai, opponent);
 
 					while(!board.isGameOver()) {
-						white.play();
+						if(connectThread.getYourTurn()) {
+							try {
+								moveController.doAIMove();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						else {
+							Thread.sleep(300);
+							//Check enemy movement
+							moveController.checkEnemy();
+						}
 						mainWindow.UpdateOthelloBoard(board);
-						black.play();
-						mainWindow.UpdateOthelloBoard(board);
+						System.out.println(board);
 					}
 					break;
 				case "Tic-tac-toe":

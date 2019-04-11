@@ -18,6 +18,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import gameai.Main;
+import gameai.models.Position;
 
 public class ConnectionListenerThread implements Runnable {
 	private int connectStatus;
@@ -32,6 +33,7 @@ public class ConnectionListenerThread implements Runnable {
 
 	private boolean connectionReady;
 	private boolean yourTurn;
+	private boolean firstTurn;
 
 	private BufferedReader fromServer;
 	private BufferedOutputStream toServer;
@@ -42,6 +44,7 @@ public class ConnectionListenerThread implements Runnable {
 	private int timer;
 	private boolean challenge;
 	private boolean match;
+	private int enemyMove;
 
 	private String game;
 
@@ -61,6 +64,8 @@ public class ConnectionListenerThread implements Runnable {
 		challenge = false;
 		match = false;
 		yourTurn = false;
+		firstTurn = true;
+		enemyMove = -1;
 
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
 
@@ -154,11 +159,17 @@ public class ConnectionListenerThread implements Runnable {
 	public boolean getChallenged() {
 		return challenge;
 	}
+	public int GetEnemyMove() {
+		return enemyMove;
+	}
 	public String getGame() {
 		return matchList.get(0);
 	}
 	public void setChallFalse() {
 		challenge = false;
+	}
+	public void ResetEnemyMove() {
+		enemyMove = -1;
 	}
 	public boolean getMatchStatus() {
 		return match;
@@ -166,16 +177,35 @@ public class ConnectionListenerThread implements Runnable {
 	public void setMatchFalse() {
 		match = false;
 	}
+	public void advanceTurn() {
+		if(yourTurn) {
+			yourTurn = false;
+		}
+		else {
+			yourTurn = true;
+		}
+	}
 	public boolean getYourTurn() {
 		return yourTurn;
-	}
-	public void setEnemyTurn() {
-		yourTurn = false;
 	}
 
 	public void sendCommand(String tekst) throws IOException {
 		toServer.write(tekst.getBytes());
 		toServer.flush();
+	}
+
+	public void doMove(Position position) throws IOException {
+		if(yourTurn) {
+			System.out.println(position);
+			int finalPositie = position.getY() * 8 + position.getX();
+			String moveCommand = "move " + Integer.toString(finalPositie) + "\n";
+			toServer.write(moveCommand.getBytes());
+			toServer.flush();
+			advanceTurn();
+		}
+		else {
+			System.out.println("Its not your turn!");
+		}
 	}
 
 	public void ListenToServer() throws IOException {
@@ -226,6 +256,7 @@ public class ConnectionListenerThread implements Runnable {
 				String thirdStep = secondStep.replaceAll("\\}","");
 				String fourthStep = thirdStep.replaceAll("\"", "");
 				String[] finalResult = fourthStep.split(", ");
+				String[] user = finalResult[0].split(": ");
 				String[] game = finalResult[1].split(": ");
 				String[] vijand = finalResult[2].split(": ");
 				matchList.clear();
@@ -234,6 +265,11 @@ public class ConnectionListenerThread implements Runnable {
 				matchList.add(vijand[1]);
 				match= true;
 				state = 2;
+
+				if(firstTurn && user[1].equals(username)) {
+					yourTurn = true;
+					firstTurn = false;
+				}
 
 				commandList.remove(0);
 
@@ -247,7 +283,6 @@ public class ConnectionListenerThread implements Runnable {
 				String[] message = finalResult.split(": ");
 
 				commandList.remove(0);
-				yourTurn= true;
 				return;
 			}
 			if(commandList.get(0).contains("SVR GAME MOVE")) {
@@ -255,19 +290,15 @@ public class ConnectionListenerThread implements Runnable {
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
 				String fourthStep = thirdStep.replaceAll("\"", "");
-				String fifthStep = fourthStep.replaceAll("PLAYERTOMOVE: ", "");
-				String sixthStep = fifthStep.replaceAll("GAMETYPE: ", "");
-				String seventhStep = sixthStep.replaceAll("OPPONENT: ", "");
+				String fifthStep = fourthStep.replaceAll("PLAYER: ", "");
+				String sixthStep = fifthStep.replaceAll("MOVE: ", "");
+				String seventhStep = sixthStep.replaceAll("DETAILS: ", "");
 				String[] finalResult = seventhStep.split(", ");
-				String[] game = finalResult[1].split(": ");
-				String[] vijand = finalResult[2].split(": ");
-				matchList.clear();
-				commandList.remove(0);
-				matchList.add(game[0]);
-				matchList.add(vijand[0]);
-				match= true;
-				for(int i = 0; i < finalResult.length; i++) {
-					System.out.println(finalResult[i]);
+
+				//DoMove
+				if(!finalResult[0].equals(username)) {
+					System.out.println(finalResult[1]);
+					enemyMove = Integer.parseInt(finalResult[1]);
 				}
 
 				commandList.remove(0);
