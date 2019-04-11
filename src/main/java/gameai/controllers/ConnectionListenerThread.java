@@ -34,6 +34,7 @@ public class ConnectionListenerThread implements Runnable {
 	private boolean connectionReady;
 	private boolean yourTurn;
 	private boolean firstTurn;
+	private boolean illegalMove;
 
 	private BufferedReader fromServer;
 	private BufferedOutputStream toServer;
@@ -63,6 +64,7 @@ public class ConnectionListenerThread implements Runnable {
 
 		challenge = false;
 		yourTurn = false;
+		illegalMove = false;
 		firstTurn = true;
 		enemyMove = -1;
 
@@ -157,6 +159,9 @@ public class ConnectionListenerThread implements Runnable {
 	}
 	public boolean getChallenged() {
 		return challenge;
+	}
+	public boolean getIllegalMove() {
+		return illegalMove;
 	}
 	public int GetEnemyMove() {
 		return enemyMove;
@@ -256,6 +261,8 @@ public class ConnectionListenerThread implements Runnable {
 				matchList.add(game[1]);
 				System.out.println(game[1]);
 				matchList.add(vijand[1]);
+				illegalMove = false;
+				firstTurn = true;
 				state = 2;
 
 				if(firstTurn && user[1].equals(username)) {
@@ -287,6 +294,16 @@ public class ConnectionListenerThread implements Runnable {
 				String seventhStep = sixthStep.replaceAll("DETAILS: ", "");
 				String[] finalResult = seventhStep.split(", ");
 
+				//Check if illegal
+				if(finalResult.length > 2) {
+					if(finalResult[2].equals("Illegal move")) {
+						illegalMove = true;
+						commandList.remove(0);
+
+						return;
+					}
+				}
+
 				//DoMove
 				if(!finalResult[0].equals(username)) {
 					System.out.println(finalResult[1]);
@@ -304,7 +321,6 @@ public class ConnectionListenerThread implements Runnable {
 				String finalResult = thirdStep.replaceAll("\"", "");
 				String message = finalResult.replaceAll("TURNMESSAGE: ", "");
 				commandList.remove(0);
-				yourTurn= true;
 				return;
 			}
 			if(commandList.get(0).contains("SVR GAME MOVE")) {

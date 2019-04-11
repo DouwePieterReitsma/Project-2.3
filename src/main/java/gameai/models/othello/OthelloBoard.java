@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OthelloBoard extends Board {
+	private boolean gameOver = false;
 
     public OthelloBoard(OthelloColor startingColor) {
         super(8, 8);
@@ -245,7 +246,14 @@ public class OthelloBoard extends Board {
     }
 
     public boolean isGameOver() {
-        return getLegalMoves(currentTurnColor).isEmpty() && getLegalMoves(opponentColor).isEmpty();
+    	if(getLegalMoves(currentTurnColor).isEmpty() && getLegalMoves(opponentColor).isEmpty()) {
+    		gameOver = true;
+    	}
+    	return gameOver;
+    }
+
+    public void EndGame() {
+    	gameOver = true;
     }
 
     @Override

@@ -211,25 +211,26 @@ public class MainThread implements Runnable {
 			switch(connectThread.getGame())
 			{
 				case "Reversi":
-
 					mainWindow.SetOthelloView();
-
-					System.out.println("asdasdf");
 
 					Thread.sleep(1000);
 
-					OthelloBoard board = new OthelloBoard(OthelloColor.BLACK);
+					OthelloBoard board = null;
+					OthelloPiece wp = null;
+					OthelloPiece bp = null;
+					OthelloAI ai = null;
+					OthelloServerPlayer opponent = null;
+					moveController = null;
 
-					OthelloPiece wp = new OthelloPiece(OthelloColor.WHITE);
-			        OthelloPiece bp = new OthelloPiece(OthelloColor.BLACK);
+					board = new OthelloBoard(OthelloColor.BLACK);
+
+					wp = new OthelloPiece(OthelloColor.WHITE);
+			        bp = new OthelloPiece(OthelloColor.BLACK);
 
 					board.getPositions()[3][3].setPiece(wp);
 					board.getPositions()[4][3].setPiece(bp);
 					board.getPositions()[3][4].setPiece(bp);
 					board.getPositions()[4][4].setPiece(wp);
-
-					OthelloAI ai = null;
-					OthelloServerPlayer opponent = null;
 
 					if(connectThread.getYourTurn()) {
 						System.out.println("yourturn");
@@ -246,7 +247,7 @@ public class MainThread implements Runnable {
 					moveController = new MoveController(connectThread, ai, opponent);
 
 					while(!board.isGameOver()) {
-						if(connectThread.getYourTurn() && connectThread.GetState() == 2) {
+						if(connectThread.getYourTurn()) {
 							try {
 								moveController.doAIMove();
 							} catch (IOException e) {
@@ -254,13 +255,14 @@ public class MainThread implements Runnable {
 								e.printStackTrace();
 							}
 						}
-						else if(connectThread.GetState() == 2) {
-							Thread.sleep(200);
+						else {
+							Thread.sleep(100);
 							//Check enemy movement
 							moveController.checkEnemy();
 						}
 						mainWindow.UpdateOthelloBoard(board);
 					}
+					inGame = false;
 					break;
 				case "Tic-tac-toe":
 

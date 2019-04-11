@@ -60,7 +60,7 @@ public class ChallengeView {
         table.getColumns().addAll(colName);
 
         addButtonToTable();
-        Button terug =  new Button("terug");
+        Button terug =  new Button("Terug");
         terug.setOnAction(e -> vorige());
         paneel = new BorderPane();
 
