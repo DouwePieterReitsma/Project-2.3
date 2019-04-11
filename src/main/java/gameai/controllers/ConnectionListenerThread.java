@@ -51,6 +51,7 @@ public class ConnectionListenerThread implements Runnable {
 	private ArrayList<String> challengeList;
 	private ArrayList<String> matchList;
 
+
 	public ConnectionListenerThread(String host, int port, String name) {
 		//Set values
 		connectStatus = 0;
@@ -265,6 +266,7 @@ public class ConnectionListenerThread implements Runnable {
 
 				for(int i = 0; i < finalResult.length; i++) {
 					System.out.println(finalResult[i]);
+					
 				}
 				
 				commandList.remove(0);
@@ -272,7 +274,7 @@ public class ConnectionListenerThread implements Runnable {
 				return;
 
 		
-			}else if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
+			}if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
@@ -293,15 +295,31 @@ public class ConnectionListenerThread implements Runnable {
 
 				return;
 			}
-			/*else if(commandList.get(0).contains("SVR GAME ")) {
+			else if(commandList.get(0).contains("SVR GAME ")) {
+				System.out.println("1");
 				String[] firstStep = commandList.get(0).split("\\{");
-				String secondStep = firstStep[1];
-				String thridStep = secondStep.replace("SVR GAME ", "");
+				String secondStep = firstStep[0];
+				String thirdStep = secondStep.replace("SVR GAME ", "");
 				switch(thirdStep) {
-					case "win":
+					case "WIN ":
+						state = 1;
+						System.out.println("win");
+						commandList.remove(0);
+						return;
+					case "LOSE ":
+						state = 1;
+						System.out.println("Lose");
+						commandList.remove(0);
+						return;
+					case "DRAW ":
+						state = 1;
+						System.out.println("Tie");
+						commandList.remove(0);
+						return;
+						
 						
 				}
-		}*/
+		}
 		}
 
 		if(commandList.size() > 0) {
