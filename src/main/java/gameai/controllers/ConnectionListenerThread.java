@@ -225,27 +225,30 @@ public class ConnectionListenerThread implements Runnable {
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
 				String fourthStep = thirdStep.replaceAll("\"", "");
-				String[] finalResult = fourthStep.split(", ");
-				String[] game = finalResult[1].split(": ");
-				String[] vijand = finalResult[2].split(": ");
-				matchList.clear();
-				matchList.add(game[1]);
-				System.out.println(game[1]);
-				matchList.add(vijand[1]);
+				String fifthStep = fourthStep.replaceAll("PLAYERTOMOVE: ", "");
+				String sixthStep = fifthStep.replaceAll("GAMETYPE: ", "");
+				String seventhStep = sixthStep.replaceAll("OPPONENT: ", "");
+				String[] finalResult = seventhStep.split(", ");
 				match= true;
-				state = 2;
-
+				matchList.clear();
 				commandList.remove(0);
+				for(int i = 0; i < finalResult.length; i++) {
+					System.out.println(finalResult[i]);
+					matchList.add(finalResult[i]);
+				}
 
+				game = finalResult[1];
+
+				state = 2;
 				return;
 			}
 			if(commandList.get(0).contains("SVR GAME YOURTURN")) {
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
-				String finalResult = thirdStep.replaceAll("\"", "");
-				String[] message = finalResult.split(": ");
 
+				String finalResult = thirdStep.replaceAll("\"", ""); 
+				String message = finalResult.replaceAll("TURNMESSAGE: ", "");
 				commandList.remove(0);
 				yourTurn= true;
 				return;
@@ -255,65 +258,36 @@ public class ConnectionListenerThread implements Runnable {
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
 				String fourthStep = thirdStep.replaceAll("\"", "");
-				String fifthStep = fourthStep.replaceAll("PLAYERTOMOVE: ", "");
-				String sixthStep = fifthStep.replaceAll("GAMETYPE: ", "");
-				String seventhStep = sixthStep.replaceAll("OPPONENT: ", "");
+				String fifthStep = fourthStep.replaceAll("PLAYER: ", "");
+				String sixthStep = fifthStep.replaceAll("DETAILS: ", "");
+				String seventhStep = sixthStep.replaceAll("MOVE: ", "");
 				String[] finalResult = seventhStep.split(", ");
-				String[] game = finalResult[1].split(": ");
-				String[] vijand = finalResult[2].split(": ");
-				matchList.clear();
-				commandList.remove(0);
-				matchList.add(game[0]);
-				matchList.add(vijand[0]);
-				match= true;
+
 				for(int i = 0; i < finalResult.length; i++) {
 					System.out.println(finalResult[i]);
 				}
-
 				commandList.remove(0);
 
 				return;
 
-			}
-			if(commandList.get(0).contains("SVR GAME YOURTURN")) {
-				String[] firstStep = commandList.get(0).split("\\{");
-				String secondStep = firstStep[1];
-				String thirdStep = secondStep.replaceAll("\\}","");
-				String finalResult = thirdStep.replaceAll("\"", "");
-				String[] message = finalResult.split(": ");
-
-				commandList.remove(0);
-				yourTurn= true;
-				return;
-			}if(commandList.get(0).contains("SVR GAME MOVE")) {
-				String[] firstStep = commandList.get(0).split("\\{");
-				String secondStep = firstStep[1];
-				String thirdStep = secondStep.replaceAll("\\}","");
-				String fourthStep = thirdStep.replaceAll("\"", "");
-				String[] finalResult = fourthStep.split(", ");
-				String[] speler = finalResult[0].split(": ");
-				String[] details = finalResult[1].split(": ");
-				String[] move = finalResult[2].split(": ");
-
-				commandList.remove(0);
-
-				return;
+		
 			}else if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\}","");
 				String fourthStep = thirdStep.replaceAll("\"", "");
-				String[] finalResult = fourthStep.split(", ");
-				String[] speler = finalResult[0].split(": ");
-				String[] nummer = finalResult[1].split(": ");
-				String[] game = finalResult[2].split(": ");
+				String fifthStep = fourthStep.replaceAll("CHALLENGER: ", "");
+				String sixthStep = fifthStep.replaceAll("CHALLENGENUMBER: ", "");
+				String seventhStep = sixthStep.replaceAll("GAMETYPE: ", "");
+				String[] finalResult = seventhStep.split(", ");
 				challengeList.clear();
+				for(int i = 0; i < finalResult.length; i++) {
+					System.out.println(finalResult[i]);
+					challengeList.add(finalResult[i]);
+				}
 
 				commandList.remove(0);
-				challengeList.add(speler[1]);
-				challengeList.add(nummer[1]);
-				challengeList.add(game[1]);
-
+				
 				challenge = true;
 
 				return;
