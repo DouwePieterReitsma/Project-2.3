@@ -24,7 +24,10 @@ public class MoveController {
 	}
 
 	public void checkEnemy() { //FINAL
-		if(connectThread.GetEnemyMove() != -1) {
+		if(connectThread.getIllegalMove()) {
+			endGame();
+		}
+		else if(connectThread.GetEnemyMove() != -1) {
 			int posX = (int)connectThread.GetEnemyMove() % 8;
 			int posY = (int)Math.floor(connectThread.GetEnemyMove() / 8);
 			System.out.println(posX + " en " + posY);
@@ -33,6 +36,10 @@ public class MoveController {
 			connectThread.ResetEnemyMove();
 			connectThread.advanceTurn();
 		}
+	}
+
+	public void endGame() {
+		player.getBoard().EndGame();
 	}
 
 	public void doMove(Position position) throws IOException {

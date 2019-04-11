@@ -138,6 +138,14 @@ public class MainWindow  {
 	    });
 	}
 
+	public void ResetView() {
+		Platform.runLater(() -> {
+			Main.GetMainStage().setTitle("Login");
+			mid = new BorderPane();
+			mid.setStyle("-fx-border-color: red");
+	    });
+	}
+
 	public OthelloView GetOthelloView() {
 		return othell;
 	}

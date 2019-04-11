@@ -45,7 +45,6 @@ public class OthelloView extends GameBoardView {
 		this.gameBoard = super.GetGameBoard();
 		this.boardList = super.GetBoardList();
 
-
 		//Set images
 		emptyImg = new Image(getClass().getResource("/img/othello/empty.png").toString());
 		whiteImg = new Image(getClass().getResource("/img/othello/white.png").toString());
