@@ -192,11 +192,13 @@ public class MainThread implements Runnable {
 			}
 			if (connectThread.getChallenged()) {
 			ArrayList<String> info = connectThread.GetChallengeList();
-			Main.runPopup(info.get(0),info.get(1),info.get(2));
+			Main.runPopup(info.get(0),info.get(1),info.get(2), connectThread);
 			connectThread.setChallFalse();
 
 			//Check if challenged
+			} if (connectThread.getMatchStatus()) {
 
+				connectThread.setMatchFalse();
 			}
 		}
 
@@ -239,6 +241,10 @@ public class MainThread implements Runnable {
 					break;
 			}
 		}
+	}
+
+	public void writeAccept(String tekst) throws IOException {
+		connectThread.sendCommand(tekst);
 	}
 
 
