@@ -31,8 +31,6 @@ public class Popup {
 
 		Label label1= new Label(uitdager +" daagt je uit om " + spel + " te spelen");
 
-
-
 		Button Accept= new Button("Accepteren ");
 		Button Decline= new Button("Weigeren");
 
@@ -45,7 +43,6 @@ public class Popup {
 			}
 		});
 		Decline.setOnAction(e -> popupwindow.close());
-
 
 		GridPane layout = new GridPane();
 		layout.add(label1, 1, 1);

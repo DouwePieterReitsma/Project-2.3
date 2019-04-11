@@ -10,20 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OthelloBoard extends Board {
-	private OthelloView othelloView;
 
-    public OthelloBoard(OthelloColor startingColor, OthelloView othelloView) {
+    public OthelloBoard(OthelloColor startingColor) {
         super(8, 8);
-
-        this.othelloView = othelloView;
 
 
         setCurrentTurnColor(startingColor);
         //this.currentTurnColor = startingColor;
     }
 
-    public OthelloBoard(Position[][] positions, OthelloColor startingColor, OthelloView othelloView) {
-        this(startingColor, othelloView);
+    public OthelloBoard(Position[][] positions, OthelloColor startingColor) {
+        this(startingColor);
 
         setPositions(positions);
     }
@@ -38,10 +35,6 @@ public class OthelloBoard extends Board {
                 positions[i][j] = new Position(board.getPositions()[i][j]);
             }
         }
-    }
-
-    public OthelloView GetOthelloView() {
-    	return othelloView;
     }
 
     private OthelloColor currentTurnColor;

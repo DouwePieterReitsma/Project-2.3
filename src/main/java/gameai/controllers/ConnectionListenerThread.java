@@ -155,7 +155,7 @@ public class ConnectionListenerThread implements Runnable {
 		return challenge;
 	}
 	public String getGame() {
-		return game;
+		return matchList.get(0);
 	}
 	public void setChallFalse() {
 		challenge = false;
@@ -229,10 +229,13 @@ public class ConnectionListenerThread implements Runnable {
 				String[] game = finalResult[1].split(": ");
 				String[] vijand = finalResult[2].split(": ");
 				matchList.clear();
-				commandList.remove(0);
-				matchList.add(game[0]);
-				matchList.add(vijand[0]);
+				matchList.add(game[1]);
+				System.out.println(game[1]);
+				matchList.add(vijand[1]);
 				match= true;
+				state = 2;
+
+				commandList.remove(0);
 
 				return;
 			}
@@ -267,7 +270,6 @@ public class ConnectionListenerThread implements Runnable {
 					System.out.println(finalResult[i]);
 				}
 
-				state = 2;
 				commandList.remove(0);
 
 				return;

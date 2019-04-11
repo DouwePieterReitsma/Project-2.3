@@ -17,12 +17,12 @@ public abstract class OthelloPlayer {
         if (board.getCurrentTurnColor() == playerColor) {
             try {
                 board.setPieceAtPosition(new OthelloPiece(playerColor), position);
-                if(playerColor == playerColor.WHITE) {
+                /*if(playerColor == playerColor.WHITE) {
                 	Platform.runLater(() -> board.GetOthelloView().SetMove(position.getX(), position.getY(), true));
                 }
                 else {
                 	Platform.runLater(() -> board.GetOthelloView().SetMove(position.getX(), position.getY(), false));
-                }
+                }*/
 
             } catch (IllegalMoveException e) {
                 e.printStackTrace();
