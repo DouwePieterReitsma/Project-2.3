@@ -266,6 +266,7 @@ public class ConnectionListenerThread implements Runnable {
 				for(int i = 0; i < finalResult.length; i++) {
 					System.out.println(finalResult[i]);
 				}
+				
 				commandList.remove(0);
 
 				return;
@@ -292,6 +293,15 @@ public class ConnectionListenerThread implements Runnable {
 
 				return;
 			}
+			/*else if(commandList.get(0).contains("SVR GAME ")) {
+				String[] firstStep = commandList.get(0).split("\\{");
+				String secondStep = firstStep[1];
+				String thridStep = secondStep.replace("SVR GAME ", "");
+				switch(thirdStep) {
+					case "win":
+						
+				}
+		}*/
 		}
 
 		if(commandList.size() > 0) {
