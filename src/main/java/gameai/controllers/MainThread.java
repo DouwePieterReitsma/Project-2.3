@@ -206,12 +206,13 @@ public class MainThread implements Runnable {
 		}
 
 	}
-
-	//Function to handle game menus
-
 	public void writeAccept(String tekst) throws IOException {
 		connectThread.sendCommand(tekst);
 	}
+
+	//Function to handle game menus
+
+	
 
 	private void GameHandler() throws InterruptedException {
 		//Startup game
