@@ -36,6 +36,7 @@ public class MainWindow  {
 	private String username;
 
 	private boolean loadingPlayers;
+	private boolean inGame;
 
 	public MainWindow(ConnectionListenerThread connectThread, String username) throws IOException
 	{
@@ -43,6 +44,7 @@ public class MainWindow  {
 		this.username = username;
 
 		loadingPlayers = true;
+		inGame = false;
 
 		//knopjes waar je de verschillende modes kunt kiezen.
 		chal = new Button("Uitdagen");
@@ -175,6 +177,25 @@ public class MainWindow  {
 			Platform.runLater(() ->
 				challview.createUI(connectThread, mid , game , sub , player, username, connectThread.GetPlayerList())
 			);
+		}
+	}
+
+	public void CheckInGame() {
+		if(connectThread.getState() == 2 && !inGame) {
+			inGame = true;
+
+			chal.setDisable(true);
+			sub.setDisable(true);
+			player.setDisable(true);
+			spel.setDisable(true);
+		}
+		else if (inGame){
+			inGame = false;
+
+			chal.setDisable(false);
+			sub.setDisable(false);
+			player.setDisable(false);
+			spel.setDisable(false);
 		}
 	}
 

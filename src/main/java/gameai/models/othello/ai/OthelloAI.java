@@ -33,8 +33,6 @@ public abstract class OthelloAI extends OthelloPlayer {
             	move = this.getBoard().getLegalMoves(this.playerColor).get(0);
             	doMove(move);
             }
-
-            //System.out.println(board.toString());
         }
     }
 

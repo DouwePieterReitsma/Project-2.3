@@ -119,6 +119,7 @@ public class MainThread implements Runnable {
 				}
 				try {
 					MainMenuHandler();
+					if(mainWindow != null) mainWindow.CheckInGame();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -130,6 +131,7 @@ public class MainThread implements Runnable {
 			else if(state == 2) {
 				try {
 					GameHandler();
+					mainWindow.CheckInGame();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
