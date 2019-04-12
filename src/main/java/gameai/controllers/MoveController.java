@@ -27,6 +27,9 @@ public class MoveController {
 		if(connectThread.getIllegalMove() || connectThread.GetState() != 2) {
 			endGame();
 		}
+		else if(connectThread.getState() == 1){
+			endGame();
+		}
 		else if(connectThread.GetEnemyMove() != -1) {
 			int posX = (int)connectThread.GetEnemyMove() % 8;
 			int posY = (int)Math.floor(connectThread.GetEnemyMove() / 8);

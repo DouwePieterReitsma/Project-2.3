@@ -29,50 +29,50 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainThread implements Runnable {
-	private ConnectionListenerThread connectThread;
+    private ConnectionListenerThread connectThread;
 
-	private ExecutorService threadPool;
+    private ExecutorService threadPool;
 
-	private MoveController moveController;
+    private MoveController moveController;
 
-	private MainWindow mainWindow;
+    private MainWindow mainWindow;
 
-	private Timeline verbindAnim;
+    private Timeline verbindAnim;
 
-	private Button loginButton;
+    private Button loginButton;
 
-	private String host;
-	private String username;
+    private String host;
+    private String username;
 
-	private int port;
-	private int timer;
-	private int state;
+    private int port;
+    private int timer;
+    private int state;
 
-	private Label errorLabel;
+    private Label errorLabel;
 
-	private boolean hasConnected;
-	private boolean isConnecting;
-	private boolean inGame;
+    private boolean hasConnected;
+    private boolean isConnecting;
+    private boolean inGame;
 
-	public MainThread(ExecutorService threadPool, Label errorLabel, Button loginButton, String host, int port, String name) {
-		//Set value
-		this.threadPool = threadPool;
-		this.errorLabel = errorLabel;
-		this.loginButton = loginButton;
-		this.host = host;
-		this.port = port;
-		this.username = name;
-		hasConnected = false;
-		isConnecting = false;
-		inGame = false;
+    public MainThread(ExecutorService threadPool, Label errorLabel, Button loginButton, String host, int port, String name) {
+        //Set value
+        this.threadPool = threadPool;
+        this.errorLabel = errorLabel;
+        this.loginButton = loginButton;
+        this.host = host;
+        this.port = port;
+        this.username = name;
+        hasConnected = false;
+        isConnecting = false;
+        inGame = false;
 
-		connectThread = null;
+        connectThread = null;
 
-		state = 0; //0 is Login, 1 = main, 2 = game
+        state = 0; //0 is Login, 1 = main, 2 = game
 
-		//Maak animatie
+        //Maak animatie
         verbindAnim = new Timeline(
-                new KeyFrame(Duration.ZERO,         event -> errorLabel.setText("Verbinden.")),
+                new KeyFrame(Duration.ZERO, event -> errorLabel.setText("Verbinden.")),
                 new KeyFrame(Duration.seconds(1), event -> errorLabel.setText("Verbinden..")),
                 new KeyFrame(Duration.seconds(2), event -> errorLabel.setText("Verbinden...")),
                 new KeyFrame(Duration.seconds(3), event -> errorLabel.setText("Verbinden..."))

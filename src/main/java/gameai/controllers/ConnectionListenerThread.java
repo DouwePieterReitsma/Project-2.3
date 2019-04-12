@@ -41,6 +41,10 @@ public class ConnectionListenerThread implements Runnable {
 
 	private PrintWriter outWriter;
 
+	public int getState() {
+		return state;
+	}
+
 	private int state;
 	private int timer;
 	private boolean challenge;
