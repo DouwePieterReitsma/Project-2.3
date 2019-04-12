@@ -6,7 +6,7 @@ import javafx.application.Platform;
 
 public abstract class OthelloPlayer {
     protected OthelloBoard board;
-    protected OthelloColor playerColor;
+    public OthelloColor playerColor;
 
     public OthelloPlayer(OthelloBoard board, OthelloColor playerColor) {
         this.board = board;

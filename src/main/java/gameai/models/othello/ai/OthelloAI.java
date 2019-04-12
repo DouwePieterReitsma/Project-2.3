@@ -1,5 +1,8 @@
 package gameai.models.othello.ai;
 
+import java.util.List;
+import java.util.Random;
+
 import gameai.controllers.ConnectionListenerThread;
 import gameai.models.IllegalMoveException;
 import gameai.models.Piece;
@@ -26,13 +29,19 @@ public abstract class OthelloAI extends OthelloPlayer {
 
             if (move != null) {
                 doMove(move);
-            } else {
-                // no move available
-                board.advanceTurn();
+            } else if(this.getBoard().getLegalMoves(this.playerColor).size() > 0) {
+            	move = this.getBoard().getLegalMoves(this.playerColor).get(0);
+            	doMove(move);
             }
 
             //System.out.println(board.toString());
         }
+    }
+
+    private Position getRandomMove(List<Position> legalMoves) {
+        if (legalMoves.isEmpty()) return null;
+
+        return legalMoves.get(new Random().nextInt(legalMoves.size()));
     }
 
     public Position GetMove() {

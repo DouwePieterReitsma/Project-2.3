@@ -75,7 +75,7 @@ public class AlphaBetaOthelloAI extends OthelloAI {
     private Position alphabetaDecision(int depth) {
         List<Position> legalMoves = this.board.getLegalMoves(playerColor);
 
-        int bestScore = 0;
+        int bestScore = Integer.MIN_VALUE;
         Position result = null;
 
         for (Position move : legalMoves) {
@@ -85,7 +85,7 @@ public class AlphaBetaOthelloAI extends OthelloAI {
 
             int score = alphabeta(temp, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
 
-            if (score > bestScore) {
+            if (score >= bestScore) {
                 bestScore = score;
                 result = move;
             }

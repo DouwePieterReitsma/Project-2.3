@@ -239,12 +239,12 @@ public class MainThread implements Runnable {
 
 					if(connectThread.getYourTurn()) {
 						System.out.println("yourturn");
-						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 5);
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 3);
 						opponent = new OthelloServerPlayer(board, OthelloColor.WHITE, connectThread);
 					}
 					else {
 						System.out.println("notyourturn");
-						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 5);
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 3);
 						opponent = new OthelloServerPlayer(board, OthelloColor.BLACK, connectThread);
 					}
 					//OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
@@ -252,6 +252,12 @@ public class MainThread implements Runnable {
 					moveController = new MoveController(connectThread, ai, opponent, "Reversi");
 
 					while(!board.isGameOver()) {
+						if(connectThread.getSkipTurn()) {
+							connectThread.resetSkipTurn();
+							connectThread.advanceTurn();
+							board.advanceTurn();
+						}
+
 						if(connectThread.getYourTurn()) {
 							try {
 								moveController.doAIMove();

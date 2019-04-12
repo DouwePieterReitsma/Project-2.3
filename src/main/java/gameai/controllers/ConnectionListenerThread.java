@@ -35,6 +35,7 @@ public class ConnectionListenerThread implements Runnable {
 	private boolean yourTurn;
 	private boolean firstTurn;
 	private boolean illegalMove;
+    private boolean skipTurn;
 
 	private BufferedReader fromServer;
 	private BufferedOutputStream toServer;
@@ -48,6 +49,7 @@ public class ConnectionListenerThread implements Runnable {
 	private int state;
 	private int timer;
 	private boolean challenge;
+	private boolean enemyMoved;
 	private int enemyMove;
 
 	private String game;
@@ -69,6 +71,8 @@ public class ConnectionListenerThread implements Runnable {
 		challenge = false;
 		yourTurn = false;
 		illegalMove = false;
+		enemyMoved = false;
+		skipTurn = false;
 		firstTurn = true;
 		enemyMove = -1;
 
@@ -179,6 +183,12 @@ public class ConnectionListenerThread implements Runnable {
 	public void ResetEnemyMove() {
 		enemyMove = -1;
 	}
+	public void resetSkipTurn() {
+		skipTurn = false;
+	}
+	public boolean getSkipTurn() {
+		return skipTurn;
+	}
 	public void advanceTurn() {
 		if(yourTurn) {
 			yourTurn = false;
@@ -211,6 +221,7 @@ public class ConnectionListenerThread implements Runnable {
 			toServer.write(moveCommand.getBytes());
 			toServer.flush();
 			advanceTurn();
+			enemyMoved = false;
 		}
 		else {
 			System.out.println("Its not your turn!");
@@ -221,6 +232,8 @@ public class ConnectionListenerThread implements Runnable {
 		challenge = false;
 		yourTurn = false;
 		illegalMove = false;
+		enemyMoved = false;
+		skipTurn = false;
 		firstTurn = true;
 		enemyMove = -1;
 		state = 1;
@@ -287,21 +300,10 @@ public class ConnectionListenerThread implements Runnable {
 
 				if(firstTurn && user[1].equals(username)) {
 					yourTurn = true;
-					firstTurn = false;
 				}
 
 				commandList.remove(0);
 
-				return;
-			}
-			if(commandList.get(0).contains("SVR GAME YOURTURN")) {
-				String[] firstStep = commandList.get(0).split("\\{");
-				String secondStep = firstStep[1];
-				String thirdStep = secondStep.replaceAll("\\}","");
-				String finalResult = thirdStep.replaceAll("\"", "");
-				String[] message = finalResult.split(": ");
-
-				commandList.remove(0);
 				return;
 			}
 			if(commandList.get(0).contains("SVR GAME MOVE")) {
@@ -324,11 +326,15 @@ public class ConnectionListenerThread implements Runnable {
 					}
 				}
 
+				firstTurn = false;
+
 				//DoMove
 				if(!finalResult[0].equals(username)) {
 					System.out.println(finalResult[1]);
 					enemyMove = Integer.parseInt(finalResult[1]);
+					enemyMoved = true;
 				}
+
 				commandList.remove(0);
 
 				return;
@@ -340,29 +346,15 @@ public class ConnectionListenerThread implements Runnable {
 
 				String finalResult = thirdStep.replaceAll("\"", "");
 				String message = finalResult.replaceAll("TURNMESSAGE: ", "");
-				commandList.remove(0);
-				return;
-			}
-			if(commandList.get(0).contains("SVR GAME MOVE")) {
-				String[] firstStep = commandList.get(0).split("\\{");
-				String secondStep = firstStep[1];
-				String thirdStep = secondStep.replaceAll("\\}","");
-				String fourthStep = thirdStep.replaceAll("\"", "");
-				String fifthStep = fourthStep.replaceAll("PLAYER: ", "");
-				String sixthStep = fifthStep.replaceAll("DETAILS: ", "");
-				String seventhStep = sixthStep.replaceAll("MOVE: ", "");
-				String[] finalResult = seventhStep.split(", ");
 
-				for(int i = 0; i < finalResult.length; i++) {
-					System.out.println(finalResult[i]);
-
+				System.out.println("Checking turns... first turn: " + firstTurn + " and enemymoved: " + enemyMoved);
+				if(!firstTurn && !enemyMoved) {
+					System.out.println("No turns possible! new turn!");
+					skipTurn = true;
 				}
 
 				commandList.remove(0);
-
 				return;
-
-
 			}if(commandList.get(0).contains("SVR GAME CHALLENGE")) {
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[1];
