@@ -432,6 +432,7 @@ public class ConnectionListenerThread implements Runnable {
 					return;
 				case "ERR Duplicate name exists":
 					connectStatus = 2;
+					commandList.remove(0);
 					return;
 
 				default:
