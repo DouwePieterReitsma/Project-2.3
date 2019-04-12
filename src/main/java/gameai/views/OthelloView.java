@@ -122,14 +122,9 @@ public class OthelloView extends GameBoardView {
 	}
 
 	public void UpdatePositions(OthelloBoard oBoard) {
-		boardList.clear();
 		for(int y = 0; y < yRows; y++) {
-			boardList.add(new ArrayList<Button>());
 			for(int x = 0; x < xRows; x++) {
-				Button column = new Button("");
-				column.setStyle("-fx-background-color: transparent; -fx-opacity: 1.0;");
-				column.setAlignment(Pos.CENTER);
-				column.setTextAlignment(TextAlignment.CENTER);
+				Button column = boardList.get(y).get(x);
 
 				if(!oBoard.getPositions()[y][x].isAvailable()) {
 					if(((OthelloPiece)(oBoard.getPositions()[y][x]).getPiece()).getColor() == OthelloColor.WHITE) { //White start
@@ -147,23 +142,10 @@ public class OthelloView extends GameBoardView {
 					ImageView emptyView = new ImageView(emptyImg);
 					column.setGraphic(emptyView);
 				}
-				
-
-				gameBoard.add(column, x, y);
-				gameBoard.setHgrow(column, Priority.ALWAYS);
-				gameBoard.setVgrow(column, Priority.ALWAYS);
-				gameBoard.setHalignment(column, HPos.CENTER);
-				gameBoard.setValignment(column, VPos.CENTER);
-				boardList.get(y).add(column);
-				
-				
-				//Set click event
-				column.setOnAction((event) -> {
-					SetMove(gameBoard.getColumnIndex(column), gameBoard.getRowIndex(column), true);
-		        });
 			}
 		}
 	}
+
 	public void updateTurn(boolean yourTurn) {
 		if(yourTurn) {
 			turnLabel.setText("Aan de beurt: " + username );
