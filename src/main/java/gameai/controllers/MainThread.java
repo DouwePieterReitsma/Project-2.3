@@ -216,7 +216,7 @@ public class MainThread implements Runnable {
 			switch(connectThread.getGame())
 			{
 				case "Reversi":
-					mainWindow.SetOthelloView();
+					mainWindow.SetOthelloView(connectThread.GetName(),connectThread.GetVS(), connectThread.GetFirstTurn());
 
 					Thread.sleep(1000);
 
@@ -271,7 +271,7 @@ public class MainThread implements Runnable {
 							//Check enemy movement
 							moveController.checkEnemy();
 						}
-						mainWindow.UpdateOthelloBoard(board);
+						mainWindow.UpdateOthelloBoard(board, connectThread.getYourTurn());
 					}
 
 					connectThread.endGame();

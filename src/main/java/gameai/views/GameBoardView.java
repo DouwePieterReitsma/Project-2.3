@@ -54,19 +54,19 @@ public abstract class GameBoardView{
         titleLabel.setFont(new Font("Arial", 30));
 
         //Create typelabel
-        typeLabel = new Label("Computer vs. AI");
+        typeLabel = new Label("");
 
         //Create turnLabel
-        turnLabel = new Label("Aan de beurt: Jij");
+        turnLabel = new Label("");
         turnLabel.setFont(new Font("Arial", 25));
         turnLabel.setStyle("-fx-font-weight: bold");
         turnLabel.setPadding(new Insets(5, 15, 5, 5));
 
         //Create client & enemylabels
-        clientLabel = new Label("Jij: X");
+        clientLabel = new Label("");
         clientLabel.setFont(new Font("Arial", 20));
         clientLabel.setStyle("-fx-font-weight: bold");
-        enemyLabel = new Label("Tegenstander: O");
+        enemyLabel = new Label("");
         enemyLabel.setFont(new Font("Arial", 20));
         enemyLabel.setStyle("-fx-font-weight: bold");
 

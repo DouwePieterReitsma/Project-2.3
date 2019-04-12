@@ -99,7 +99,16 @@ public class ConnectionListenerThread implements Runnable {
 	public int GetState() {
 		return state;
 	}
-
+	public String GetName() {
+		return username;
+	}
+	public String GetVS() {
+		String vs = matchList.get(1);
+		return vs;
+	}
+	public boolean GetFirstTurn() {
+		return firstTurn;
+	}
 	public void run() {
 		connectStatus = 0;
 
@@ -293,6 +302,7 @@ public class ConnectionListenerThread implements Runnable {
 				matchList.clear();
 				matchList.add(game[1]);
 				matchList.add(vijand[1]);
+				matchList.add(user[1]);
 				illegalMove = false;
 				yourTurn = false;
 				firstTurn = true;
@@ -377,21 +387,20 @@ public class ConnectionListenerThread implements Runnable {
 				return;
 			}
 			else if(commandList.get(0).contains("SVR GAME ")) {
-				System.out.println("1");
 				String[] firstStep = commandList.get(0).split("\\{");
 				String secondStep = firstStep[0];
 				String thirdStep = secondStep.replace("SVR GAME ", "");
 				switch(thirdStep) {
 					case "WIN ":
-						System.out.println("win");
+						//System.out.println("win");
 						commandList.remove(0);
 						return;
 					case "LOSE ":
-						System.out.println("Lose");
+						//System.out.println("Lose");
 						commandList.remove(0);
 						return;
 					case "DRAW ":
-						System.out.println("Tie");
+						//System.out.println("Tie");
 						commandList.remove(0);
 						return;
 
