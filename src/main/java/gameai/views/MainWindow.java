@@ -125,10 +125,10 @@ public class MainWindow  {
 		return loadingPlayers;
 	}
 
-	public void SetOthelloView(String username, String VS, boolean firstTurn) {
+	public void SetOthelloView(String username, String VS, boolean veryFirstTurn) {
 		Platform.runLater(() -> {
 			othell = new OthelloView();
-					othell.createUI(mid,username, VS, firstTurn);
+					othell.createUI(mid,username, VS, veryFirstTurn);
 					Main.GetMainStage().setTitle("Reversi");
 	    });
 	}
@@ -140,17 +140,18 @@ public class MainWindow  {
 	    });
 	}
 
-	public void SetTicTacToeView() {
+	public void SetTicTacToeView(String username, String VS, boolean veryFirstTurn) {
 		Platform.runLater(() -> {
 			tictac = new TicTacToeView();
-					tictac.createUI(mid);
+					tictac.createUI(mid,username, VS, veryFirstTurn);
 					Main.GetMainStage().setTitle("TicTacToe");
 	    });
 	}
 
-	public void UpdateTicTacToeBoard(TicTacToeBoard tBoard) {
+	public void UpdateTicTacToeBoard(TicTacToeBoard tBoard, boolean yourTurn) {
 		Platform.runLater(() -> {
 			tictac.UpdatePositions(tBoard);
+			tictac.updateTurn(yourTurn);
 	    });
 	}
 

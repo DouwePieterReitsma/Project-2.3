@@ -31,8 +31,7 @@ public class OthelloView extends GameBoardView {
 	private Label enemyLabel;
 	
 	
-	private boolean yourTurn;
-	private boolean firstTurn;
+	private boolean veryFirstTurn;
 	private String username;
 	private String VS;
 	
@@ -51,7 +50,7 @@ public class OthelloView extends GameBoardView {
 
 	private List<List<Button>> boardList;
 
-	public void createUI(BorderPane parent, String username, String VS, boolean firstTurn) {
+	public void createUI(BorderPane parent, String username, String VS, boolean veryFirstTurn) {
 		this.gameScene = super.GetGameScene();
 		this.titleLabel = super.GetTitleLabel();
 		this.gameBoard = super.GetGameBoard();
@@ -61,7 +60,7 @@ public class OthelloView extends GameBoardView {
 		this.clientLabel =super.GetClientLabel();
 		this.enemyLabel = super.GetEnemyLabel();
 		this.username = username;
-		this.firstTurn = firstTurn;
+		this.veryFirstTurn = veryFirstTurn;
 		this.VS = VS;
 		//Set images
 		emptyImg = new Image(getClass().getResource("/img/othello/empty.png").toString());
@@ -174,12 +173,12 @@ public class OthelloView extends GameBoardView {
 		
 	}
 	public void setColor() {
-		if (firstTurn) {
-			enemyLabel.setText(VS+ " : Zwart ");
-			clientLabel.setText(username + " : Wit ");
+		if (veryFirstTurn) {
+			enemyLabel.setText(username+ " : Zwart ");
+			clientLabel.setText(VS + " : Wit ");
 		}else {
-			enemyLabel.setText(VS+ " : Wit ");
-			clientLabel.setText(username + " : Zwart ");
+			enemyLabel.setText(username + " : Wit ");
+			clientLabel.setText(VS + " : Zwart ");
 		}
 	}
 

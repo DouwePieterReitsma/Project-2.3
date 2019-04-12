@@ -216,7 +216,7 @@ public class MainThread implements Runnable {
 			switch(connectThread.getGame())
 			{
 				case "Reversi":
-					mainWindow.SetOthelloView(connectThread.GetName(),connectThread.GetVS(), connectThread.GetFirstTurn());
+					mainWindow.SetOthelloView(connectThread.GetName(),connectThread.GetVS(), connectThread.GetVeryFirstTurn());
 
 					Thread.sleep(1000);
 
@@ -279,7 +279,7 @@ public class MainThread implements Runnable {
 					inGame = false;
 					break;
 				case "Tic-tac-toe":
-					mainWindow.SetTicTacToeView();
+					mainWindow.SetTicTacToeView(connectThread.GetName(),connectThread.GetVS(), connectThread.GetVeryFirstTurn());
 
 					Thread.sleep(1000);
 
@@ -317,7 +317,7 @@ public class MainThread implements Runnable {
 							//Check enemy movement
 							moveController.checkEnemy();
 						}
-						mainWindow.UpdateTicTacToeBoard(tBoard);
+						mainWindow.UpdateTicTacToeBoard(tBoard,connectThread.getYourTurn());
 					}
 
 					connectThread.endGame();
