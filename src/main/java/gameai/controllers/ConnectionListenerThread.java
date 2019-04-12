@@ -199,7 +199,14 @@ public class ConnectionListenerThread implements Runnable {
 	public void doMove(Position position) throws IOException {
 		if(yourTurn) {
 			System.out.println(position);
-			int finalPositie = position.getY() * 8 + position.getX();
+			int finalPositie = 0;
+			//Check game
+			if(getGame().equals("Reversi")) {
+				finalPositie = position.getY() * 8 + position.getX();
+			}
+			else if (getGame().equals("Tic-tac-toe")){
+				finalPositie = position.getY() * 3 + position.getX();
+			}
 			String moveCommand = "move " + Integer.toString(finalPositie) + "\n";
 			toServer.write(moveCommand.getBytes());
 			toServer.flush();

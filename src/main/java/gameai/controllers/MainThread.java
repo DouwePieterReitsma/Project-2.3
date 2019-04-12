@@ -6,6 +6,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import gameai.Main;
+import gameai.models.Board;
+import gameai.models.MiniMaxTicTacToeAI;
+import gameai.models.TicTacToeBoard;
+import gameai.models.TicTacToeServerPlayer;
 import gameai.models.othello.OthelloBoard;
 import gameai.models.othello.OthelloColor;
 import gameai.models.othello.OthelloPiece;
@@ -214,6 +218,8 @@ public class MainThread implements Runnable {
 				case "Reversi":
 					mainWindow.SetOthelloView();
 
+					Thread.sleep(1000);
+
 					OthelloBoard board = null;
 					OthelloPiece wp = null;
 					OthelloPiece bp = null;
@@ -243,7 +249,7 @@ public class MainThread implements Runnable {
 					}
 					//OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
 
-					moveController = new MoveController(connectThread, ai, opponent);
+					moveController = new MoveController(connectThread, ai, opponent, "Reversi");
 
 					while(!board.isGameOver()) {
 						if(connectThread.getYourTurn()) {
@@ -267,7 +273,50 @@ public class MainThread implements Runnable {
 					inGame = false;
 					break;
 				case "Tic-tac-toe":
+					mainWindow.SetTicTacToeView();
 
+					Thread.sleep(1000);
+
+					MiniMaxTicTacToeAI tAI = null;
+					TicTacToeServerPlayer tOpponent = null;
+					TicTacToeBoard tBoard = null;
+					moveController = null;
+
+					if(connectThread.getYourTurn()) {
+						System.out.println("yourturn");
+						tAI = new MiniMaxTicTacToeAI(true);
+						tOpponent = new TicTacToeServerPlayer(false);
+					}
+					else {
+						System.out.println("notyourturn");
+						tAI = new MiniMaxTicTacToeAI(false);
+						tOpponent = new TicTacToeServerPlayer(true);
+					}
+
+					tBoard = new TicTacToeBoard(tAI, tOpponent);
+
+					moveController = new MoveController(connectThread, tAI, tOpponent, "TicTacToe");
+
+					while(!tBoard.GetGameOver()) {
+						if(connectThread.getYourTurn()) {
+							try {
+								moveController.doAIMove();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						else {
+							Thread.sleep(100);
+							//Check enemy movement
+							moveController.checkEnemy();
+						}
+						mainWindow.UpdateTicTacToeBoard(tBoard);
+					}
+
+					connectThread.endGame();
+					Thread.sleep(1000);
+					inGame = false;
 					break;
 			}
 		}

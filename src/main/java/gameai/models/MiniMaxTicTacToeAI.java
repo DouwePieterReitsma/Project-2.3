@@ -1,35 +1,44 @@
 package gameai.models;
 
 import java.util.ArrayList;
+
+import gameai.models.othello.OthelloBoard;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class MiniMaxTicTacToeAI implements TicTacToeAI {
 	public TicTacToeBoard board;
-	public TicTacToeFigure player = TicTacToeFigure.X;
-	public TicTacToeFigure opponent = TicTacToeFigure.O;
+	public TicTacToeFigure player;
+	public TicTacToeFigure opponent;
+	private Position bestMove;
+
+	public MiniMaxTicTacToeAI(boolean firstTurn) {
+		if(firstTurn) {
+			opponent = TicTacToeFigure.O;
+			player = TicTacToeFigure.X;
+		}
+		else {
+			opponent = TicTacToeFigure.X;
+			player = TicTacToeFigure.O;
+		}
+	}
+
 	@Override
 	public void makeMove() {
-		System.out.println(board + "\n");
 		ArrayList<Position> available = board.getLegalMoves();
 
 		if(this.board.currentTurn == player) {
-			Position bestMove = calculateMove(player);
-			System.out.println(bestMove);
+			bestMove = calculateMove(player);
+
 			for(Position move: available) {
 				if(move.equals(bestMove)) {
 					board.setTicTacToePieceAtPosition(new TicTacToePiece(player), move);
 					board.currentTurn = opponent;
+					System.out.println("new position = " + move);
 				}
-			}
-
-		}else if(this.board.currentTurn == opponent) {
-			Position bestMove = calculateMove(opponent);
-			System.out.println(bestMove);
-			for(Position move: available) {
-				if(move.equals(bestMove)) {
-					board.setTicTacToePieceAtPosition(new TicTacToePiece(opponent), move);
-					board.currentTurn = player;
+				else {
+					board.currentTurn = opponent;
 				}
 			}
 		}
@@ -155,5 +164,13 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
 
 	public void setOpponent(TicTacToeFigure opponent) {
 		this.opponent = opponent;
+	}
+
+	public TicTacToeBoard getBoard() {
+		// TODO Auto-generated method stub
+		return this.board;
+	}
+	public Position getBestMove() {
+		return bestMove;
 	}
 }

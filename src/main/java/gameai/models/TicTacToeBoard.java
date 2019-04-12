@@ -5,16 +5,20 @@ import java.util.ArrayList;
 
 public class TicTacToeBoard extends Board {
 	public TicTacToeAI ai;
+	private TicTacToeServerPlayer opponent;
 	protected ArrayList<Position> array = new ArrayList<Position>();
 	public TicTacToeFigure currentTurn = TicTacToeFigure.X;
+	private boolean isGameOver;
 
-	public TicTacToeBoard(TicTacToeAI ai) {
+	public TicTacToeBoard(TicTacToeAI ai, TicTacToeServerPlayer opponent) {
 		super(3, 3);
 		this.ai = ai;
+		this.opponent = opponent;
+		isGameOver = false;
 		ai.setBoard(this);
-		play();
+		opponent.setBoard(this);
 	}
-	
+
 	public TicTacToeBoard(TicTacToeBoard board) {
 		super(3,3);
 		Position[][] tempPositions = board.getPositions();
@@ -28,23 +32,27 @@ public class TicTacToeBoard extends Board {
 		}
 	}
 
+	public void EndGame() {
+		isGameOver = true;
+	}
+
+	public boolean GetGameOver() {
+		return isGameOver;
+	}
+
 	public void play() {
 		// Carries out the game locally
-		while (true) {
+
 			TicTacToeFigure check = checkWinningConditions();
 			if (check != null) {
 				System.out.println("The winner is: " + check);
-				break;
+				isGameOver = true;
 			}
 			array = getLegalMoves();
 			if (array.size() == 0) {
 				System.out.println("It's a draw");
-				break;
+				isGameOver = true;
 			}
-			ai.makeMove();
-			
-
-		}
 		System.out.println(this);
 	}
 

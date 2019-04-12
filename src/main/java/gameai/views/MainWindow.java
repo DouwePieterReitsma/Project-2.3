@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import gameai.controllers.ConnectionListenerThread;
+import gameai.models.TicTacToeBoard;
 import gameai.models.othello.OthelloBoard;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -138,9 +139,23 @@ public class MainWindow  {
 	    });
 	}
 
+	public void SetTicTacToeView() {
+		Platform.runLater(() -> {
+			tictac = new TicTacToeView();
+					tictac.createUI(mid);
+					Main.GetMainStage().setTitle("TicTacToe");
+	    });
+	}
+
+	public void UpdateTicTacToeBoard(TicTacToeBoard tBoard) {
+		Platform.runLater(() -> {
+			tictac.UpdatePositions(tBoard);
+	    });
+	}
+
 	public void ResetView() {
 		Platform.runLater(() -> {
-			Main.GetMainStage().setTitle("Login");
+			Main.GetMainStage().setTitle("Wachtkamer");
 			mid = new BorderPane();
 			mid.setStyle("-fx-border-color: red");
 	    });
@@ -188,9 +203,9 @@ public class MainWindow  {
 			//Main.GetMainStage().setTitle("Othello");
 		}
 		else {
-			tictac = new TicTacToeView();
-			tictac.createUI(mid);
-			Main.GetMainStage().setTitle("Tic-Tac-Toe");
+			//tictac = new TicTacToeView();
+			//tictac.createUI(mid);
+			//Main.GetMainStage().setTitle("Tic-Tac-Toe");
 		}
 	}
 }
