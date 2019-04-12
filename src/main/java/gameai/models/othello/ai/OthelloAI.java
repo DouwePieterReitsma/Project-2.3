@@ -1,5 +1,6 @@
 package gameai.models.othello.ai;
 
+import gameai.controllers.ConnectionListenerThread;
 import gameai.models.IllegalMoveException;
 import gameai.models.Piece;
 import gameai.models.Position;

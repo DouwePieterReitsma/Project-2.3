@@ -110,7 +110,9 @@ public class MainThread implements Runnable {
 			}
 			else if(state == 1) {
 				timer = 1000;
-
+				if(inGame) {
+					inGame = false;
+				}
 				try {
 					MainMenuHandler();
 				} catch (IOException e) {
@@ -203,7 +205,6 @@ public class MainThread implements Runnable {
 	}
 
 	//Function to handle game menus
-
 	private void GameHandler() throws InterruptedException {
 		//Startup game
 		if(!inGame) {
@@ -212,8 +213,6 @@ public class MainThread implements Runnable {
 			{
 				case "Reversi":
 					mainWindow.SetOthelloView();
-
-					Thread.sleep(1000);
 
 					OthelloBoard board = null;
 					OthelloPiece wp = null;
@@ -262,6 +261,9 @@ public class MainThread implements Runnable {
 						}
 						mainWindow.UpdateOthelloBoard(board);
 					}
+
+					connectThread.endGame();
+					Thread.sleep(1000);
 					inGame = false;
 					break;
 				case "Tic-tac-toe":
@@ -274,7 +276,6 @@ public class MainThread implements Runnable {
 	public void writeAccept(String tekst) throws IOException {
 		connectThread.sendCommand(tekst);
 	}
-
 
 	//Close application
     public void stop(){

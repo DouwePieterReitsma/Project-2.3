@@ -24,7 +24,7 @@ public class MoveController {
 	}
 
 	public void checkEnemy() { //FINAL
-		if(connectThread.getIllegalMove()) {
+		if(connectThread.getIllegalMove() || connectThread.GetState() != 2) {
 			endGame();
 		}
 		else if(connectThread.GetEnemyMove() != -1) {

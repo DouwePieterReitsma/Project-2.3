@@ -206,6 +206,15 @@ public class ConnectionListenerThread implements Runnable {
 		}
 	}
 
+	public void endGame() {
+		challenge = false;
+		yourTurn = false;
+		illegalMove = false;
+		firstTurn = true;
+		enemyMove = -1;
+		state = 1;
+	}
+
 	public void ListenToServer() throws IOException {
 		//Add to queue
 		String data = null;
@@ -259,9 +268,9 @@ public class ConnectionListenerThread implements Runnable {
 				String[] vijand = finalResult[2].split(": ");
 				matchList.clear();
 				matchList.add(game[1]);
-				System.out.println(game[1]);
 				matchList.add(vijand[1]);
 				illegalMove = false;
+				yourTurn = false;
 				firstTurn = true;
 				state = 2;
 
@@ -371,17 +380,14 @@ public class ConnectionListenerThread implements Runnable {
 				String thirdStep = secondStep.replace("SVR GAME ", "");
 				switch(thirdStep) {
 					case "WIN ":
-						state = 1;
 						System.out.println("win");
 						commandList.remove(0);
 						return;
 					case "LOSE ":
-						state = 1;
 						System.out.println("Lose");
 						commandList.remove(0);
 						return;
 					case "DRAW ":
-						state = 1;
 						System.out.println("Tie");
 						commandList.remove(0);
 						return;
