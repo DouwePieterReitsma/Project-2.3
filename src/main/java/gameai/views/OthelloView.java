@@ -24,7 +24,19 @@ import javafx.stage.Stage;
 public class OthelloView extends GameBoardView {
 	private Scene gameScene;
 	private Label titleLabel;
+	private Label typeLabel;
+	private Label turnLabel;
 	private GridPane gameBoard;
+	private Label clientLabel;
+	private Label enemyLabel;
+	
+	
+	private boolean yourTurn;
+	private boolean firstTurn;
+	private String username;
+	private String VS;
+	
+
 
 	private Image emptyImg;
 	private Image whiteImg;
@@ -39,12 +51,18 @@ public class OthelloView extends GameBoardView {
 
 	private List<List<Button>> boardList;
 
-	public void createUI(BorderPane parent) {
+	public void createUI(BorderPane parent, String username, String VS, boolean firstTurn) {
 		this.gameScene = super.GetGameScene();
 		this.titleLabel = super.GetTitleLabel();
 		this.gameBoard = super.GetGameBoard();
 		this.boardList = super.GetBoardList();
-
+		this.typeLabel= super.GetTypeLabel();
+		this.turnLabel = super.GetTurnLabel();
+		this.clientLabel =super.GetClientLabel();
+		this.enemyLabel = super.GetEnemyLabel();
+		this.username = username;
+		this.firstTurn = firstTurn;
+		this.VS = VS;
 		//Set images
 		emptyImg = new Image(getClass().getResource("/img/othello/empty.png").toString());
 		whiteImg = new Image(getClass().getResource("/img/othello/white.png").toString());
@@ -52,6 +70,10 @@ public class OthelloView extends GameBoardView {
 
 		//Set titlelabel
 		titleLabel.setText("Othello");
+		//set typelabel
+		titleLabel.setText( username +" vs. " + VS );
+		//set client and enemylabel
+		setColor();
 
 		//Create board
 		CreateBoard();
@@ -126,6 +148,7 @@ public class OthelloView extends GameBoardView {
 					ImageView emptyView = new ImageView(emptyImg);
 					column.setGraphic(emptyView);
 				}
+				
 
 				gameBoard.add(column, x, y);
 				gameBoard.setHgrow(column, Priority.ALWAYS);
@@ -133,12 +156,30 @@ public class OthelloView extends GameBoardView {
 				gameBoard.setHalignment(column, HPos.CENTER);
 				gameBoard.setValignment(column, VPos.CENTER);
 				boardList.get(y).add(column);
-
+				
+				
 				//Set click event
 				column.setOnAction((event) -> {
 					SetMove(gameBoard.getColumnIndex(column), gameBoard.getRowIndex(column), true);
 		        });
 			}
+		}
+	}
+	public void updateTurn(boolean yourTurn) {
+		if(yourTurn) {
+			turnLabel.setText("Aan de beurt: " + username );
+		}else {
+			turnLabel.setText("Aan de beurt: " + VS);
+		}
+		
+	}
+	public void setColor() {
+		if (firstTurn) {
+			enemyLabel.setText(VS+ " : Zwart ");
+			clientLabel.setText(username + " : Wit ");
+		}else {
+			enemyLabel.setText(VS+ " : Wit ");
+			clientLabel.setText(username + " : Zwart ");
 		}
 	}
 

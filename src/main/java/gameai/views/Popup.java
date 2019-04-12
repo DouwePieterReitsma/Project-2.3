@@ -58,12 +58,13 @@ public class Popup {
 		Scene scene1= new Scene(layout, 400, 150);
 
 		popupwindow.setScene(scene1);
+		popupwindow.setResizable(false);
 
 		popupwindow.showAndWait();
 	}
 
 	private void accept() throws IOException {
-		String send = "challenge accept " + id + "/n" ;
+		String send = "challenge accept " + id + "\n" ;
 		connectThread.sendCommand(send);
 		popupwindow.close();
 	}

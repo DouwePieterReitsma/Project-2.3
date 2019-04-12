@@ -124,17 +124,18 @@ public class MainWindow  {
 		return loadingPlayers;
 	}
 
-	public void SetOthelloView() {
+	public void SetOthelloView(String username, String VS, boolean firstTurn) {
 		Platform.runLater(() -> {
 			othell = new OthelloView();
-					othell.createUI(mid);
+					othell.createUI(mid,username, VS, firstTurn);
 					Main.GetMainStage().setTitle("Reversi");
 	    });
 	}
 
-	public void UpdateOthelloBoard(OthelloBoard oBoard) {
+	public void UpdateOthelloBoard(OthelloBoard oBoard, boolean yourTurn) {
 		Platform.runLater(() -> {
 			othell.UpdatePositions(oBoard);
+			othell.updateTurn(yourTurn);
 	    });
 	}
 

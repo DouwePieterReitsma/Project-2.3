@@ -212,7 +212,7 @@ public class MainThread implements Runnable {
 			switch(connectThread.getGame())
 			{
 				case "Reversi":
-					mainWindow.SetOthelloView();
+					mainWindow.SetOthelloView(connectThread.GetName(),connectThread.GetVS(), connectThread.GetFirstTurn());
 
 					OthelloBoard board = null;
 					OthelloPiece wp = null;
@@ -233,12 +233,12 @@ public class MainThread implements Runnable {
 
 					if(connectThread.getYourTurn()) {
 						System.out.println("yourturn");
-						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 5);
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 6);
 						opponent = new OthelloServerPlayer(board, OthelloColor.WHITE, connectThread);
 					}
 					else {
 						System.out.println("notyourturn");
-						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 5);
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 6);
 						opponent = new OthelloServerPlayer(board, OthelloColor.BLACK, connectThread);
 					}
 					//OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
@@ -259,7 +259,7 @@ public class MainThread implements Runnable {
 							//Check enemy movement
 							moveController.checkEnemy();
 						}
-						mainWindow.UpdateOthelloBoard(board);
+						mainWindow.UpdateOthelloBoard(board, connectThread.getYourTurn());
 					}
 
 					connectThread.endGame();
