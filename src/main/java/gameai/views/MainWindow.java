@@ -136,6 +136,7 @@ public class MainWindow  {
 		Platform.runLater(() -> {
 			othell.UpdatePositions(oBoard);
 			othell.updateTurn(yourTurn);
+			othell.UpdateScore(oBoard);
 	    });
 	}
 

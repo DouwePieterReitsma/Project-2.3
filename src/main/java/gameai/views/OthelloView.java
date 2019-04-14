@@ -29,6 +29,8 @@ public class OthelloView extends GameBoardView {
 	private GridPane gameBoard;
 	private Label clientLabel;
 	private Label enemyLabel;
+	private Label clientLabelScore;
+	private Label enemyLabelScore;
 	
 	
 	private boolean veryFirstTurn;
@@ -59,6 +61,8 @@ public class OthelloView extends GameBoardView {
 		this.turnLabel = super.GetTurnLabel();
 		this.clientLabel =super.GetClientLabel();
 		this.enemyLabel = super.GetEnemyLabel();
+		this.clientLabelScore =super.GetClientLabelScore();
+		this.enemyLabelScore = super.GetEnemyLabelScore();
 		this.username = username;
 		this.veryFirstTurn = veryFirstTurn;
 		this.VS = VS;
@@ -143,6 +147,15 @@ public class OthelloView extends GameBoardView {
 					column.setGraphic(emptyView);
 				}
 			}
+		}
+	}
+	public void UpdateScore(OthelloBoard oBoard) {
+		if (veryFirstTurn) {
+			enemyLabelScore.setText(Integer.toString(oBoard.getPlayerScore(OthelloColor.BLACK)));
+			clientLabelScore.setText(Integer.toString(oBoard.getPlayerScore(OthelloColor.WHITE)));
+		}else {
+			enemyLabelScore.setText(Integer.toString(oBoard.getPlayerScore(OthelloColor.WHITE)));
+			clientLabelScore.setText(Integer.toString(oBoard.getPlayerScore(OthelloColor.BLACK)));
 		}
 	}
 
