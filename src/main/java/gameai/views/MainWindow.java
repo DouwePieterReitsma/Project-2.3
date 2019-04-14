@@ -97,7 +97,6 @@ public class MainWindow  {
 		// middelste pane wat de spellen gaat bevatten en de lijst met spelers om te challenge
 		mid = new BorderPane();
 		//TextField test = new TextField();
-		mid.setStyle("-fx-border-color: red");
 		//mid.setCenter(test);
 		//mid.setPrefSize(200, 200);
 
