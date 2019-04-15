@@ -31,23 +31,20 @@ public class ChallengeView {
     private String game;
     private String username;
     private Button sub;
-    private Button player;
     private ConnectionListenerThread connectThread;
     private ArrayList<String> playerList;
     private int playerCounter;
     private BorderPane parent;
 
-    public void createUI(ConnectionListenerThread connectThread, BorderPane parent , String game ,Button sub , Button player, String username, ArrayList<String> playerList) {
+    public void createUI(ConnectionListenerThread connectThread, BorderPane parent , String game ,Button sub , String username, ArrayList<String> playerList) {
     	this.connectThread = connectThread;
     	this.game = game;
     	this.sub = sub;
-    	this.player = player;
     	this.playerList = playerList;
     	this.parent = parent;
     	this.username = username;
 
     	sub.setDisable(true);
-    	player.setDisable(true);
 
         setTableappearance();
 
@@ -93,7 +90,6 @@ public class ChallengeView {
 
     public void vorige() {
     	sub.setDisable(false);
-    	player.setDisable(false);
     	parent.setCenter(null);
     	System.out.println("terug naar het vorige scherm");
     }

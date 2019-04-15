@@ -34,6 +34,7 @@ public class ConnectionListenerThread implements Runnable {
 	private boolean connectionReady;
 	private boolean yourTurn;
 	private boolean firstTurn;
+	private boolean veryFirstTurn;
 	private boolean illegalMove;
     private boolean skipTurn;
 
@@ -75,6 +76,7 @@ public class ConnectionListenerThread implements Runnable {
 		skipTurn = false;
 		firstTurn = true;
 		enemyMove = -1;
+		
 
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
 
@@ -108,6 +110,11 @@ public class ConnectionListenerThread implements Runnable {
 	}
 	public boolean GetFirstTurn() {
 		return firstTurn;
+	
+	}
+	public boolean GetVeryFirstTurn() {
+		return veryFirstTurn;
+	
 	}
 	public void run() {
 		connectStatus = 0;
@@ -306,10 +313,12 @@ public class ConnectionListenerThread implements Runnable {
 				illegalMove = false;
 				yourTurn = false;
 				firstTurn = true;
+				veryFirstTurn = false;
 				state = 2;
 
 				if(firstTurn && user[1].equals(username)) {
 					yourTurn = true;
+					veryFirstTurn = true;
 				}
 
 				commandList.remove(0);
@@ -423,6 +432,7 @@ public class ConnectionListenerThread implements Runnable {
 					return;
 				case "ERR Duplicate name exists":
 					connectStatus = 2;
+					commandList.remove(0);
 					return;
 
 				default:

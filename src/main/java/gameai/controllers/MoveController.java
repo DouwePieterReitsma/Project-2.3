@@ -41,7 +41,7 @@ public class MoveController {
 				}
 			}
 			else {
-				//connectThread.advanceTurn();
+				connectThread.advanceTurn();
 				System.out.println("Legal moves: " + player.getBoard().getLegalMoves(player.playerColor).size());
 			}
 		}

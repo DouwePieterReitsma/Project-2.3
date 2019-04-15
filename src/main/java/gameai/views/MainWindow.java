@@ -27,7 +27,6 @@ public class MainWindow  {
 	private ChallengeView challview;
 	private ConnectionListenerThread connectThread;
 	private Button sub;
-	private Button player;
 	private Button chal;
 	private TicTacToeView tictac;
 	private ArrayList<String> playerList;
@@ -49,7 +48,6 @@ public class MainWindow  {
 		//knopjes waar je de verschillende modes kunt kiezen.
 		chal = new Button("Uitdagen");
 		sub = new Button("Inschrijven");
-		player = new Button("Speler");
 
 		// combobox om spellen uit te kiezen, later toevoegen dat je
 		// de ondersteunde spellen opvraagd en dan er in zet.
@@ -68,7 +66,6 @@ public class MainWindow  {
 				e1.printStackTrace();
 			}
 		});
-		player.setOnAction(e -> tegenAi());
 		chal.setOnAction(e -> {
 			try {
 				challenge();
@@ -88,9 +85,8 @@ public class MainWindow  {
 		//pane.setStyle("-fx-border-color: red");
 
 		pane.add(spel, 0, 0);
-		pane.add(player, 1, 0);
-		pane.add(sub, 2, 0);
-		pane.add(chal, 3, 0);
+		pane.add(sub, 1, 0);
+		pane.add(chal, 2, 0);
 		//pane.setLeft(spel);
 		//pane.setCenter(player);
 		//pane.setCenter(sub);
@@ -99,7 +95,6 @@ public class MainWindow  {
 		// middelste pane wat de spellen gaat bevatten en de lijst met spelers om te challenge
 		mid = new BorderPane();
 		//TextField test = new TextField();
-		mid.setStyle("-fx-border-color: red");
 		//mid.setCenter(test);
 		//mid.setPrefSize(200, 200);
 
@@ -127,10 +122,10 @@ public class MainWindow  {
 		return loadingPlayers;
 	}
 
-	public void SetOthelloView(String username, String VS, boolean firstTurn) {
+	public void SetOthelloView(String username, String VS, boolean veryFirstTurn) {
 		Platform.runLater(() -> {
 			othell = new OthelloView();
-					othell.createUI(mid,username, VS, firstTurn);
+					othell.createUI(mid,username, VS, veryFirstTurn);
 					Main.GetMainStage().setTitle("Reversi");
 	    });
 	}
@@ -139,20 +134,22 @@ public class MainWindow  {
 		Platform.runLater(() -> {
 			othell.UpdatePositions(oBoard);
 			othell.updateTurn(yourTurn);
+			othell.UpdateScore(oBoard);
 	    });
 	}
 
-	public void SetTicTacToeView() {
+	public void SetTicTacToeView(String username, String VS, boolean veryFirstTurn) {
 		Platform.runLater(() -> {
 			tictac = new TicTacToeView();
-					tictac.createUI(mid);
+					tictac.createUI(mid,username, VS, veryFirstTurn);
 					Main.GetMainStage().setTitle("TicTacToe");
 	    });
 	}
 
-	public void UpdateTicTacToeBoard(TicTacToeBoard tBoard) {
+	public void UpdateTicTacToeBoard(TicTacToeBoard tBoard, boolean yourTurn) {
 		Platform.runLater(() -> {
 			tictac.UpdatePositions(tBoard);
+			tictac.updateTurn(yourTurn);
 	    });
 	}
 
@@ -175,7 +172,7 @@ public class MainWindow  {
 			String game = (String) spel.getValue();
 			challview = new ChallengeView();
 			Platform.runLater(() ->
-				challview.createUI(connectThread, mid , game , sub , player, username, connectThread.GetPlayerList())
+				challview.createUI(connectThread, mid , game , sub , username, connectThread.GetPlayerList())
 			);
 		}
 	}
@@ -218,16 +215,5 @@ public class MainWindow  {
 		}
 	}
 
-	public void tegenAi() {
-		if(spel.getValue().equals("Reversi")) {
-			//othell = new OthelloView();
-			//othell.createUI(mid);
-			//Main.GetMainStage().setTitle("Othello");
-		}
-		else {
-			//tictac = new TicTacToeView();
-			//tictac.createUI(mid);
-			//Main.GetMainStage().setTitle("Tic-Tac-Toe");
-		}
-	}
+	
 }

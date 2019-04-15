@@ -218,7 +218,7 @@ public class MainThread implements Runnable {
 			switch(connectThread.getGame())
 			{
 				case "Reversi":
-					mainWindow.SetOthelloView(connectThread.GetName(),connectThread.GetVS(), connectThread.GetFirstTurn());
+					mainWindow.SetOthelloView(connectThread.GetName(),connectThread.GetVS(), connectThread.GetVeryFirstTurn());
 
 					Thread.sleep(1000);
 
@@ -241,12 +241,12 @@ public class MainThread implements Runnable {
 
 					if(connectThread.getYourTurn()) {
 						System.out.println("yourturn");
-						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 3);
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 5);
 						opponent = new OthelloServerPlayer(board, OthelloColor.WHITE, connectThread);
 					}
 					else {
 						System.out.println("notyourturn");
-						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 3);
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 5);
 						opponent = new OthelloServerPlayer(board, OthelloColor.BLACK, connectThread);
 					}
 					//OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
@@ -281,7 +281,7 @@ public class MainThread implements Runnable {
 					inGame = false;
 					break;
 				case "Tic-tac-toe":
-					mainWindow.SetTicTacToeView();
+					mainWindow.SetTicTacToeView(connectThread.GetName(),connectThread.GetVS(), connectThread.GetVeryFirstTurn());
 
 					Thread.sleep(1000);
 
@@ -319,7 +319,7 @@ public class MainThread implements Runnable {
 							//Check enemy movement
 							moveController.checkEnemy();
 						}
-						mainWindow.UpdateTicTacToeBoard(tBoard);
+						mainWindow.UpdateTicTacToeBoard(tBoard,connectThread.getYourTurn());
 					}
 
 					connectThread.endGame();

@@ -32,6 +32,8 @@ public abstract class GameBoardView{
 	private Label typeLabel;
 	private Label clientLabel;
 	private Label enemyLabel;
+	private Label clientLabelScore;
+	private Label enemyLabelScore;
 	private Label turnLabel;
 	private VBox titleBox;
 
@@ -66,9 +68,15 @@ public abstract class GameBoardView{
         clientLabel = new Label("");
         clientLabel.setFont(new Font("Arial", 20));
         clientLabel.setStyle("-fx-font-weight: bold");
+        clientLabelScore = new Label("");
+        clientLabelScore.setFont(new Font("Arial", 20));
+        clientLabelScore.setStyle("-fx-font-weight: bold");
         enemyLabel = new Label("");
         enemyLabel.setFont(new Font("Arial", 20));
         enemyLabel.setStyle("-fx-font-weight: bold");
+        enemyLabelScore = new Label("");
+        enemyLabelScore.setFont(new Font("Arial", 20));
+        enemyLabelScore.setStyle("-fx-font-weight: bold");
 
         //Create vbox
         titleBox = new VBox(2);
@@ -79,7 +87,9 @@ public abstract class GameBoardView{
         //Create hbox
         middleTitleBox = new HBox(100);
         middleTitleBox.getChildren().add(clientLabel);
+        middleTitleBox.getChildren().add(clientLabelScore);
         middleTitleBox.getChildren().add(enemyLabel);
+        middleTitleBox.getChildren().add(enemyLabelScore);
         middleTitleBox.setAlignment(Pos.CENTER);
         middleTitleBox.setPadding(new Insets(10, 10, 10, 10));
 
@@ -143,6 +153,13 @@ public abstract class GameBoardView{
 
 	public Label GetEnemyLabel() {
 		return enemyLabel;
+	}
+	public Label GetClientLabelScore() {
+		return clientLabelScore;
+	}
+
+	public Label GetEnemyLabelScore() {
+		return enemyLabelScore;
 	}
 
 	public Label GetTurnLabel() {

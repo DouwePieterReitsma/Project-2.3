@@ -29,10 +29,11 @@ public class OthelloView extends GameBoardView {
 	private GridPane gameBoard;
 	private Label clientLabel;
 	private Label enemyLabel;
+	private Label clientLabelScore;
+	private Label enemyLabelScore;
 	
 	
-	private boolean yourTurn;
-	private boolean firstTurn;
+	private boolean veryFirstTurn;
 	private String username;
 	private String VS;
 	
@@ -51,7 +52,7 @@ public class OthelloView extends GameBoardView {
 
 	private List<List<Button>> boardList;
 
-	public void createUI(BorderPane parent, String username, String VS, boolean firstTurn) {
+	public void createUI(BorderPane parent, String username, String VS, boolean veryFirstTurn) {
 		this.gameScene = super.GetGameScene();
 		this.titleLabel = super.GetTitleLabel();
 		this.gameBoard = super.GetGameBoard();
@@ -60,8 +61,10 @@ public class OthelloView extends GameBoardView {
 		this.turnLabel = super.GetTurnLabel();
 		this.clientLabel =super.GetClientLabel();
 		this.enemyLabel = super.GetEnemyLabel();
+		this.clientLabelScore =super.GetClientLabelScore();
+		this.enemyLabelScore = super.GetEnemyLabelScore();
 		this.username = username;
-		this.firstTurn = firstTurn;
+		this.veryFirstTurn = veryFirstTurn;
 		this.VS = VS;
 		//Set images
 		emptyImg = new Image(getClass().getResource("/img/othello/empty.png").toString());
@@ -123,14 +126,9 @@ public class OthelloView extends GameBoardView {
 	}
 
 	public void UpdatePositions(OthelloBoard oBoard) {
-		boardList.clear();
 		for(int y = 0; y < yRows; y++) {
-			boardList.add(new ArrayList<Button>());
 			for(int x = 0; x < xRows; x++) {
-				Button column = new Button("");
-				column.setStyle("-fx-background-color: transparent; -fx-opacity: 1.0;");
-				column.setAlignment(Pos.CENTER);
-				column.setTextAlignment(TextAlignment.CENTER);
+				Button column = boardList.get(y).get(x);
 
 				if(!oBoard.getPositions()[y][x].isAvailable()) {
 					if(((OthelloPiece)(oBoard.getPositions()[y][x]).getPiece()).getColor() == OthelloColor.WHITE) { //White start
@@ -148,23 +146,19 @@ public class OthelloView extends GameBoardView {
 					ImageView emptyView = new ImageView(emptyImg);
 					column.setGraphic(emptyView);
 				}
-				
-
-				gameBoard.add(column, x, y);
-				gameBoard.setHgrow(column, Priority.ALWAYS);
-				gameBoard.setVgrow(column, Priority.ALWAYS);
-				gameBoard.setHalignment(column, HPos.CENTER);
-				gameBoard.setValignment(column, VPos.CENTER);
-				boardList.get(y).add(column);
-				
-				
-				//Set click event
-				column.setOnAction((event) -> {
-					SetMove(gameBoard.getColumnIndex(column), gameBoard.getRowIndex(column), true);
-		        });
 			}
 		}
 	}
+	public void UpdateScore(OthelloBoard oBoard) {
+		if (veryFirstTurn) {
+			enemyLabelScore.setText(Integer.toString(oBoard.getPlayerScore(OthelloColor.BLACK)));
+			clientLabelScore.setText(Integer.toString(oBoard.getPlayerScore(OthelloColor.WHITE)));
+		}else {
+			enemyLabelScore.setText(Integer.toString(oBoard.getPlayerScore(OthelloColor.WHITE)));
+			clientLabelScore.setText(Integer.toString(oBoard.getPlayerScore(OthelloColor.BLACK)));
+		}
+	}
+
 	public void updateTurn(boolean yourTurn) {
 		if(yourTurn) {
 			turnLabel.setText("Aan de beurt: " + username );
@@ -174,12 +168,12 @@ public class OthelloView extends GameBoardView {
 		
 	}
 	public void setColor() {
-		if (firstTurn) {
-			enemyLabel.setText(VS+ " : Zwart ");
-			clientLabel.setText(username + " : Wit ");
+		if (veryFirstTurn) {
+			enemyLabel.setText(username+ " : Zwart ");
+			clientLabel.setText(VS + " : Wit ");
 		}else {
-			enemyLabel.setText(VS+ " : Wit ");
-			clientLabel.setText(username + " : Zwart ");
+			enemyLabel.setText(username + " : Wit ");
+			clientLabel.setText(VS + " : Zwart ");
 		}
 	}
 

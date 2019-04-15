@@ -28,6 +28,14 @@ public class TicTacToeView extends GameBoardView {
 	private Scene gameScene;
 	private Label titleLabel;
 	private GridPane gameBoard;
+	private Label typeLabel;
+	private Label turnLabel;
+	private Label clientLabel;
+	private Label enemyLabel;
+	
+	private boolean veryFirstTurn;
+	private String username;
+	private String VS;
 
 	private Image emptyImg;
 	private Image playerImg;
@@ -38,11 +46,18 @@ public class TicTacToeView extends GameBoardView {
 
 	private List<List<Button>> boardList;
 
-	public void createUI(BorderPane parent) {
+	public void createUI(BorderPane parent,String username, String VS, boolean veryFirstTurn) {
 		this.gameScene = super.GetGameScene();
 		this.titleLabel = super.GetTitleLabel();
 		this.gameBoard = super.GetGameBoard();
 		this.boardList = super.GetBoardList();
+		this.typeLabel= super.GetTypeLabel();
+		this.turnLabel = super.GetTurnLabel();
+		this.clientLabel =super.GetClientLabel();
+		this.enemyLabel = super.GetEnemyLabel();
+		this.username = username;
+		this.veryFirstTurn = veryFirstTurn;
+		this.VS = VS;
 
 		//Set images
 		emptyImg = new Image(getClass().getResource("/img/tictactoe/empty.png").toString());
@@ -51,6 +66,10 @@ public class TicTacToeView extends GameBoardView {
 
 		//Set titleLabel
 		titleLabel.setText("Tic-Tac-Toe");
+		//Set typeLabel
+		titleLabel.setText( username +" vs. " + VS );
+		
+		setXO();
 
 		//Create Board
 		CreateBoard();
@@ -144,9 +163,26 @@ public class TicTacToeView extends GameBoardView {
 	private void CheckIfDone() {
 
 	}
+	public void setXO() {
+		if (veryFirstTurn) {
+			enemyLabel.setText(username+ " : X ");
+			clientLabel.setText(VS + " : O ");
+		}else {
+			enemyLabel.setText(username + " : O ");
+			clientLabel.setText(VS + " : X ");
+		}
+	}
+	public void updateTurn(boolean yourTurn) {
+		if(yourTurn) {
+			turnLabel.setText("Aan de beurt: " + username );
+		}else {
+			turnLabel.setText("Aan de beurt: " + VS);
+		}
+	}
 
 	/*Launch application
     public static void main(String[] args) {
         launch(args);
     }*/
 }
+
