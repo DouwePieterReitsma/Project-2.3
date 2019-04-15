@@ -366,7 +366,7 @@ public class ConnectionListenerThread implements Runnable {
 				String finalResult = thirdStep.replaceAll("\"", "");
 				String message = finalResult.replaceAll("TURNMESSAGE: ", "");
 
-				System.out.println("Checking turns... first turn: " + firstTurn + " and enemymoved: " + enemyMoved);
+				//System.out.println("Checking turns... first turn: " + firstTurn + " and enemymoved: " + enemyMoved);
 				if(!firstTurn && !enemyMoved) {
 					System.out.println("No turns possible! new turn!");
 					skipTurn = true;
@@ -401,15 +401,15 @@ public class ConnectionListenerThread implements Runnable {
 				String thirdStep = secondStep.replace("SVR GAME ", "");
 				switch(thirdStep) {
 					case "WIN ":
-						//System.out.println("win");
+						state = 1;
 						commandList.remove(0);
 						return;
 					case "LOSE ":
-						//System.out.println("Lose");
+						state = 1;
 						commandList.remove(0);
 						return;
 					case "DRAW ":
-						//System.out.println("Tie");
+						state = 1;
 						commandList.remove(0);
 						return;
 

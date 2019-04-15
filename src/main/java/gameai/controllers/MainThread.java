@@ -239,12 +239,12 @@ public class MainThread implements Runnable {
 
 					if(connectThread.getYourTurn()) {
 						System.out.println("yourturn");
-						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 5);
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 4);
 						opponent = new OthelloServerPlayer(board, OthelloColor.WHITE, connectThread);
 					}
 					else {
 						System.out.println("notyourturn");
-						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 5);
+						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 4);
 						opponent = new OthelloServerPlayer(board, OthelloColor.BLACK, connectThread);
 					}
 					//OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
