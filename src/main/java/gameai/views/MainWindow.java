@@ -183,7 +183,6 @@ public class MainWindow  {
 
 			chal.setDisable(true);
 			sub.setDisable(true);
-			player.setDisable(true);
 			spel.setDisable(true);
 		}
 		else if (inGame){
@@ -191,7 +190,6 @@ public class MainWindow  {
 
 			chal.setDisable(false);
 			sub.setDisable(false);
-			player.setDisable(false);
 			spel.setDisable(false);
 		}
 	}
@@ -215,5 +213,5 @@ public class MainWindow  {
 		}
 	}
 
-	
+
 }
