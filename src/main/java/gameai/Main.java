@@ -16,7 +16,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
 import gameai.models.Board;
-import gameai.models.MiniMaxTicTacToe;
 import gameai.models.MiniMaxTicTacToeAI;
 import gameai.models.RandomTicTacToeAI;
 import gameai.models.TicTacToeBoard;

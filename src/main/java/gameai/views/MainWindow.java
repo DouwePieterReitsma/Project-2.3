@@ -1,6 +1,7 @@
 package gameai.views;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 import com.sun.xml.internal.bind.v2.runtime.Name;
@@ -20,7 +21,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * After the user logs in the gets send to the mainwindow, this is the class that is used to create that window.
+ * This is also the class that hold all the other views.
+ * @author Bram
+ *
+ */
 public class MainWindow  {
 	private ComboBox spel = new ComboBox();
 	private Scene mainScene;
@@ -54,19 +61,16 @@ public class MainWindow  {
 		loadingPlayers = true;
 		inGame = false;
 
-		//knopjes waar je de verschillende modes kunt kiezen.
+		//button to choose different modes
 		chal = new Button("Uitdagen");
 		sub = new Button("Inschrijven");
 
-		// combobox om spellen uit te kiezen, later toevoegen dat je
-		// de ondersteunde spellen opvraagd en dan er in zet.
-		//ComboBox spel = new ComboBox();
+		// adding games to the combobox
 		for(int i = 0; i < connectThread.GetGameList().size(); i++) {
 			spel.getItems().add(connectThread.GetGameList().get(i));
 		}
 
 
-		//dat er ook iet gebeurt als je op een knopje drukt
 		sub.setOnAction(e ->{
 			try {
 				subscribe();
@@ -87,38 +91,25 @@ public class MainWindow  {
 			}
 		});
 
-		// Bovenste pane waar de knopjes in worden geplaatst
+		// Top pane where all the buttons and the  combobox gets added to
 		GridPane pane = new GridPane();
-		//pane.setPadding(new Insets(5,5,5,5));
+	
 		pane.setHgap(30.0);
-		//pane.setStyle("-fx-border-color: red");
 
 		pane.add(spel, 0, 0);
 		pane.add(sub, 1, 0);
 		pane.add(chal, 2, 0);
-		//pane.setLeft(spel);
-		//pane.setCenter(player);
-		//pane.setCenter(sub);
-		//pane.setRight(chal);
+		
 
-		// middelste pane wat de spellen gaat bevatten en de lijst met spelers om te challenge
+		// middle pane that gets to hold all the games and the challenge view
 		mid = new BorderPane();
-		//TextField test = new TextField();
-		//mid.setCenter(test);
-		//mid.setPrefSize(200, 200);
+		
 
-		// hier wordt alles in geplaatst
 		BorderPane root = new BorderPane();
 		root.setTop(pane);
 
-		//root.setStyle("-fx-border-color: red");
 		root.setCenter(mid);
-		//challview = new ChallengeView();
-		//challview.createUI(mid);
-		//othell = new OthelloView();
-		//othell.createUI(mid);
-		//tictac=new TicTacToeView();
-		//tictac.createUI(mid);
+		
 
 		mainScene = new Scene(root, 700, 700);
 	}
@@ -169,7 +160,7 @@ public class MainWindow  {
 			othell.UpdateScore(oBoard);
 	    });
 	}
-
+	
 	/**
 	* Function to set the view to TicTacToe
 	* @author David Laan
@@ -185,6 +176,7 @@ public class MainWindow  {
 	    });
 	}
 
+
 	/**
 	* Constructor for the opponent of Reversi when playing online
 	* @author David Laan
@@ -197,7 +189,6 @@ public class MainWindow  {
 			tictac.updateTurn(yourTurn);
 	    });
 	}
-
 	/**
 	* Function to reset the view
 	* @author David Laan
@@ -209,7 +200,6 @@ public class MainWindow  {
 			mid.setStyle("-fx-border-color: red");
 	    });
 	}
-
 	/**
 	* Function to return the reversi game view
 	* @author David Laan
@@ -218,7 +208,7 @@ public class MainWindow  {
 	public OthelloView GetOthelloView() {
 		return othell;
 	}
-
+	
 	/**
 	* Function to process the requested playerlist.
 	* @author David Laan
@@ -235,6 +225,8 @@ public class MainWindow  {
 			);
 		}
 	}
+	
+
 
 	/**
 	* Function to check if client is ingame
@@ -256,6 +248,10 @@ public class MainWindow  {
 			spel.setDisable(false);
 		}
 	}
+	/**
+	 * this method is used to subscribe to a game
+	 * @throws IOException
+	 */
 
 	public void subscribe() throws IOException{
 		if(spel.getValue() != null) {
@@ -264,7 +260,11 @@ public class MainWindow  {
 			connectThread.sendCommand(subscribeCommand);
 		}
 	}
-
+/**
+ * this method is used to get the data necessary to create the ChallengeView
+ * @throws IOException
+ * @throws InterruptedException
+ */
 	public void challenge() throws IOException, InterruptedException {
 		if(spel.getValue() != null) {
 			connectThread.GetPlayerList().clear();
