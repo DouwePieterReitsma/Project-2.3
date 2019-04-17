@@ -197,9 +197,7 @@ public class MainWindow  {
 	public void subscribe() throws IOException{
 		if(spel.getValue() != null) {
 			String game = (String) spel.getValue();
-			System.out.println("Inschrijven voor " + game);
 			subscribeCommand = "subscribe "+ game + "\n";
-			System.out.println(subscribeCommand);
 			connectThread.sendCommand(subscribeCommand);
 		}
 	}

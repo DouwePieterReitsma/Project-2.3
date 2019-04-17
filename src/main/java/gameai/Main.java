@@ -89,7 +89,6 @@ public class Main extends Application {
     	    @Override
     	    public void handle(WindowEvent t) {
     	        Platform.exit();
-    	        System.out.println("Application sucessfully stopped!");
     	        System.exit(0);
     	    }
     	});
@@ -273,30 +272,6 @@ public class Main extends Application {
     //Launch application
     public static void main(String[] args) {
         launch(args);
-        //launch();
-        //Board board = new TicTacToeBoard(new MiniMaxTicTacToeAI());
-
-//        OthelloBoard board = new OthelloBoard(OthelloColor.WHITE);
-//
-//        OthelloPiece wp = new OthelloPiece(OthelloColor.WHITE);
-//        OthelloPiece bp = new OthelloPiece(OthelloColor.BLACK);
-//
-//        board.getPositions()[3][3].setPiece(bp);
-//        board.getPositions()[4][3].setPiece(wp);
-//        board.getPositions()[3][4].setPiece(wp);
-//        board.getPositions()[4][4].setPiece(bp);
-//
-//        System.out.println(board);
-//
-//        OthelloAI white = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 4);
-//        OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
-//
-//        while(!board.isGameOver()) {
-//            white.play();
-//            black.play();
-//        }
-//
-//        System.out.println(board.getMatchResult());
     }
 
     //Close application
@@ -304,6 +279,5 @@ public class Main extends Application {
 	public void stop(){
     	threadPool.shutdown();
 		while(!threadPool.isTerminated()) {}
-		System.out.println("Application succesfully closed!");
 	}
 }

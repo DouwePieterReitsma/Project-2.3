@@ -6,30 +6,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import gameai.Main;
-import gameai.models.Board;
 import gameai.models.MiniMaxTicTacToeAI;
 import gameai.models.TicTacToeBoard;
 import gameai.models.TicTacToeServerPlayer;
 import gameai.models.othello.OthelloBoard;
 import gameai.models.othello.OthelloColor;
 import gameai.models.othello.OthelloPiece;
-import gameai.models.othello.OthelloPlayer;
 import gameai.models.othello.OthelloServerPlayer;
 import gameai.models.othello.ai.AlphaBetaOthelloAI;
 import gameai.models.othello.ai.OthelloAI;
-import gameai.models.othello.ai.RandomOthelloAI;
 import gameai.views.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainThread implements Runnable {
@@ -105,7 +96,6 @@ public class MainThread implements Runnable {
 			try {
 				Thread.sleep(timer);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			//State handlers
@@ -121,10 +111,8 @@ public class MainThread implements Runnable {
 					MainMenuHandler();
 					if(mainWindow != null) mainWindow.CheckInGame();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -133,7 +121,6 @@ public class MainThread implements Runnable {
 					GameHandler();
 					mainWindow.CheckInGame();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -177,10 +164,8 @@ public class MainThread implements Runnable {
 				}
 			}
 			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -240,16 +225,13 @@ public class MainThread implements Runnable {
 					board.getPositions()[4][4].setPiece(wp);
 
 					if(connectThread.getYourTurn()) {
-						System.out.println("yourturn");
 						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 4);
 						opponent = new OthelloServerPlayer(board, OthelloColor.WHITE, connectThread);
 					}
 					else {
-						System.out.println("notyourturn");
 						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 4);
 						opponent = new OthelloServerPlayer(board, OthelloColor.BLACK, connectThread);
 					}
-					//OthelloAI black = new RandomOthelloAI(board, OthelloColor.BLACK);
 
 					moveController = new MoveController(connectThread, ai, opponent, "Reversi");
 
@@ -264,7 +246,6 @@ public class MainThread implements Runnable {
 							try {
 								moveController.doAIMove();
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -275,7 +256,7 @@ public class MainThread implements Runnable {
 						}
 						mainWindow.UpdateOthelloBoard(board, connectThread.getYourTurn());
 					}
-
+					mainWindow.UpdateOthelloBoard(board, connectThread.getYourTurn());
 					connectThread.endGame();
 					Thread.sleep(1000);
 					inGame = false;
@@ -291,12 +272,10 @@ public class MainThread implements Runnable {
 					moveController = null;
 
 					if(connectThread.getYourTurn()) {
-						System.out.println("yourturn");
 						tAI = new MiniMaxTicTacToeAI(true);
 						tOpponent = new TicTacToeServerPlayer(false);
 					}
 					else {
-						System.out.println("notyourturn");
 						tAI = new MiniMaxTicTacToeAI(false);
 						tOpponent = new TicTacToeServerPlayer(true);
 					}
@@ -310,7 +289,6 @@ public class MainThread implements Runnable {
 							try {
 								moveController.doAIMove();
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -338,6 +316,5 @@ public class MainThread implements Runnable {
     public void stop(){
     	threadPool.shutdown();
 		while(!threadPool.isTerminated()) {}
-		System.out.println("Application succesfully closed!");
 	}
 }
