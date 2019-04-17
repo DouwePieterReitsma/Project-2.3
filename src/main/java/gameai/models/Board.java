@@ -2,10 +2,17 @@ package gameai.models;
 
 import java.util.List;
 
+/**
+ * class representing an x*y board
+ */
 public abstract class Board {
 	protected int turn = 0;
     protected Position[][] positions;
 
+    /**
+     * @param x number ofcolumns
+     * @param y number of rows
+     */
     public Board(int x, int y) {
         positions = new Position[y][x];
 
@@ -26,6 +33,11 @@ public abstract class Board {
 
     public abstract List<Position> getLegalMoves();
 
+    /**
+     * @param piece piece to place
+     * @param position position to place piece at.
+     * @throws IllegalMoveException
+     */
     public void setPieceAtPosition(Piece piece, Position position) throws IllegalMoveException {
         List<Position> legalMoves = getLegalMoves();
 

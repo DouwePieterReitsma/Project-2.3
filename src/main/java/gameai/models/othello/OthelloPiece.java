@@ -2,6 +2,9 @@ package gameai.models.othello;
 
 import gameai.models.Piece;
 
+/**
+ * class for representing an Othello piece.
+ */
 public class OthelloPiece extends Piece {
     public OthelloColor getColor() {
         return color;

@@ -53,8 +53,8 @@ public class MoveController {
 		if(type.equals("Reversi")) {
 			player.play();
 
-			if (player.GetMove() != null ) {
-				connectThread.doMove(player.GetMove());
+			if (player.getMove() != null ) {
+				connectThread.doMove(player.getMove());
 
 				if(connectThread.getIllegalMove()) {
 					endGame();
@@ -117,7 +117,7 @@ public class MoveController {
 	*/
 	public void endGame() {
 		if(type.equals("Reversi")) {
-			player.getBoard().EndGame();
+			player.getBoard().endGame();
 		}
 		else if(type.equals("TicTacToe")) {
 			tPlayer.getBoard().EndGame();

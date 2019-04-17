@@ -9,9 +9,15 @@ import gameai.views.OthelloView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class serves as an implementation of the game Othello / Reversi.
+ */
 public class OthelloBoard extends Board {
 	private boolean gameOver = false;
 
+    /**
+     * @param startingColor
+     */
     public OthelloBoard(OthelloColor startingColor) {
         super(8, 8);
 
@@ -19,12 +25,9 @@ public class OthelloBoard extends Board {
         //this.currentTurnColor = startingColor;
     }
 
-    public OthelloBoard(Position[][] positions, OthelloColor startingColor) {
-        this(startingColor);
-
-        setPositions(positions);
-    }
-
+    /**
+     * @param board board to copy
+     */
     public OthelloBoard(OthelloBoard board) {
         super(8, 8);
 
@@ -40,11 +43,18 @@ public class OthelloBoard extends Board {
     private OthelloColor currentTurnColor;
     private OthelloColor opponentColor;
 
+    /**
+     * @return list of legal positions for the player whose turn it is.
+     */
     @Override
     public List<Position> getLegalMoves() {
         return getLegalMoves(currentTurnColor);
     }
 
+    /**
+     * @param color color to get legal moves for.
+     * @return list of legal positions for color.
+     */
     public List<Position> getLegalMoves(OthelloColor color) {
         List<Position> result = new ArrayList<>();
 
@@ -55,7 +65,11 @@ public class OthelloBoard extends Board {
         return result;
     }
 
-    public List<OthelloMove> getLegalMovesWrapper(OthelloColor color) {
+    /**
+     * @param color color to get legal moves for.
+     * @return list of legal moves for color.
+     */
+    private List<OthelloMove> getLegalMovesWrapper(OthelloColor color) {
         List<OthelloMove> legalMoves = new ArrayList<>();
 
         for (Position[] row : positions) {
@@ -70,6 +84,13 @@ public class OthelloBoard extends Board {
         return legalMoves;
     }
 
+    /**
+     * This checks if a position is a valid move in Othello.
+     *
+     * @param position position to try.
+     * @param color    player color.
+     * @return othello move or null if the position is illegal.
+     */
     private OthelloMove tryPosition(Position position, OthelloColor color) {
         OthelloPiece piece = (OthelloPiece)position.getPiece();
         OthelloMove move = new OthelloMove(position);
@@ -99,6 +120,13 @@ public class OthelloBoard extends Board {
         return move.getScore() > 0 ? move : null;
     }
 
+    /**
+     * @param startingPosition    position to search from.
+     * @param color               player color
+     * @param horizontalDirection horizontal direction to search.
+     * @param verticalDirection   vertical direction to search.
+     * @return position with the pieces to swap or null if there is no piece of the same color in the specified search direction.
+     */
     private OthelloMove findPieceInLine(Position startingPosition, OthelloColor color, int horizontalDirection, int verticalDirection) {
         OthelloMove move = new OthelloMove(startingPosition);
         Position currentPosition = null;
@@ -133,6 +161,12 @@ public class OthelloBoard extends Board {
         return null;
     }
 
+    /**
+     * This function turns the pieces which need to be turned for the current move.
+     *
+     * @param position starting position
+     * @param color    player color
+     */
     private void turnPieces(Position position, OthelloColor color) {
         // get the adjacent positions for the given position
         List<Position> neighbors = getOpponentNeighbors(position, color);
@@ -154,6 +188,14 @@ public class OthelloBoard extends Board {
         }
     }
 
+    /**
+     * This function checks if there is a neighboring piece for a position.
+     *
+     * @param x     x coordinate.
+     * @param y     y coordinate.
+     * @param color player color.
+     * @return neighbor or null if there is no neighbor.
+     */
     private Position tryNeighbor(int x, int y, OthelloColor color) {
         // bounds check
         if(x < 0 || x > 7 || y < 0 || y > 7) return null;
@@ -173,6 +215,13 @@ public class OthelloBoard extends Board {
         return positions[y][x];
     }
 
+    /**
+     * This method checks if there are neighboring opponents for a given position.
+     *
+     * @param position position to search from.
+     * @param color player color.
+     * @return list of opponent neighbors.
+     */
     private List<Position> getOpponentNeighbors(Position position, OthelloColor color) {
         List<Position> neighbors = new ArrayList<>();
         Position neighbor = null;
@@ -220,6 +269,10 @@ public class OthelloBoard extends Board {
         return neighbors;
     }
 
+    /**
+     * @param color player color
+     * @return player score
+     */
     public int getPlayerScore(OthelloColor color) {
         int score = 0;
 
@@ -236,15 +289,9 @@ public class OthelloBoard extends Board {
         return score;
     }
 
-    public OthelloMatchResult getMatchResult() {
-        int whitePiecesLeft = getPlayerScore(OthelloColor.WHITE);
-        int blackPiecesLeft = getPlayerScore(OthelloColor.BLACK);
-
-        if (whitePiecesLeft == blackPiecesLeft) return OthelloMatchResult.TIE;
-
-        return whitePiecesLeft > blackPiecesLeft ? OthelloMatchResult.WHITE_WINS : OthelloMatchResult.BLACK_WINS;
-    }
-
+    /**
+     * @return win or lose
+     */
     public boolean isGameOver() {
     	if(getLegalMoves(currentTurnColor).isEmpty() && getLegalMoves(opponentColor).isEmpty()) {
     		gameOver = true;
@@ -252,10 +299,18 @@ public class OthelloBoard extends Board {
     	return gameOver;
     }
 
-    public void EndGame() {
+    /**
+     * This method ends the game.
+     */
+    public void endGame() {
     	gameOver = true;
     }
 
+    /**
+     * @param piece piece to set
+     * @param position position to set piece at.
+     * @throws IllegalMoveException
+     */
     @Override
     public void setPieceAtPosition(Piece piece, Position position) throws IllegalMoveException {
         super.setPieceAtPosition(piece, position);
@@ -265,6 +320,9 @@ public class OthelloBoard extends Board {
         advanceTurn();
     }
 
+    /**
+     * This method advances the turn and swaps the current turn colors.
+     */
     public void advanceTurn() {
         turn++;
 
@@ -274,13 +332,15 @@ public class OthelloBoard extends Board {
     public OthelloColor getCurrentTurnColor() {
         return currentTurnColor;
     }
-    public OthelloColor getOpponentColor() { return opponentColor; }
 
     public void setCurrentTurnColor(OthelloColor currentTurnColor) {
         this.currentTurnColor = currentTurnColor;
         this.opponentColor = currentTurnColor == OthelloColor.WHITE ? OthelloColor.BLACK : OthelloColor.WHITE;
     }
 
+    /**
+     * @return text representation of the board.
+     */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();

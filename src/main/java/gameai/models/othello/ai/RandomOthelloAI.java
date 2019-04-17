@@ -8,6 +8,9 @@ import gameai.models.othello.ai.OthelloAI;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This class generates random moves for the supplied board.
+ */
 public class RandomOthelloAI extends OthelloAI {
     public RandomOthelloAI(OthelloBoard board, OthelloColor playerColor) {
         super(board, playerColor);
@@ -20,6 +23,10 @@ public class RandomOthelloAI extends OthelloAI {
         return getRandomMove(legalMoves);
     }
 
+    /**
+     * @param legalMoves list of legal moves for the player
+     * @return a random position.
+     */
     private Position getRandomMove(List<Position> legalMoves) {
         if (legalMoves.isEmpty()) return null;
 

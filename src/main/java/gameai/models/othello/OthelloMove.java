@@ -5,15 +5,25 @@ import gameai.models.Position;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents an Othello move.
+ */
 public class OthelloMove {
     private Position position;
     private List<Position> piecesToSwap;
 
+    /**
+     * @param position move position
+     */
     public OthelloMove(Position position) {
         this.position = position;
         piecesToSwap = new ArrayList<>();
     }
 
+    /**
+     * copy constructor
+     * @param move move to copy
+     */
     public OthelloMove(OthelloMove move) {
         this.position = new Position(move.getPosition());
         this.piecesToSwap = new ArrayList<>();

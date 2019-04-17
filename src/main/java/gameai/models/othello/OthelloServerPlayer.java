@@ -2,6 +2,9 @@ package gameai.models.othello;
 
 import gameai.controllers.ConnectionListenerThread;
 
+/**
+ * class representing a server player.
+ */
 public class OthelloServerPlayer extends OthelloPlayer  {
 
 	/**

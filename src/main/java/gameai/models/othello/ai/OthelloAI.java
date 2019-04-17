@@ -12,9 +12,16 @@ import gameai.models.othello.OthelloColor;
 import gameai.models.othello.OthelloPlayer;
 import javafx.geometry.Pos;
 
+/**
+ * This class serves as a base for other OthelloAIs.
+ */
 public abstract class OthelloAI extends OthelloPlayer {
 	private Position move;
 
+    /**
+     * @param board board to play on.
+     * @param playerColor
+     */
     public OthelloAI(OthelloBoard board, OthelloColor playerColor) {
         super(board, playerColor);
     }
@@ -36,13 +43,7 @@ public abstract class OthelloAI extends OthelloPlayer {
         }
     }
 
-    private Position getRandomMove(List<Position> legalMoves) {
-        if (legalMoves.isEmpty()) return null;
-
-        return legalMoves.get(new Random().nextInt(legalMoves.size()));
-    }
-
-    public Position GetMove() {
+    public Position getMove() {
     	return move;
     }
 }
