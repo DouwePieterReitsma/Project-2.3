@@ -81,6 +81,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
+    	//Create new stage
     	mainStage = stage;
 
     	//Make sure everything stops after exit
@@ -177,6 +178,7 @@ public class Main extends Application {
         File tempFile = new File("login.txt");
         boolean exists = tempFile.exists();
 
+        //If exists, save info
         if(exists) {
         	try {
 				BufferedReader br = new BufferedReader(new FileReader(tempFile));

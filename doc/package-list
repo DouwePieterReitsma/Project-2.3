@@ -1,0 +1,6 @@
+gameai
+gameai.controllers
+gameai.models
+gameai.models.othello
+gameai.models.othello.ai
+gameai.views
