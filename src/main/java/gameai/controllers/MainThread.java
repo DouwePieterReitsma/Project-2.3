@@ -49,6 +49,16 @@ public class MainThread implements Runnable {
     private boolean isConnecting;
     private boolean inGame;
 
+    /**
+	* Constructor for the MainThread.
+	* @author David Laan
+	* @param threadPool To pass the existing threadpool to the mainthread.
+	* @param errorLabel To pass the errorLabel so the mainthread can show errors.
+	* @param loginButton To pass the login button so the mainthread can disable/enable it.
+	* @param host The hostname/ip the client will connect to.
+	* @param port The port the client uses to connect.
+	* @param name The username the client has chosen.
+	*/
     public MainThread(ExecutorService threadPool, Label errorLabel, Button loginButton, String host, int port, String name) {
         //Set value
         this.threadPool = threadPool;
@@ -75,6 +85,12 @@ public class MainThread implements Runnable {
     	verbindAnim.setCycleCount(Timeline.INDEFINITE);
 	}
 
+    /**
+	* Function to run the thread
+	* @author David Laan
+	* @exception InterruptedException
+	* @exception IOException
+	*/
 	public void run() {
 		//Play animation
 		verbindAnim.play();
@@ -127,7 +143,12 @@ public class MainThread implements Runnable {
 		}
 	}
 
-	//Function for checking connection
+	/**
+	* Function to check the connection and its status when state == 0.
+	* @author David Laan
+	* @exception InterruptedException
+	* @exception IOException
+	*/
 	private void CheckConnection() {
 		if(!hasConnected && isConnecting) {
 			try {
@@ -171,7 +192,12 @@ public class MainThread implements Runnable {
 		}
 	}
 
-	//Function to handle main menu
+	/**
+	* Function to handle the main menu when state == 1.
+	* @author David Laan
+	* @exception InterruptedException
+	* @exception IOException
+	*/
 	private void MainMenuHandler() throws IOException, InterruptedException {
 		//Create main menu
 		if(mainWindow == null && connectThread.GetGameList().size() > 0) {
@@ -195,7 +221,11 @@ public class MainThread implements Runnable {
 		}
 	}
 
-	//Function to handle game menus
+	/**
+	* Function to handle the game windows when state == 2.
+	* @author David Laan
+	* @exception InterruptedException
+	*/
 	private void GameHandler() throws InterruptedException {
 		//Startup game
 		if(!inGame) {
@@ -226,11 +256,11 @@ public class MainThread implements Runnable {
 
 					if(connectThread.getYourTurn()) {
 						ai = new AlphaBetaOthelloAI(board, OthelloColor.BLACK, 4);
-						opponent = new OthelloServerPlayer(board, OthelloColor.WHITE, connectThread);
+						opponent = new OthelloServerPlayer(board, OthelloColor.WHITE);
 					}
 					else {
 						ai = new AlphaBetaOthelloAI(board, OthelloColor.WHITE, 4);
-						opponent = new OthelloServerPlayer(board, OthelloColor.BLACK, connectThread);
+						opponent = new OthelloServerPlayer(board, OthelloColor.BLACK);
 					}
 
 					moveController = new MoveController(connectThread, ai, opponent, "Reversi");
@@ -312,7 +342,10 @@ public class MainThread implements Runnable {
 		connectThread.sendCommand(tekst);
 	}
 
-	//Close application
+	/**
+	* Function to stop the application
+	* @author David Laan
+	*/
     public void stop(){
     	threadPool.shutdown();
 		while(!threadPool.isTerminated()) {}

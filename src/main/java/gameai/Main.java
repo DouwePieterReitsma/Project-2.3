@@ -79,6 +79,11 @@ public class Main extends Application {
 
 	private static Stage mainStage;
 
+	/**
+	* Function to start the stage
+	* @author David Laan
+	* @exception Exception
+	*/
     @Override
     public void start(Stage stage) throws Exception{
     	//Create new stage
@@ -162,6 +167,10 @@ public class Main extends Application {
         mainStage.show();
     }
 
+    /**
+	* This function creates all the objects inside the login pane
+	* @author David Laan
+	*/
     private void CreateLoginPane() {
     	//Create Labels
         ipLabel = new Label("Hostnaam/IP:");
@@ -222,6 +231,11 @@ public class Main extends Application {
         loginPane.setConstraints(portTextArea, 1, 2, 1, 1, HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
     }
 
+    /**
+	* This function checks if the inputs of the text areas are correct and then creates a main thread to connect to the server.
+	* @author David Laan
+	* @exception FileNotFoundException
+	*/
     private void ConnectToServer() throws FileNotFoundException {
     	//Check if inputs are correct
     	if(portTextArea.getText().length() > 5) {
@@ -259,22 +273,36 @@ public class Main extends Application {
     	threadPool.execute(mainThread);
     }
 
-    //Stage getter
+    /**
+	* Function get the mainstage of the application
+	* @author David Laan
+	* @return Returns the mainstage to other classes
+	*/
     public static Stage GetMainStage() {
     	return mainStage;
     }
 
+    /**
+	* Function to run a popup when necessary
+	* @author Bram de Boer
+	*/
     public static void runPopup(String speler, String game , String id,ConnectionListenerThread connectThread) {
     	Popup pop = new Popup();
     	Platform.runLater(() -> pop.display(speler, game ,id, connectThread) );
     }
 
-    //Launch application
+    /**
+	* Function to start the application
+	* @author David Laan
+	*/
     public static void main(String[] args) {
         launch(args);
     }
 
-    //Close application
+    /**
+	* Function to stop the application
+	* @author David Laan
+	*/
     @Override
 	public void stop(){
     	threadPool.shutdown();
