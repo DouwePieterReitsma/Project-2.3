@@ -1,6 +1,7 @@
 package gameai.views;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 import gameai.controllers.ConnectionListenerThread;
@@ -18,7 +19,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * After the user logs in the gets send to the mainwindow, this is the class that is used to create that window.
+ * This is also the class that hold all the other views.
+ * @author Bram
+ *
+ */
 public class MainWindow  {
 	private ComboBox spel = new ComboBox();
 	private Scene mainScene;
@@ -36,7 +43,13 @@ public class MainWindow  {
 
 	private boolean loadingPlayers;
 	private boolean inGame;
-
+/**
+ * creates the actual main window
+ * 
+ * @param connectThread
+ * @param username
+ * @throws IOException
+ */
 	public MainWindow(ConnectionListenerThread connectThread, String username) throws IOException
 	{
 		this.connectThread = connectThread;
@@ -45,19 +58,16 @@ public class MainWindow  {
 		loadingPlayers = true;
 		inGame = false;
 
-		//knopjes waar je de verschillende modes kunt kiezen.
+		//button to choose different modes
 		chal = new Button("Uitdagen");
 		sub = new Button("Inschrijven");
 
-		// combobox om spellen uit te kiezen, later toevoegen dat je
-		// de ondersteunde spellen opvraagd en dan er in zet.
-		//ComboBox spel = new ComboBox();
+		// adding games to the combobox
 		for(int i = 0; i < connectThread.GetGameList().size(); i++) {
 			spel.getItems().add(connectThread.GetGameList().get(i));
 		}
 
 
-		//dat er ook iet gebeurt als je op een knopje drukt
 		sub.setOnAction(e ->{
 			try {
 				subscribe();
@@ -78,50 +88,48 @@ public class MainWindow  {
 			}
 		});
 
-		// Bovenste pane waar de knopjes in worden geplaatst
+		// Top pane where all the buttons and the  combobox gets added to
 		GridPane pane = new GridPane();
-		//pane.setPadding(new Insets(5,5,5,5));
+	
 		pane.setHgap(30.0);
-		//pane.setStyle("-fx-border-color: red");
 
 		pane.add(spel, 0, 0);
 		pane.add(sub, 1, 0);
 		pane.add(chal, 2, 0);
-		//pane.setLeft(spel);
-		//pane.setCenter(player);
-		//pane.setCenter(sub);
-		//pane.setRight(chal);
+		
 
-		// middelste pane wat de spellen gaat bevatten en de lijst met spelers om te challenge
+		// middle pane that gets to hold all the games and the challenge view
 		mid = new BorderPane();
-		//TextField test = new TextField();
-		//mid.setCenter(test);
-		//mid.setPrefSize(200, 200);
+		
 
-		// hier wordt alles in geplaatst
 		BorderPane root = new BorderPane();
 		root.setTop(pane);
 
-		//root.setStyle("-fx-border-color: red");
 		root.setCenter(mid);
-		//challview = new ChallengeView();
-		//challview.createUI(mid);
-		//othell = new OthelloView();
-		//othell.createUI(mid);
-		//tictac=new TicTacToeView();
-		//tictac.createUI(mid);
+		
 
 		mainScene = new Scene(root, 700, 700);
 	}
-
+	/**
+	 * this method is used to return the mainScene
+	 * @return Scene this return the mainScene of this class 
+	 */
 	public Scene GetMainScene() {
 		return mainScene;
 	}
-
+	/**
+	 * this method is used to get the value of loadingPlayers. 
+	 * @return boolean This returns whether loadingPlayers is true or false
+	 */
 	public boolean GetLoadingPlayers() {
 		return loadingPlayers;
 	}
-
+/**
+ * This method is used to set the othelloview in borderpane mid
+ * @param username Name of the user
+ * @param VS Name of the other player
+ * @param veryFirstTurn whether or not you have the first turn
+ */
 	public void SetOthelloView(String username, String VS, boolean veryFirstTurn) {
 		Platform.runLater(() -> {
 			othell = new OthelloView();
@@ -129,7 +137,12 @@ public class MainWindow  {
 					Main.GetMainStage().setTitle("Reversi");
 	    });
 	}
-
+/**
+ * This method used to update the positions, turn and the score.
+ * 
+ * @param oBoard passes through the Othelloboard oBoard
+ * @param yourTurn boolean to see if it is your turn
+ */
 	public void UpdateOthelloBoard(OthelloBoard oBoard, boolean yourTurn) {
 		Platform.runLater(() -> {
 			othell.UpdatePositions(oBoard);
@@ -137,6 +150,13 @@ public class MainWindow  {
 			othell.UpdateScore(oBoard);
 	    });
 	}
+	/**
+	 * This method is used to set the TicTacToeView in borderpane mid
+	 * 
+	 * @param username name of the user	
+	 * @param VS name of the other player
+	 * @param veryFirstTurn whether or not you have the first turn
+	 */
 
 	public void SetTicTacToeView(String username, String VS, boolean veryFirstTurn) {
 		Platform.runLater(() -> {
@@ -145,13 +165,20 @@ public class MainWindow  {
 					Main.GetMainStage().setTitle("TicTacToe");
 	    });
 	}
-
+/**
+ * This method is used to update the positions and the turn
+ * @param tBoard 
+ * @param yourTurn
+ */
 	public void UpdateTicTacToeBoard(TicTacToeBoard tBoard, boolean yourTurn) {
 		Platform.runLater(() -> {
 			tictac.UpdatePositions(tBoard);
 			tictac.updateTurn(yourTurn);
 	    });
 	}
+	/**
+	 * This method is used to reset the middle pane that holds the games and challengeview
+	 */
 
 	public void ResetView() {
 		Platform.runLater(() -> {
@@ -160,10 +187,18 @@ public class MainWindow  {
 			mid.setStyle("-fx-border-color: red");
 	    });
 	}
+	/**
+	 * This method is used to get othell
+	 * @return OthelloView
+	 */
 
 	public OthelloView GetOthelloView() {
 		return othell;
 	}
+	/**
+	 * this method is used to create the ChallengeView
+	 * @throws IOException
+	 */
 
 	public void ProcessPlayers() throws IOException {
 		if(loadingPlayers && connectThread.GetPlayerList().size() > 0) {
@@ -176,7 +211,10 @@ public class MainWindow  {
 			);
 		}
 	}
-
+	
+/**
+ * this method is used to check if you are in a game and disable the buttons
+ */
 	public void CheckInGame() {
 		if(connectThread.getState() == 2 && !inGame) {
 			inGame = true;
@@ -193,6 +231,10 @@ public class MainWindow  {
 			spel.setDisable(false);
 		}
 	}
+	/**
+	 * this method is used to subscribe to a game
+	 * @throws IOException
+	 */
 
 	public void subscribe() throws IOException{
 		if(spel.getValue() != null) {
@@ -201,7 +243,11 @@ public class MainWindow  {
 			connectThread.sendCommand(subscribeCommand);
 		}
 	}
-
+/**
+ * this method is used to get the data necessary to create the ChallengeView
+ * @throws IOException
+ * @throws InterruptedException
+ */
 	public void challenge() throws IOException, InterruptedException {
 		if(spel.getValue() != null) {
 			connectThread.GetPlayerList().clear();
