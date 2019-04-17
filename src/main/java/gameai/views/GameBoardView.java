@@ -39,6 +39,10 @@ public abstract class GameBoardView{
 
 	private List<List<Button>> boardList = new ArrayList<List<Button>>();
 
+	/**
+	* Constructor for the gameboardview
+	* @author David Laan
+	*/
 	public GameBoardView() {
 		//Create border pane
         mainPane = new BorderPane();
@@ -119,45 +123,94 @@ public abstract class GameBoardView{
 	//	gameScene = new Scene(mainPane, 700, 700);
 	}
 
-	//Getters
+	/**
+	* Function to get the gamescene
+	* @author David Laan
+	* @return Returns the gamescene
+	*/
 	public Scene GetGameScene() {
 		return gameScene;
 	}
-
+	/**
+	* Function to get the middlepane
+	* @author David Laan
+	* @return Returns the middlepane
+	*/
 	public BorderPane GetMiddlePane() {
 		return middlePane;
 	}
-
+	/**
+	* Function to get the gameboard
+	* @author David Laan
+	* @return Returns the gameboard
+	*/
 	public GridPane GetGameBoard() {
 		return gameBoard;
 	}
-
+	/**
+	* Function to get the boardlist
+	* @author David Laan
+	* @return Returns the boardlist
+	*/
 	public List<List<Button>> GetBoardList() {
 		return boardList;
 	}
+	/**
+	* Function to get the mainpane
+	* @author David Laan
+	* @return Returns the mainpane
+	*/
 	public BorderPane getMainPane() {
 		return mainPane;
 	}
-
+	/**
+	* Function to get the title label
+	* @author David Laan
+	* @return Returns the title label
+	*/
 	public Label GetTitleLabel() {
 		return titleLabel;
 	}
-
+	/**
+	* Function to get the type label
+	* @author David Laan
+	* @return Returns the type label
+	*/
 	public Label GetTypeLabel() {
 		return typeLabel;
 	}
 
+	/**
+	* Function to get the client label
+	* @author David Laan
+	* @return Returns the client label
+	*/
 	public Label GetClientLabel() {
 		return clientLabel;
 	}
 
+	/**
+	* Function to get the enemy label
+	* @author David Laan
+	* @return Returns the enemy label
+	*/
 	public Label GetEnemyLabel() {
 		return enemyLabel;
 	}
+	/**
+	* Function to get the client label for the score
+	* @author David Laan
+	* @return Returns the client label for the score
+	*/
 	public Label GetClientLabelScore() {
 		return clientLabelScore;
 	}
 
+	/**
+	* Function to get the enemy label for the score
+	* @author David Laan
+	* @return Returns the enemy label for the score
+	*/
 	public Label GetEnemyLabelScore() {
 		return enemyLabelScore;
 	}

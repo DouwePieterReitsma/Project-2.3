@@ -31,12 +31,12 @@ public class OthelloView extends GameBoardView {
 	private Label enemyLabel;
 	private Label clientLabelScore;
 	private Label enemyLabelScore;
-	
-	
+
+
 	private boolean veryFirstTurn;
 	private String username;
 	private String VS;
-	
+
 
 
 	private Image emptyImg;
@@ -52,6 +52,14 @@ public class OthelloView extends GameBoardView {
 
 	private List<List<Button>> boardList;
 
+	/**
+	* Function to create the UI for the Reversi board
+	* @author David Laan
+	* @param parent Returns the gamescene
+	* @param username Returns the username of the client
+	* @param VS Returns the username of opponent
+	* @param veryFirstTurn Returns if its the first turn
+	*/
 	public void createUI(BorderPane parent, String username, String VS, boolean veryFirstTurn) {
 		this.gameScene = super.GetGameScene();
 		this.titleLabel = super.GetTitleLabel();
@@ -84,7 +92,10 @@ public class OthelloView extends GameBoardView {
 		parent.setCenter(mainPane);
 	}
 
-	//Function to create gameboard
+	/**
+	* This function creates the board
+	* @author David Laan
+	*/
 	private void CreateBoard() {
 		for(int y = 0; y < yRows; y++) {
 			boardList.add(new ArrayList<Button>());
@@ -125,6 +136,11 @@ public class OthelloView extends GameBoardView {
 		}
 	}
 
+	/**
+	* This function updates the board
+	* @author David Laan
+	* @param oBoard The gameboard
+	*/
 	public void UpdatePositions(OthelloBoard oBoard) {
 		for(int y = 0; y < yRows; y++) {
 			for(int x = 0; x < xRows; x++) {
@@ -165,7 +181,7 @@ public class OthelloView extends GameBoardView {
 		}else {
 			turnLabel.setText("Aan de beurt: " + VS);
 		}
-		
+
 	}
 	public void setColor() {
 		if (veryFirstTurn) {
@@ -177,6 +193,13 @@ public class OthelloView extends GameBoardView {
 		}
 	}
 
+	/**
+	* Function to set a move when the player is not an AI
+	* @author David Laan
+	* @param columnId The ID of the column that has been selected
+	* @param rowId the ID of the row that has been selected
+	* @param isPlayer Checks if the player set an move or the opponent
+	*/
 	public void SetMove(int columnId, int rowId, boolean isPlayer) {
 		//Check if player or not
 		if(isPlayer) {

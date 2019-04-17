@@ -3,6 +3,8 @@ package gameai.views;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.runtime.Name;
+
 import gameai.controllers.ConnectionListenerThread;
 import gameai.models.TicTacToeBoard;
 import gameai.models.othello.OthelloBoard;
@@ -37,6 +39,13 @@ public class MainWindow  {
 	private boolean loadingPlayers;
 	private boolean inGame;
 
+	/**
+	* Constructor for the mainwindow
+	* @author David Laan
+	* @param connectThread The connectionlistenerthread
+	* @param username The name of the client's user
+	* @exception IOException
+	*/
 	public MainWindow(ConnectionListenerThread connectThread, String username) throws IOException
 	{
 		this.connectThread = connectThread;
@@ -114,14 +123,31 @@ public class MainWindow  {
 		mainScene = new Scene(root, 700, 700);
 	}
 
+	/**
+	* Returns the mainScene
+	* @author David Laan
+	* @return Returns the mainScene
+	*/
 	public Scene GetMainScene() {
 		return mainScene;
 	}
 
+	/**
+	* Returns if the window is loading players
+	* @author David Laan
+	* @return Returns if the windows is loading players
+	*/
 	public boolean GetLoadingPlayers() {
 		return loadingPlayers;
 	}
 
+	/**
+	* Sets the view to Reversi
+	* @author David Laan
+	* @param username Gives the username of the client's user
+	* @param VS Gives the opponent's name
+	* @param veryFirstTurn
+	*/
 	public void SetOthelloView(String username, String VS, boolean veryFirstTurn) {
 		Platform.runLater(() -> {
 			othell = new OthelloView();
@@ -130,6 +156,12 @@ public class MainWindow  {
 	    });
 	}
 
+	/**
+	* Function to update the Reversi gameboard view
+	* @author David Laan
+	* @param oBoard The gameboard
+	* @param yourTurn Checks if its the player or opponent's turn
+	*/
 	public void UpdateOthelloBoard(OthelloBoard oBoard, boolean yourTurn) {
 		Platform.runLater(() -> {
 			othell.UpdatePositions(oBoard);
@@ -138,6 +170,13 @@ public class MainWindow  {
 	    });
 	}
 
+	/**
+	* Function to set the view to TicTacToe
+	* @author David Laan
+	* @param username The client's username
+	* @param VS The opponent's name
+	* @param veryFirstTurn Checks if its the first turn
+	*/
 	public void SetTicTacToeView(String username, String VS, boolean veryFirstTurn) {
 		Platform.runLater(() -> {
 			tictac = new TicTacToeView();
@@ -146,6 +185,12 @@ public class MainWindow  {
 	    });
 	}
 
+	/**
+	* Constructor for the opponent of Reversi when playing online
+	* @author David Laan
+	* @param tBoard The gameboard
+	* @param yourTurn Checks if its the player's turn or not
+	*/
 	public void UpdateTicTacToeBoard(TicTacToeBoard tBoard, boolean yourTurn) {
 		Platform.runLater(() -> {
 			tictac.UpdatePositions(tBoard);
@@ -153,6 +198,10 @@ public class MainWindow  {
 	    });
 	}
 
+	/**
+	* Function to reset the view
+	* @author David Laan
+	*/
 	public void ResetView() {
 		Platform.runLater(() -> {
 			Main.GetMainStage().setTitle("Wachtkamer");
@@ -161,10 +210,20 @@ public class MainWindow  {
 	    });
 	}
 
+	/**
+	* Function to return the reversi game view
+	* @author David Laan
+	* @return Returns the Reversi gameview
+	*/
 	public OthelloView GetOthelloView() {
 		return othell;
 	}
 
+	/**
+	* Function to process the requested playerlist.
+	* @author David Laan
+	* @exception IOException
+	*/
 	public void ProcessPlayers() throws IOException {
 		if(loadingPlayers && connectThread.GetPlayerList().size() > 0) {
 			loadingPlayers = false;
@@ -177,6 +236,10 @@ public class MainWindow  {
 		}
 	}
 
+	/**
+	* Function to check if client is ingame
+	* @author David Laan
+	*/
 	public void CheckInGame() {
 		if(connectThread.getState() == 2 && !inGame) {
 			inGame = true;

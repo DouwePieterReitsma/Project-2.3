@@ -32,7 +32,7 @@ public class TicTacToeView extends GameBoardView {
 	private Label turnLabel;
 	private Label clientLabel;
 	private Label enemyLabel;
-	
+
 	private boolean veryFirstTurn;
 	private String username;
 	private String VS;
@@ -46,6 +46,14 @@ public class TicTacToeView extends GameBoardView {
 
 	private List<List<Button>> boardList;
 
+	/**
+	* Function to create the UI for the TicTacToe board
+	* @author David Laan
+	* @param parent Returns the gamescene
+	* @param username Returns the username of the client
+	* @param VS Returns the username of opponent
+	* @param veryFirstTurn Returns if its the first turn
+	*/
 	public void createUI(BorderPane parent,String username, String VS, boolean veryFirstTurn) {
 		this.gameScene = super.GetGameScene();
 		this.titleLabel = super.GetTitleLabel();
@@ -68,7 +76,7 @@ public class TicTacToeView extends GameBoardView {
 		titleLabel.setText("Tic-Tac-Toe");
 		//Set typeLabel
 		titleLabel.setText( username +" vs. " + VS );
-		
+
 		setXO();
 
 		//Create Board
@@ -76,7 +84,10 @@ public class TicTacToeView extends GameBoardView {
 		parent.setCenter(mainPane);
 	}
 
-	//Function to create gameboard
+	/**
+	* This function creates the board
+	* @author David Laan
+	*/
 	private void CreateBoard() {
 		//Make columns
 		for(int y = 0; y < yRows; y++) {
@@ -104,6 +115,11 @@ public class TicTacToeView extends GameBoardView {
 		}
 	}
 
+	/**
+	* This function updates the board
+	* @author David Laan
+	* @param tBoard The gameboard
+	*/
 	public void UpdatePositions(TicTacToeBoard tBoard) {
 		boardList.clear();
 		for(int y = 0; y < yRows; y++) {
@@ -146,6 +162,13 @@ public class TicTacToeView extends GameBoardView {
 		}
 	}
 
+	/**
+	* Function to set a move when the player is not an AI
+	* @author David Laan
+	* @param columnId The ID of the column that has been selected
+	* @param rowId the ID of the row that has been selected
+	* @param isPlayer Checks if the player set an move or the opponent
+	*/
 	private void SetMove(int columnId, int rowId, boolean isPlayer) {
 		//Check if player or not
 		if(isPlayer) {
@@ -160,9 +183,6 @@ public class TicTacToeView extends GameBoardView {
 		boardList.get(rowId).get(columnId).setDisable(true);
 	}
 
-	private void CheckIfDone() {
-
-	}
 	public void setXO() {
 		if (veryFirstTurn) {
 			enemyLabel.setText(username+ " : X ");

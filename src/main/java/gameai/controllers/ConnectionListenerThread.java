@@ -61,7 +61,13 @@ public class ConnectionListenerThread implements Runnable {
 	private ArrayList<String> challengeList;
 	private ArrayList<String> matchList;
 
-
+	/**
+	* Constructor for the ConnectionListenerThread. Sets values and creates objects.
+	* @author David Laan
+	* @param host Returns the hostname or ip
+	* @param port Returns the port
+	* @param name Returns the username of the player
+	*/
 	public ConnectionListenerThread(String host, int port, String name) {
 		//Set values
 		connectStatus = 0;
@@ -76,7 +82,7 @@ public class ConnectionListenerThread implements Runnable {
 		skipTurn = false;
 		firstTurn = true;
 		enemyMove = -1;
-		
+
 
 		state = 0; // 0 = login, 1 = mainmenu, 2 = game
 
@@ -92,30 +98,58 @@ public class ConnectionListenerThread implements Runnable {
 		matchList = new ArrayList<String>();
 	}
 
-	//Getter for connectionstatus
+	/**
+	* Returns the connection status. 0 = connecting, 1 = failed by host, 2 = failed by duplicate name, 3 = successful.
+	* @author David Laan
+	* @return Returns the connection status.
+	*/
 	public int GetConnectStatus() {
 		return connectStatus; // 0 = connecting, 1 = failed by host, 2 = failed by duplicate name,  3 = succesfull
 	}
 
-	//Getter for state
+	/**
+	* Function to return the state of the application. 0 = Login, 1 = Main, 2 = Game.
+	* @author David Laan
+	* @return Returns the state of the application.
+	*/
 	public int GetState() {
 		return state;
 	}
+
+	/**
+	* Function to return the username
+	* @author David Laan
+	* @return Returns the username
+	*/
 	public String GetName() {
 		return username;
 	}
+
 	public String GetVS() {
 		String vs = matchList.get(1);
 		return vs;
 	}
+
+	/**
+	* Function to return if its the first turn
+	* @author David Laan
+	* @return Returns if first turn
+	*/
 	public boolean GetFirstTurn() {
 		return firstTurn;
-	
 	}
+
+
 	public boolean GetVeryFirstTurn() {
 		return veryFirstTurn;
-	
 	}
+
+	/**
+	* Function to run the thread
+	* @author David Laan
+	* @exception UnknownHostException
+	* @exception IOException
+	*/
 	public void run() {
 		connectStatus = 0;
 
@@ -161,20 +195,42 @@ public class ConnectionListenerThread implements Runnable {
 		}
 	}
 
+	/**
+	* Function to request an update for the player list
+	* @author David Laan
+	* @exception InterruptedException
+	* @exception IOException
+	*/
 	public void UpdatePlayerList() throws IOException, InterruptedException {
 		toServer.write("get playerlist\n".getBytes());
 		toServer.flush(); // send the message
 	}
 
+	/**
+	* Function to request an update for the game list
+	* @author David Laan
+	* @exception InterruptedException
+	* @exception IOException
+	*/
 	public void UpdateGameList() throws IOException, InterruptedException {
 		toServer.write("get gamelist\n".getBytes());
 		toServer.flush(); // send the message
 	}
 
+	/**
+	* Function to return the playerlist.
+	* @author David Laan
+	* @return Returns the playerlist.
+	*/
 	public ArrayList<String> GetPlayerList() {
 		return playerList;
 	}
 
+	/**
+	* Function to return the gamelist
+	* @author David Laan
+	* @return Returns the gamelist.
+	*/
 	public ArrayList<String> GetGameList() {
 		return gameList;
 	}
@@ -184,27 +240,59 @@ public class ConnectionListenerThread implements Runnable {
 	public boolean getChallenged() {
 		return challenge;
 	}
+	/**
+	* Function to return if an illegalmove has been set
+	* @author David Laan
+	* @return Returns the state of illegalmove
+	*/
 	public boolean getIllegalMove() {
 		return illegalMove;
 	}
+	/**
+	* Function to check if the enemy has moved.
+	* @author David Laan
+	* @return Returns the movement coordinates of the enemy. (-1 means not moved)
+	*/
 	public int GetEnemyMove() {
 		return enemyMove;
 	}
+	/**
+	* Function to return the current selected game
+	* @author David Laan
+	* @return Returns the current selected game
+	*/
 	public String getGame() {
 		return matchList.get(0);
 	}
 	public void setChallFalse() {
 		challenge = false;
 	}
+	/**
+	* Resets enemy move to -1 which means not moved.
+	* @author David Laan
+	*/
 	public void ResetEnemyMove() {
 		enemyMove = -1;
 	}
+	/**
+	* Resets skipturn to false which means no turn will be skipped.
+	* @author David Laan
+	*/
 	public void resetSkipTurn() {
 		skipTurn = false;
 	}
+	/**
+	* Returns if a turn has to be skipped.
+	* @author David Laan
+	* @return Returns the state of skipturn
+	*/
 	public boolean getSkipTurn() {
 		return skipTurn;
 	}
+	/**
+	* Function to advance the turn
+	* @author David Laan
+	*/
 	public void advanceTurn() {
 		if(yourTurn) {
 			yourTurn = false;
@@ -213,15 +301,30 @@ public class ConnectionListenerThread implements Runnable {
 			yourTurn = true;
 		}
 	}
+	/**
+	* Function to return if its the player's turn
+	* @author David Laan
+	* @return Returns if the player has to move
+	*/
 	public boolean getYourTurn() {
 		return yourTurn;
 	}
 
+	/**
+	* Function to send a command to the server
+	* @author David Laan
+	* @param tekst The string that will be send to the server
+	*/
 	public void sendCommand(String tekst) throws IOException {
 		toServer.write(tekst.getBytes());
 		toServer.flush();
 	}
 
+	/**
+	* Function to tell the server which move has been set
+	* @author David Laan
+	* @param position The position that has been set
+	*/
 	public void doMove(Position position) throws IOException {
 		if(yourTurn) {
 			int finalPositie = 0;
@@ -240,6 +343,10 @@ public class ConnectionListenerThread implements Runnable {
 		}
 	}
 
+	/**
+	* Function to end a game by resetting values and setting state to Main
+	* @author David Laan
+	*/
 	public void endGame() {
 		challenge = false;
 		yourTurn = false;
@@ -251,6 +358,11 @@ public class ConnectionListenerThread implements Runnable {
 		state = 1;
 	}
 
+	/**
+	* Function that listens to incoming messages from the server.
+	* @author David Laan
+	* @exception IOException
+	*/
 	public void ListenToServer() throws IOException {
 		//Add to queue
 		String data = null;
@@ -261,6 +373,10 @@ public class ConnectionListenerThread implements Runnable {
 		ProcessCommands();
 	}
 
+	/**
+	* Function that processes all the commands that the client gets from the server.
+	* @author David Laan
+	*/
 	private void ProcessCommands() {
 		if(commandList.size() > 0) {
 
