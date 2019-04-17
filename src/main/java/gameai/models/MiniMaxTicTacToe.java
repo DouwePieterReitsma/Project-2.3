@@ -16,8 +16,6 @@ public class MiniMaxTicTacToe implements TicTacToeAI {
 
 	@Override
 	public void makeMove() {
-		System.out.println(board + "\n");
- 
         ArrayList<Position> array = board.getLegalMoves();
         if(this.board.getTurn() == 0) {
             checkBestMove(board, player);

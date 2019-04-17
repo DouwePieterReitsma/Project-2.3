@@ -91,7 +91,6 @@ public class ChallengeView {
     public void vorige() {
     	sub.setDisable(false);
     	parent.setCenter(null);
-    	System.out.println("terug naar het vorige scherm");
     }
 
     private void addButtonToTable() {
@@ -107,7 +106,6 @@ public class ChallengeView {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Online online = getTableView().getItems().get(getIndex());
-                            System.out.println(online);
 
                             try {
 								connectThread.sendCommand(online.toString());

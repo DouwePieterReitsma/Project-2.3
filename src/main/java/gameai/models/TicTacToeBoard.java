@@ -45,15 +45,12 @@ public class TicTacToeBoard extends Board {
 
 			TicTacToeFigure check = checkWinningConditions();
 			if (check != null) {
-				System.out.println("The winner is: " + check);
 				isGameOver = true;
 			}
 			array = getLegalMoves();
 			if (array.size() == 0) {
-				System.out.println("It's a draw");
 				isGameOver = true;
 			}
-		System.out.println(this);
 	}
 
 	@Override

@@ -35,7 +35,6 @@ public class MiniMaxTicTacToeAI implements TicTacToeAI {
 				if(move.equals(bestMove)) {
 					board.setTicTacToePieceAtPosition(new TicTacToePiece(player), move);
 					board.currentTurn = opponent;
-					System.out.println("new position = " + move);
 				}
 				else {
 					board.currentTurn = opponent;

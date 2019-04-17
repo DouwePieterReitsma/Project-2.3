@@ -42,7 +42,6 @@ public class MoveController {
 			}
 			else {
 				connectThread.advanceTurn();
-				System.out.println("Legal moves: " + player.getBoard().getLegalMoves(player.playerColor).size());
 			}
 		}
 		else if(type.equals("TicTacToe")) {
@@ -54,20 +53,19 @@ public class MoveController {
 
 	public void checkEnemy() { //FINAL
 		if(type.equals("Reversi")) {
-			if(connectThread.getIllegalMove() || connectThread.GetState() != 2) {
+			if(connectThread.getIllegalMove()) {
 				endGame();
 			}
-			else if(connectThread.getState() == 1){
-				endGame();
-			}
-			else if(connectThread.GetEnemyMove() != -1) {
+			if(connectThread.GetEnemyMove() != -1) {
 				int posX = (int)connectThread.GetEnemyMove() % 8;
 				int posY = (int)Math.floor(connectThread.GetEnemyMove() / 8);
-				System.out.println(posX + " en " + posY);
 				Position newPos = player.getBoard().getPositions()[posY][posX];
 				opponent.doMove(newPos);
 				connectThread.ResetEnemyMove();
 				connectThread.advanceTurn();
+			}
+			else if(connectThread.getState() != 2){
+				endGame();
 			}
 		}
 		else if(type.equals("TicTacToe")) {
@@ -80,7 +78,6 @@ public class MoveController {
 			else if(connectThread.GetEnemyMove() != -1) {
 				int posX = (int)connectThread.GetEnemyMove() % 3;
 				int posY = (int)Math.floor(connectThread.GetEnemyMove() / 3);
-				System.out.println(posX + " en " + posY);
 				Position newPos = tPlayer.getBoard().getPositions()[posY][posX];
 				tOpponent.doMove(newPos);
 				tOpponent.getBoard().play();

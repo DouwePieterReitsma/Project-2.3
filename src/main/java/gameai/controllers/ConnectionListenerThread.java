@@ -224,7 +224,6 @@ public class ConnectionListenerThread implements Runnable {
 
 	public void doMove(Position position) throws IOException {
 		if(yourTurn) {
-			System.out.println(position);
 			int finalPositie = 0;
 			//Check game
 			if(getGame().equals("Reversi")) {
@@ -238,9 +237,6 @@ public class ConnectionListenerThread implements Runnable {
 			toServer.flush();
 			advanceTurn();
 			enemyMoved = false;
-		}
-		else {
-			System.out.println("Its not your turn!");
 		}
 	}
 
@@ -267,11 +263,9 @@ public class ConnectionListenerThread implements Runnable {
 
 	private void ProcessCommands() {
 		if(commandList.size() > 0) {
-			System.out.println(commandList.get(0));
 
 			//Check if its a server command first
 			if(commandList.get(0).contains("SVR PLAYERLIST")) {
-				//System.out.println("works!");
 				String[] firstStep = commandList.get(0).split("\\[");
 				String secondStep = firstStep[1];
 				String thirdStep = secondStep.replaceAll("\\]","");
@@ -349,7 +343,6 @@ public class ConnectionListenerThread implements Runnable {
 
 				//DoMove
 				if(!finalResult[0].equals(username)) {
-					System.out.println(finalResult[1]);
 					enemyMove = Integer.parseInt(finalResult[1]);
 					enemyMoved = true;
 				}
@@ -366,9 +359,7 @@ public class ConnectionListenerThread implements Runnable {
 				String finalResult = thirdStep.replaceAll("\"", "");
 				String message = finalResult.replaceAll("TURNMESSAGE: ", "");
 
-				//System.out.println("Checking turns... first turn: " + firstTurn + " and enemymoved: " + enemyMoved);
 				if(!firstTurn && !enemyMoved) {
-					System.out.println("No turns possible! new turn!");
 					skipTurn = true;
 				}
 
@@ -385,7 +376,6 @@ public class ConnectionListenerThread implements Runnable {
 				String[] finalResult = seventhStep.split(", ");
 				challengeList.clear();
 				for(int i = 0; i < finalResult.length; i++) {
-					System.out.println(finalResult[i]);
 					challengeList.add(finalResult[i]);
 				}
 
@@ -424,7 +414,6 @@ public class ConnectionListenerThread implements Runnable {
 				case "OK":
 					if(state == 0) {
 						state++;
-						System.out.println("State highered!");
 						connectionReady = true;
 						timer = 1000;
 					}
