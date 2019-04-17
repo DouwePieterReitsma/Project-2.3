@@ -2,7 +2,11 @@ package gameai.models;
 
 import java.util.ArrayList;
 
-
+/**
+ * Creates the board for Tic tac toe by creating two arrays which hold 9 positions
+ * @author Jelle
+ *
+ */
 public class TicTacToeBoard extends Board {
 	public TicTacToeAI ai;
 	private TicTacToeServerPlayer opponent;
@@ -10,6 +14,13 @@ public class TicTacToeBoard extends Board {
 	public TicTacToeFigure currentTurn = TicTacToeFigure.X;
 	private boolean isGameOver;
 
+	/**
+	 * The constructor for the Tic tac toe board.
+	 * @param ai
+	 * The AI to be used on this board
+	 * @param opponent
+	 * The opponent to be set.
+	 */
 	public TicTacToeBoard(TicTacToeAI ai, TicTacToeServerPlayer opponent) {
 		super(3, 3);
 		this.ai = ai;
@@ -18,7 +29,13 @@ public class TicTacToeBoard extends Board {
 		ai.setBoard(this);
 		opponent.setBoard(this);
 	}
-
+	
+	/**
+	 * Overloaded constructor to be used by the Minimax AI
+	 * This constructor is used to create a new board for each move to be calculated.
+	 * @param board
+	 * The current board to be set in the new board.
+	 */
 	public TicTacToeBoard(TicTacToeBoard board) {
 		super(3,3);
 		Position[][] tempPositions = board.getPositions();
@@ -31,7 +48,10 @@ public class TicTacToeBoard extends Board {
 			}
 		}
 	}
-
+	
+	/**
+	 * Boolean to be used to stop the model from playing on.
+	 */
 	public void EndGame() {
 		isGameOver = true;
 	}
@@ -39,7 +59,10 @@ public class TicTacToeBoard extends Board {
 	public boolean GetGameOver() {
 		return isGameOver;
 	}
-
+	
+	/**
+	 * Method to set the game state of the current game.
+	 */
 	public void play() {
 		// Carries out the game locally
 
@@ -54,8 +77,12 @@ public class TicTacToeBoard extends Board {
 	}
 
 	@Override
+	/**
+	 * returns an array which contains the positions which aren't occupied.
+	 * @return
+	 * The arraylist with the legal moves.
+	 */
 	public ArrayList<Position> getLegalMoves() {
-		// returns an array which contains the positions which aren't occupied.
 		ArrayList<Position> temp = new ArrayList<Position>();
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
@@ -66,11 +93,15 @@ public class TicTacToeBoard extends Board {
 		}
 		return temp;
 	}
-
+	
+	/**
+	 * Checks if the current state of the game has a winning condition. 
+	 * 
+	 * @return
+	 * returns the character which has won (Cross or Circle).
+	 * If there is no winning condition found, it returns null.
+	 */
 	public TicTacToeFigure checkWinningConditions() {
-		// Checks if the current state of the game has a winning condition. If so, it
-		// returns the character which has won (Cross or Circle).If there is no winning
-		// condition found, it returns null.
 		if (positions[0][0].getPiece() != null && positions[1][1].getPiece() != null
 				&& positions[2][2].getPiece() != null) {
 			if (((TicTacToePiece) positions[0][0].getPiece()).equals(((TicTacToePiece) positions[1][1].getPiece()))
@@ -108,9 +139,11 @@ public class TicTacToeBoard extends Board {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Overrides the toString method to display the board in the console.
+	 */
 	public String toString() {
-		// Overrides the toString method to display the board in the console.
 		String board = "";
 		for (int x = 0; x < 3; x++) {
 			if (x != 0) {
@@ -122,10 +155,19 @@ public class TicTacToeBoard extends Board {
 		}
 		return board;
 	}
-
+	
+	
 	public ArrayList<Position> getLegalMovesList() {
 		return array;
 	}
+	
+	/**
+	 * Sets a piece at a specific position
+	 * @param piece
+	 * The piece to be set
+	 * @param position
+	 * The position where the piece has to be set in.
+	 */
     public void setTicTacToePieceAtPosition(Piece piece, Position position){
         position.setPiece(piece);
     }

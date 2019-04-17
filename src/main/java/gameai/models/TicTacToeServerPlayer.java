@@ -1,12 +1,20 @@
 package gameai.models;
 
-import gameai.models.othello.OthelloPiece;
-
+/**
+ * The class used to do the move of the opponent.
+ * @author Jelle
+ *
+ */
 public class TicTacToeServerPlayer implements TicTacToeAI {
 	private TicTacToeBoard board;
 	private TicTacToeFigure opponent;
 	private TicTacToeFigure player;
-
+	
+	/**
+	 * Constructor to set the figure of the opponent and the player.
+	 * @param firstTurn
+	 * The firstTurn decides which figure the opponent and the player are.
+	 */
 	public TicTacToeServerPlayer(boolean firstTurn) {
 		if(firstTurn) {
 			opponent = TicTacToeFigure.X;
@@ -17,7 +25,12 @@ public class TicTacToeServerPlayer implements TicTacToeAI {
 			player = TicTacToeFigure.X;
 		}
 	}
-
+	
+	/**
+	 * Method which sets the move the opponent took in the model.
+	 * @param position
+	 * The position to make the move.
+	 */
 	public void doMove(Position position) {
         if (board.currentTurn == opponent) {
             board.setTicTacToePieceAtPosition(new TicTacToePiece(opponent), position);
