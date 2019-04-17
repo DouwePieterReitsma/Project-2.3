@@ -1,26 +1,18 @@
 package gameai.views;
 
-import java.io.IOException;
-
-import java.util.ArrayList;
-
-import com.sun.xml.internal.bind.v2.runtime.Name;
-
+import gameai.Main;
 import gameai.controllers.ConnectionListenerThread;
 import gameai.models.TicTacToeBoard;
 import gameai.models.othello.OthelloBoard;
-import javafx.application.Application;
 import javafx.application.Platform;
-import gameai.Main;
-import gameai.controllers.ConnectionListenerThread;
-import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.ArrayList;
 /**
  * 
  * After the user logs in the gets send to the mainwindow, this is the class that is used to create that window.
